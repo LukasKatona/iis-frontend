@@ -1,22 +1,14 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { CategoryMenuComponent } from './components/category-menu/category-menu.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, CategoryMenuComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
   title = 'efarm';
-
-  public testEndpoint() {
-    const baseUri = "https://closed-sapphire-lukokat-71c0d315.koyeb.app/";
-
-    // Test GET request
-    fetch(baseUri + "items/0")
-      .then(response => response.json())
-      .then(data => console.log(data));
-  }
 }
