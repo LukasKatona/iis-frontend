@@ -1,0 +1,22 @@
+.ef-main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: var(--primary-container);
+}
+
+.ef-main-header__logo {
+    color: var(--on-primary-container);
+}
+
+.ef-main-header__search {
+    width: 50%;
+}
+
+.ef-main-header__buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    color: var(--on-primary-container);
+}

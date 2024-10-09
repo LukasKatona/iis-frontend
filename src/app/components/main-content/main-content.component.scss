@@ -1,0 +1,18 @@
+.ef-main-content {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    padding: 1rem 2rem;
+}
+
+.ef-main-content__menu {
+    width: 20%;
+}
+
+.ef-main-content__router-outlet {
+    width: 60%;
+}
+
+.ef-main-content__popular {
+    width: 20%;
+}
