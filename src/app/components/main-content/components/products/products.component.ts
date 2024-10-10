@@ -3,6 +3,7 @@ import { environment } from '../../../../../environments/environment';
 import { Product } from '../../../../../models/product.interface';
 import { CommonModule } from '@angular/common';
 import { ProductCardComponent } from './components/product-card/product-card.component';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-products',
@@ -12,10 +13,16 @@ import { ProductCardComponent } from './components/product-card/product-card.com
   styleUrl: './products.component.scss'
 })
 export class ProductsComponent {
+  private categoryId: number = 0;
+  public categoryName: string = '';
   public products: Product[] = [];
 
+  constructor(private route: ActivatedRoute) {}
+
   ngOnInit(): void {
-    this.getProducts(undefined, undefined, undefined, undefined);
+    this.categoryId = this.route.snapshot.data['categoryId'];
+    this.categoryName = this.route.snapshot.data['categoryName'];
+    this.getProducts(undefined, this.categoryId, undefined, undefined);
   }
 
   private getProducts(nameFilter?: string, categoryIdFilter?: number, sortField?: string, sortDirection?: string): void {

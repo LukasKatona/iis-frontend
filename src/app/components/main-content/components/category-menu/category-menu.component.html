@@ -1,9 +1,9 @@
 <mat-tree class="ef-category-menu" [dataSource]="dataSource" [treeControl]="treeControl" >
   <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
     <mat-icon>remove</mat-icon>
-    {{node.name}}
+    <a class="ef-category-menu__link" [routerLink]="['/', node.name.toLowerCase()]">{{ node.name }}</a>
   </mat-tree-node>
-  <mat-tree-node *matTreeNodeDef="let node;when: hasChild" matTreeNodeToggle matTreeNodePadding
+  <mat-tree-node *matTreeNodeDef="let node;when: hasChild" matTreeNodePadding
                  [cdkTreeNodeTypeaheadLabel]="node.name">
     <a mat-icon-button matTreeNodeToggle
             [attr.aria-label]="'Toggle ' + node.name">
@@ -11,6 +11,6 @@
         {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
       </mat-icon>
     </a>
-    {{node.name}}
+    <a class="ef-category-menu__link" [routerLink]="['/', node.name.toLowerCase()]">{{ node.name }}</a>
   </mat-tree-node>
 </mat-tree>
