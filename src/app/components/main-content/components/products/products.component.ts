@@ -15,11 +15,32 @@ export class ProductsComponent {
   public products: Product[] = [];
 
   ngOnInit(): void {
-    this.getProducts();
+    this.getProducts(undefined, undefined, undefined, undefined);
   }
 
-  private getProducts() {
-    fetch(environment.baseUri + '/products')
+  private getProducts(nameFilter?: string, categoryIdFilter?: number, sortField?: string, sortDirection?: string): void {
+    let url = environment.baseUri + '/products';
+
+    const params = new URLSearchParams();
+
+    if (nameFilter) {
+      params.append('nameFilter', nameFilter);
+    }
+    if (categoryIdFilter) {
+      params.append('categoryIdFilter', categoryIdFilter.toString());
+    }
+    if (sortField) {
+      params.append('sortField', sortField.toString());
+    }
+    if (sortDirection) {
+      params.append('sortDirection', sortDirection.toString());
+    }
+
+    if (params.toString()) {
+      url += `?${params.toString()}`;
+    }
+
+    fetch(url)
       .then(response => response.json())
       .then(data => {
         this.products = data;
