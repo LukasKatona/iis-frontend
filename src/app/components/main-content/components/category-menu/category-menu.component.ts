@@ -28,7 +28,6 @@ export class CategoryMenuComponent implements OnInit {
   }
 
   private getProductCategories() {
-    console.log(environment.baseUri)
     fetch(environment.baseUri + '/product-categories')
       .then(response => response.json())
       .then(data => {
@@ -49,7 +48,6 @@ export class CategoryMenuComponent implements OnInit {
     categories.forEach(category => {
       if (category.parentCategoryId === null) {
         tree.push(categoryMap[category.id]);
-        console.log(categoryMap[category.id]);
       } else {
         if (category.parentCategoryId !== undefined) {
           const parent = categoryMap[category.parentCategoryId];
@@ -60,7 +58,6 @@ export class CategoryMenuComponent implements OnInit {
       }
     });
   
-    console.log(tree);
     return tree;
   }
 

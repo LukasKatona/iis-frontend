@@ -1,0 +1,24 @@
+.ef-product-card {
+    width: 15rem;
+    height: 30rem;
+    background-color: var(--surface-container);
+    color: var(--on-surface);
+}
+
+.ef-product-card__image {
+    width: 100%;
+    height: 15rem;
+    object-fit: cover;
+}
+
+.ef-product-card__info {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    padding: 1rem;
+    background-color: var(--surface-container-lowest);
+}
+
+.ef-product-card__actions {
+
+}
