@@ -8,4 +8,5 @@ export interface Product {
     unitPrice: number;
     stock: number;
     categoryId: number;
+    farmerId: number;
 }
