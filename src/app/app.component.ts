@@ -35,7 +35,7 @@ export class AppComponent {
 
   private populateRoutes(categories: ProductCategory[]) {
     const dynamicRoutes = categories.map(category => ({
-      path: category.name.toLowerCase(),
+      path: "shop/" + category.name.toLowerCase(),
       component: ProductsComponent,
       data: { categoryId: category.id, categoryName: category.name }
     }));
