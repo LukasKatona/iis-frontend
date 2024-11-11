@@ -3,11 +3,11 @@
     justify-content: space-between;
     align-items: center;
     padding: 1rem 2rem;
-    background-color: var(--primary-container);
+    background-color: rgb(var(--mdui-color-primary-container));
 }
 
 .ef-main-header__logo {
-    color: var(--on-primary-container);
+    color: rgb(var(--mdui-color-on-primary-container));
 }
 
 .ef-main-header__search {
@@ -18,5 +18,5 @@
     display: flex;
     flex-direction: row;
     gap: 1rem;
-    color: var(--on-primary-container);
+    color: rgb(var(--mdui-color-on-primary-container));
 }

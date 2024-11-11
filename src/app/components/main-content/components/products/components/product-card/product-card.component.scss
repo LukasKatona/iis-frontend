@@ -1,8 +1,6 @@
 .ef-product-card {
     width: 15rem;
     height: 30rem;
-    background-color: var(--surface-container);
-    color: var(--on-surface);
 }
 
 .ef-product-card__image {
@@ -16,5 +14,4 @@
     flex-direction: column;
     flex-grow: 1;
     padding: 1rem;
-    background-color: var(--surface-container-lowest);
 }
