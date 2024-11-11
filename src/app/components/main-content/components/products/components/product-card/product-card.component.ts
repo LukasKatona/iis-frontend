@@ -1,7 +1,5 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA, Input } from '@angular/core';
 import { Product } from '../../../../../../../models/product.interface';
-import 'mdui/components/card.js';
-import 'mdui/components/checkbox.js';
 
 @Component({
   selector: 'app-product-card',

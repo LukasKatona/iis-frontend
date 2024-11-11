@@ -6,6 +6,8 @@ import { ProductsComponent } from './components/main-content/components/products
 import { ProductCategory } from '../models/product-category.interface';
 import { environment } from '../environments/environment';
 import { Router } from '@angular/router';
+import 'mdui/mdui.css';
+import 'mdui';
 
 @Component({
   selector: 'app-root',

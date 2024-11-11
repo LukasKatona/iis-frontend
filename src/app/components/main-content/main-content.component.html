@@ -3,6 +3,10 @@
         <app-category-menu></app-category-menu>
     </div>
     <div class="ef-main-content__router-outlet">
+        <mdui-tabs value="tab-1">
+            <mdui-tab value="tab-1" (click)="routeToHomePage()">Tab 1</mdui-tab>
+            <mdui-tab value="tab-2" (click)="routeToFarmerPage()">Tab 2</mdui-tab>
+        </mdui-tabs>
         <router-outlet></router-outlet>
     </div>
     <div class="ef-main-content__popular">

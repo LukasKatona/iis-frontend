@@ -3,7 +3,7 @@ import { environment } from '../../../../../environments/environment';
 import { Product } from '../../../../../models/product.interface';
 import { CommonModule } from '@angular/common';
 import { ProductCardComponent } from './components/product-card/product-card.component';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-products',
