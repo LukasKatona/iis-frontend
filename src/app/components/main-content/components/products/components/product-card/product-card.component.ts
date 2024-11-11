@@ -1,14 +1,15 @@
-import { Component, Input } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, Input } from '@angular/core';
 import { Product } from '../../../../../../../models/product.interface';
-import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
+import 'mdui/components/card.js';
+import 'mdui/components/checkbox.js';
 
 @Component({
   selector: 'app-product-card',
   standalone: true,
-  imports: [MatCardModule, MatButtonModule],
+  imports: [],
   templateUrl: './product-card.component.html',
-  styleUrl: './product-card.component.scss'
+  styleUrl: './product-card.component.scss',
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class ProductCardComponent {
   @Input()
