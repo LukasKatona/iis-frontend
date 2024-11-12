@@ -1,5 +1,5 @@
 export interface Farmer {
-    id: number;
+    id?: number;
     userId: number;
     farmName?: string;
     description?: string;
@@ -20,4 +20,24 @@ export interface Farmer {
     zipCode?: string;
 
     [key: string]: any;
+}
+
+export function createEmptyFarmer(userId: number): Farmer {
+    return {
+        userId,
+        farmName: '',
+        description: '',
+        CIN: '',
+        VATIN: '',
+        VAT: '',
+        paysVat: false,
+        bankCode: '',
+        accountNumber: '',
+        iban: '',
+        state: '',
+        city: '',
+        street: '',
+        streetNumber: '',
+        zipCode: ''
+    };
 }

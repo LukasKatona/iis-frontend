@@ -109,6 +109,7 @@
             <mdui-checkbox
                 class="ef-personal-info__checkbox"
                 [checked]="farmer?.paysVat"
+                (change)="changeFarmer('paysVat', $event)"
             >
                 Pays VAT
             </mdui-checkbox>

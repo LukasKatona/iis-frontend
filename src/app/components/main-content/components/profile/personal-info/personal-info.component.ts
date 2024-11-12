@@ -1,7 +1,7 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { User } from '../../../../../../models/user.interface';
 import { environment } from '../../../../../../environments/environment';
-import { Farmer } from '../../../../../../models/farmer.interface';
+import { Farmer, createEmptyFarmer } from '../../../../../../models/farmer.interface';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -13,6 +13,8 @@ import { CommonModule } from '@angular/common';
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class PersonalInfoComponent {
+  private userId = 3;
+
   public user?: User;
   public farmer?: Farmer;
 
@@ -25,7 +27,7 @@ export class PersonalInfoComponent {
   }
 
   private fetchUser() {
-    let url = environment.baseUri + '/users/' + 1;
+    let url = environment.baseUri + '/users/' + this.userId;
  
     fetch(url)
       .then(response => response.json())
@@ -35,12 +37,15 @@ export class PersonalInfoComponent {
   }
 
   private fetchFarmer() {
-    let url = environment.baseUri + '/farmers/' + 1 + '/by-user-id';
-    console.log(url);
+    let url = environment.baseUri + '/farmers/' + this.userId + '/by-user-id';
     fetch(url)
       .then(response => response.json())
       .then((data: Farmer) => {
-        this.farmer = data;
+        if (data !== null) {
+          this.farmer = data;
+        } else {
+          this.farmer = createEmptyFarmer(this.userId);
+        }
       });
   }
 
@@ -68,18 +73,33 @@ export class PersonalInfoComponent {
 
   public saveFarmerInfo() {
     this.isFarmerInfoLoading = true;
-    fetch(environment.baseUri + '/farmers/' + this.farmer?.id, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(this.farmer)
-    })
-    .then(response => response.json())
-    .then((data: Farmer) => {
-      this.isFarmerInfoLoading = false;
-      this.farmer = data;
-    });
+    if (this.farmer?.id) {
+      fetch(environment.baseUri + '/farmers/' + this.farmer?.id, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(this.farmer)
+      })
+      .then(response => response.json())
+      .then((data: Farmer) => {
+        this.isFarmerInfoLoading = false;
+        this.farmer = data;
+      });
+    } else {
+      fetch(environment.baseUri + '/farmers', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(this.farmer)
+      })
+      .then(response => response.json())
+      .then((data: Farmer) => {
+        this.isFarmerInfoLoading = false;
+        this.farmer = data;
+      });
+    }
   }
 
   public changeFarmer(field: string, event: any) {
