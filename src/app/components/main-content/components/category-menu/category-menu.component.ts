@@ -56,7 +56,7 @@ export class CategoryMenuComponent {
   }
 
   private buildMenu() {
-    const menu = document.querySelector(".menu-collapse") as HTMLElement;
+    const menu = document.querySelector(".menu-collapse") as any;
     if (menu != null) {
       this.categoryTree.forEach((category: ProductCategory) => {
         if (category.children != null) {
@@ -72,12 +72,6 @@ export class CategoryMenuComponent {
         }
       });
     }
-
-    setTimeout(() => {
-      if ((window as any).mdui) {
-        (window as any).mdui.mutation();
-      }
-    }, 0);
   }
 
   private buildChildren(category: ProductCategory) {
