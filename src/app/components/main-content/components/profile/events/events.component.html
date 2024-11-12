@@ -1,1 +1,15 @@
-<p>events works!</p>
+<mdui-tabs value="liked-events" full-width variant="secondary">
+    <mdui-tab value="liked-events">Liked Events</mdui-tab>
+    <mdui-tab value="all-events">All Events</mdui-tab>
+    <mdui-tab value="my-events">My Events</mdui-tab>
+
+    <mdui-tab-panel class="ef-events__tab-panel" slot="panel" value="liked-events">
+        <app-liked-events></app-liked-events>
+    </mdui-tab-panel>
+    <mdui-tab-panel class="ef-events__tab-panel" slot="panel" value="all-events">
+        <app-all-events></app-all-events>
+    </mdui-tab-panel>
+    <mdui-tab-panel class="ef-events__tab-panel" slot="panel" value="my-events">
+        <app-farmer-events></app-farmer-events>
+    </mdui-tab-panel>
+</mdui-tabs>

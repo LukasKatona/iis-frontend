@@ -1,0 +1,30 @@
+.ef-event-card {
+    padding: 1rem;
+    width: 100%;
+    background-color: rgb(var(--mdui-color-surface-container));
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.ef-event-card__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+
+    h3,p {
+        margin: 0;
+    }
+}
+
+.ef-event-card__info {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+    align-items: center;
+
+    p {
+        margin: 0;
+    };
+}

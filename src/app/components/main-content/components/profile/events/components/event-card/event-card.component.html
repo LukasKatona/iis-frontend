@@ -1,0 +1,18 @@
+<mdui-card class="ef-event-card">
+    <div class="ef-event-card__header">
+        <h3>{{ event.name }}</h3>
+        <p>Created on: {{ createdAt }}</p>
+    </div>
+    <mdui-divider></mdui-divider>
+    <div class="ef-event-card__body">
+        <div class="ef-event-card__info">
+            <i class="ri-calendar-event-line"></i>
+            <p>{{ startsAt }} - {{ endsAt }}</p>
+        </div>
+        <div class="ef-event-card__info">
+            <i class="ri-map-pin-line"></i>
+            <p>{{ event.street }} {{ event.streetNumber }}, {{ event.zipCode }}, {{ event.city }}, {{ event.state }}</p>
+        </div>
+        <p>{{ event.description }}</p>
+    </div>
+</mdui-card>
