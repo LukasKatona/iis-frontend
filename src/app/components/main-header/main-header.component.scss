@@ -18,5 +18,8 @@
     display: flex;
     flex-direction: row;
     gap: 1rem;
+}
+
+.ef-main-header__buttons i {
     color: rgb(var(--mdui-color-on-primary-container));
 }
