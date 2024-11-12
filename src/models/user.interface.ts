@@ -16,4 +16,6 @@ export interface User {
     street?: string;
     streetNumber?: string;
     zipCode?: string;
+
+    [key: string]: any;
 }

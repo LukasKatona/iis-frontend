@@ -56,22 +56,28 @@ export class CategoryMenuComponent {
   }
 
   private buildMenu() {
-    const menu = document.querySelector(".menu-collapse") as any;
+    const menu = document.querySelector(".menu-collapse") as HTMLElement;
     if (menu != null) {
       this.categoryTree.forEach((category: ProductCategory) => {
         if (category.children != null) {
           menu.innerHTML += `
-            <mdui-collapse-item class="menu-item-${category.id}" value="${category.id}" trigger=".trigger-${category.id}">
-              <mdui-list-item slot="header">
-                <a style="color: rgb(var(--mdui-color-on-surface)); text-decoration: none" href="/shop/${category.name.toLowerCase()}" class="menu-link">${category.name}</a>
-                <mdui-icon slot="end-icon" class="trigger-${category.id}" name="keyboard_arrow_down"></mdui-icon>
-              </mdui-list-item>
-            </mdui-collapse-item>
-          `;
+              <mdui-collapse-item class="menu-item-${category.id}" value="${category.id}" trigger=".trigger-${category.id}">
+                <mdui-list-item slot="header">
+                  <a style="color: rgb(var(--mdui-color-on-surface)); text-decoration: none" href="/shop/${category.name.toLowerCase()}" class="menu-link">${category.name}</a>
+                  <mdui-icon slot="end-icon" class="trigger-${category.id}" name="keyboard_arrow_down"></mdui-icon>
+                </mdui-list-item>
+              </mdui-collapse-item>
+            `;
           this.buildChildren(category);
         }
       });
     }
+
+    setTimeout(() => {
+      if ((window as any).mdui) {
+        (window as any).mdui.mutation();
+      }
+    }, 0);
   }
 
   private buildChildren(category: ProductCategory) {

@@ -16,6 +16,9 @@ export class PersonalInfoComponent {
   public user?: User;
   public farmer?: Farmer;
 
+  public isPersonalInfoLoading = false;
+  public isFarmerInfoLoading = false;
+
   constructor() {
     this.fetchUser()
     this.fetchFarmer();
@@ -26,7 +29,7 @@ export class PersonalInfoComponent {
  
     fetch(url)
       .then(response => response.json())
-      .then(data => {
+      .then((data: User) => {
         this.user = data;
       });
   }
@@ -36,8 +39,52 @@ export class PersonalInfoComponent {
     console.log(url);
     fetch(url)
       .then(response => response.json())
-      .then(data => {
+      .then((data: Farmer) => {
         this.farmer = data;
       });
+  }
+
+  public savePersonalInfo() {
+    this.isPersonalInfoLoading = true;
+    fetch(environment.baseUri + '/users/' + this.user?.id, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(this.user)
+    })
+    .then(response => response.json())
+    .then((data: User) => {
+      this.isPersonalInfoLoading = false;
+      this.user = data;
+    });
+  }
+
+  public changeUser(field: string, event: any) {
+    if (this.user) {
+      this.user[field] = event.target.value;
+    }
+  }
+
+  public saveFarmerInfo() {
+    this.isFarmerInfoLoading = true;
+    fetch(environment.baseUri + '/farmers/' + this.farmer?.id, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(this.farmer)
+    })
+    .then(response => response.json())
+    .then((data: Farmer) => {
+      this.isFarmerInfoLoading = false;
+      this.farmer = data;
+    });
+  }
+
+  public changeFarmer(field: string, event: any) {
+    if (this.farmer) {
+      this.farmer[field] = event.target.value;
+    }
   }
 }

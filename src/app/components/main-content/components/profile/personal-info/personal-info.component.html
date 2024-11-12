@@ -1,16 +1,18 @@
-<div *ngIf="user" class="ef-personal-info">
+<div class="ef-personal-info">
     <div class="ef-personal-info__user">
         <h2>Personal Information</h2>
         <div class="ef-personal-info__row">
             <mdui-text-field
                 label="Name"
                 type="text"
-                [value]="user.name"
+                [value]="user?.name"
+                (input)="changeUser('name', $event)"
             ></mdui-text-field>
             <mdui-text-field
                 label="Surname"
                 type="text"
-                [value]="user.surname"
+                [value]="user?.surname"
+                (input)="changeUser('surname', $event)"
             ></mdui-text-field>
         </div>
         <h3>Contact Information</h3>
@@ -18,42 +20,54 @@
             <mdui-text-field
                 label="Email"
                 type="text"
-                [value]="user.email"
+                [value]="user?.email"
+                (input)="changeUser('email', $event)"
             ></mdui-text-field>
             <mdui-text-field
                 label="Phone"
                 type="text"
-                [value]="user.phone"
+                [value]="user?.phone"
+                (input)="changeUser('phone', $event)"
             ></mdui-text-field>
         </div>
         <h3>Billing Address</h3>
         <mdui-text-field
             label="State"
             type="text"
-            [value]="user.state"
+            [value]="user?.state"
+            (input)="changeUser('state', $event)"
         ></mdui-text-field>
         <mdui-text-field
             label="City"
             type="text"
-            [value]="user.city"
+            [value]="user?.city"
+            (input)="changeUser('city', $event)"
         ></mdui-text-field>
         <div class="ef-personal-info__row">
             <mdui-text-field
                 label="Street"
                 type="text"
-                [value]="user.street"
+                [value]="user?.street"
+                (input)="changeUser('street', $event)"
             ></mdui-text-field>
             <mdui-text-field
                 label="Street Number"
                 type="text"
-                [value]="user.streetNumber"
+                [value]="user?.streetNumber"
+                (input)="changeUser('streetNumber', $event)"
             ></mdui-text-field>
         </div>
         <mdui-text-field
             label="Zip Code"
             type="text"
-            [value]="user.zipCode"
+            [value]="user?.zipCode"
+            (input)="changeUser('zipCode', $event)"
         ></mdui-text-field>
+        <mdui-button
+            [loading]="isPersonalInfoLoading"
+            (click)="savePersonalInfo()">
+            Save Personal Information
+        </mdui-button>
     </div>
     <div class="ef-personal-info__farmer">
         <h2>Farmer Information</h2>
@@ -61,11 +75,13 @@
             label="Farm Name"
             type="text"
             [value]="farmer?.farmName"
+            (input)="changeFarmer('farmName', $event)"
         ></mdui-text-field>
         <mdui-text-field
             label="Farm Description"
             type="text"
             [value]="farmer?.description"
+            (input)="changeFarmer('description', $event)"
             autosize
         ></mdui-text-field>
         <h3>Commerce Information</h3>
@@ -74,11 +90,13 @@
                 label="CIN"
                 type="text"
                 [value]="farmer?.CIN"
+                (input)="changeFarmer('CIN', $event)"
             ></mdui-text-field>
             <mdui-text-field
                 label="VATIN"
                 type="text"
                 [value]="farmer?.VATIN"
+                (input)="changeFarmer('VATIN', $event)"
             ></mdui-text-field>
         </div>
         <div class="ef-personal-info__row">
@@ -86,6 +104,7 @@
                 label="VAT"
                 type="text"
                 [value]="farmer?.VAT"
+                (input)="changeFarmer('VAT', $event)"
             ></mdui-text-field>
             <mdui-checkbox
                 class="ef-personal-info__checkbox"
@@ -99,46 +118,59 @@
                 label="Bank Code"
                 type="text"
                 [value]="farmer?.bankCode"
+                (input)="changeFarmer('bankCode', $event)"
             ></mdui-text-field>
             <mdui-text-field
                 label="Account Number"
                 type="text"
                 [value]="farmer?.accountNumber"
+                (input)="changeFarmer('accountNumber', $event)"
             ></mdui-text-field>
         </div>
         <mdui-text-field
             label="IBAN"
             type="text"
             [value]="farmer?.iban"
+            (input)="changeFarmer('iban', $event)"
         ></mdui-text-field>
         <h3>Billing Address</h3>
         <mdui-text-field
             label="State"
             type="text"
             [value]="farmer?.state"
+            (input)="changeFarmer('state', $event)"
         ></mdui-text-field>
         <mdui-text-field
             label="City"
             type="text"
             [value]="farmer?.city"
+            (input)="changeFarmer('city', $event)"
         ></mdui-text-field>
         <div class="ef-personal-info__row">
             <mdui-text-field
                 label="Street"
                 type="text"
                 [value]="farmer?.street"
+                (input)="changeFarmer('street', $event)"
             ></mdui-text-field>
             <mdui-text-field
                 label="Street Number"
                 type="text"
                 [value]="farmer?.streetNumber"
+                (input)="changeFarmer('streetNumber', $event)"
             ></mdui-text-field>
         </div>
         <mdui-text-field
             label="Zip Code"
             type="text"
             [value]="farmer?.zipCode"
+            (input)="changeFarmer('zipCode', $event)"
         ></mdui-text-field>
+        <mdui-button
+            [loading]="isFarmerInfoLoading"
+            (click)="saveFarmerInfo()">
+            Save Farmer Information
+        </mdui-button>
     </div>
 </div>
 

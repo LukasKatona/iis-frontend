@@ -18,4 +18,6 @@ export interface Farmer {
     street?: string;
     streetNumber?: string;
     zipCode?: string;
+
+    [key: string]: any;
 }
