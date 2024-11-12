@@ -3,6 +3,7 @@ import { ProductsComponent } from './components/main-content/components/products
 import { FarmerProductsComponent } from './components/main-content/components/farmer-products/farmer-products.component';
 
 export const routes: Routes = [
-    { path: '', component: ProductsComponent },
-    { path: 'farmer-products', component: FarmerProductsComponent },
+    { path: '', redirectTo: 'shop', pathMatch: 'full' },
+    { path: 'shop', component: ProductsComponent },
+    { path: 'shop/farmer-products', component: FarmerProductsComponent },
 ];

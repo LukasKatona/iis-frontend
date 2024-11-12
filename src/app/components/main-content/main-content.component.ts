@@ -18,10 +18,10 @@ export class MainContentComponent {
   constructor(private router: Router, private route: ActivatedRoute) {}
 
   routeToHomePage() {
-    this.router.navigate([`/`]);
+    this.router.navigate([`/shop`]);
   }
 
   routeToFarmerPage() {
-    this.router.navigate([`/farmer-products`]);
+    this.router.navigate([`/shop/farmer-products`]);
   }
 }
