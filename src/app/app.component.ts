@@ -8,6 +8,7 @@ import { environment } from '../environments/environment';
 import { Router } from '@angular/router';
 import 'mdui/mdui.css';
 import 'mdui';
+import { setColorScheme } from 'mdui';
 
 @Component({
   selector: 'app-root',
@@ -20,8 +21,8 @@ export class AppComponent {
   constructor(private router: Router) {}
 
   ngOnInit() {
+    setColorScheme('#0D2216');
     this.getProductCategories();
-    console.log(this.router);
   }
 
   private getProductCategories() {
@@ -34,7 +35,7 @@ export class AppComponent {
 
   private populateRoutes(categories: ProductCategory[]) {
     const dynamicRoutes = categories.map(category => ({
-      path: category.name.toLowerCase(),
+      path: "shop/" + category.name.toLowerCase(),
       component: ProductsComponent,
       data: { categoryId: category.id, categoryName: category.name }
     }));
