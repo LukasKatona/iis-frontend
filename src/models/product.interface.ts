@@ -14,6 +14,7 @@ export interface Product {
 export function createEmptyProduct(farmerId: number): Product {
     return {
         name: '',
+        imageUrl: '',
         unit: Unit.KILOGRAM,
         unitPrice: 0,
         stock: 0,

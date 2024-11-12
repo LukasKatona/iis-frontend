@@ -1,0 +1,19 @@
+<mdui-card variant="elevated" class="ef-product-card">
+    <img class="ef-product-card__image" [src]="product.imageUrl" alt="product image">
+    <div class="ef-product-card__content">
+        <div>
+            <h3>{{ product.name }}</h3>
+            <p>Price: {{ product.unitPrice }} / {{ product.unit }}</p>
+            <p>In stock: {{ product.stock }}</p>
+        </div>
+        <div class="ef-product-card__actions">
+            <mdui-button-icon (click)="editProduct(product)">
+                <i class="mdui-icon material-icons">edit</i>
+            </mdui-button-icon>
+
+            <mdui-button-icon (click)="removeProduct(product)">
+                <i class="mdui-icon material-icons">delete</i>
+            </mdui-button-icon>
+        </div>
+    </div>
+</mdui-card>

@@ -1,4 +1,4 @@
-<div class="sa-add-product">
+<div class="ef-add-product">
     <mdui-text-field label="ProductName" type="text" [value]="product?.name" (input)="createProduct('name',$event)"></mdui-text-field>
     <mdui-text-field label="Amount" type="number" [value]="product?.stock" (input)="createProduct('stock',$event)"></mdui-text-field>
     <mdui-select [value]="product?.unit" name="unit" (change)="createProduct('unit',$event)">
@@ -6,8 +6,9 @@
         <mdui-menu-item [value]="unit.LITER">{{ unit.LITER }}</mdui-menu-item>
         <mdui-menu-item [value]="unit.PIECE">{{ unit.PIECE }}</mdui-menu-item>
     </mdui-select>
-    <mdui-text-field label="Unit Price" type="number" [value]="product?.unitPrice" (input)="createProduct('unitPrice',$event)"></mdui-text-field>
+    <mdui-text-field label="Unit Price" type="fl" [value]="product?.unitPrice" (input)="createProduct('unitPrice',$event)"></mdui-text-field>
     <mdui-text-field label="Category ID" type="number" [value]="product?.categoryId" (input)="createProduct('categoryId',$event)"></mdui-text-field>
+    <mdui-text-field label="Image URL" type="text" [value]="product?.imageUrl" (input)="createProduct('description',$event)"></mdui-text-field>
     <mdui-button type="submit" [loading]="isProductCreated" (click)="saveProduct()">Add Product</mdui-button>
   
 </div>

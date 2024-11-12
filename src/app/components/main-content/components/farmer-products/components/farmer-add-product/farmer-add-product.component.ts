@@ -1,4 +1,4 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectorRef, OnInit } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectorRef, OnInit, Output, EventEmitter } from '@angular/core';
 import { environment } from '../../../../../../../environments/environment';
 import { CommonModule } from '@angular/common';
 import { Product } from '../../../../../../../models/product.interface';
@@ -18,6 +18,9 @@ export class FarmerAddProductComponent {
   public product?: Product;
   public unit = Unit;
   public isProductCreated: boolean = false;
+  public isDeleting: boolean = false;
+
+  @Output() productUpdated = new EventEmitter<Product>();
 
   constructor() {
     this.initProduct(); 
@@ -33,22 +36,33 @@ export class FarmerAddProductComponent {
     }
   }
 
+  public setProductForEditing(product: Product) {
+    this.product = { ...product };
+  }
+
   public saveProduct() {
     this.isProductCreated = true;
-    fetch(environment.baseUri + '/products', {
-      method: 'POST',
+    const isNewProduct = !this.product?.id;
+    console.log('Product to save:', isNewProduct);
+    const url = environment.baseUri + '/products' + (isNewProduct ? '' : '/' + this.product?.id);
+    const method = isNewProduct ? 'POST' : 'PATCH';
+
+    fetch(url, {
+      method: method,
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify(this.product)
+      body: JSON.stringify(this.product),
     })
-      .then(response => response.json())
-      .then(() => {
-        this.isProductCreated = true;  
+      .then((response) => response.json())
+      .then((updatedProduct) => {
+        this.isProductCreated = false;
+        this.productUpdated.emit(updatedProduct);
+
         this.initProduct();
       })
-      .catch(error => {
-        console.error("Error creating product:", error);
+      .catch((error) => {
+        console.error('Error creating/updating product:', error);
         this.isProductCreated = false;
       });
   }

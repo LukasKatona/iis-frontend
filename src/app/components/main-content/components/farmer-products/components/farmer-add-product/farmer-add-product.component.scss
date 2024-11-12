@@ -1,0 +1,15 @@
+.ef-add-product {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .ef-add-product mdui-text-field,
+  .ef-add-product mdui-select {
+    width: 100%; 
+  }
+  
+  .ef-add-product mdui-button {
+    width: auto; 
+    align-self: flex-end; 
+  }

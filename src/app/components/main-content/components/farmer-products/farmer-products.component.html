@@ -1,4 +1,10 @@
-<div class="parent-container">
-    <app-farmer-banner *ngIf="farmer" [farmer]="farmer"></app-farmer-banner>
-    <app-farmer-add-product></app-farmer-add-product>
+<div class="ef-farmer-products">
+    <div class="ef-farmer-products--overview">
+        <app-farmer-banner *ngIf="farmer" [farmer]="farmer"></app-farmer-banner>
+        <app-farmer-add-product  #addProductForm (productUpdated)="onProductUpdated($event)"></app-farmer-add-product>
+    </div>
+    <div class="ef-farmer-products--products">
+        <app-farmer-product-card *ngFor="let product of products" [product]="product" (editRequested)="onEditProduct($event)"></app-farmer-product-card>
+    </div>
+
 </div>

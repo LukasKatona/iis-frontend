@@ -1,14 +1,28 @@
-.parent-container {
-    display: flex;
-    justify-content: space-between;  
-    gap: 30px;               
-  }
-  
-  .app-farmer-banner {
-    flex: 1;                 
-  }
-  
-  .app-farmer-add-product {
-    flex: 1;                
-  }
-  
+.ef-farmer-products {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.ef-farmer-products--products{
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.ef-farmer-products--overview {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding-bottom: 1rem;
+}
+
+app-farmer-banner,
+app-farmer-add-product {
+  flex: 1;
+  box-sizing: border-box;
+}
+
