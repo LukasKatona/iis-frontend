@@ -25,8 +25,8 @@ export class EventCardComponent {
 
   ngOnInit() {
     this.createdAt = formatDate(this.event.createdAt*1000, 'dd.MM.yyyy', 'en-US');
-    this.startsAt = formatDate(this.event.startDate*1000, 'dd.MM.yyyy HH:MM', 'en-US');
-    this.endsAt = formatDate(this.event.endDate*1000, 'dd.MM.yyyy  HH:MM', 'en-US');
+    this.startsAt = formatDate(this.event.startDate*1000, 'dd.MM.yyyy HH:mm', 'en-US');
+    this.endsAt = formatDate(this.event.endDate*1000, 'dd.MM.yyyy  HH:mm', 'en-US');
   }
 
   public onLikeEvent() {

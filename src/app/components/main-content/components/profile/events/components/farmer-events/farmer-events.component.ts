@@ -30,8 +30,8 @@ export class FarmerEventsComponent {
 
   public fetchEventToEditor(event: Event) {
     this.eventToEdit = { ...event };
-    this.startsAt = formatDate(event.startDate*1000, 'yyyy-MM-dd', 'en-US');
-    this.endsAt = formatDate(event.endDate*1000, 'yyyy-MM-dd', 'en-US');
+    this.startsAt = formatDate(event.startDate*1000, 'yyyy-MM-ddTHH:mm', 'en-US');
+    this.endsAt = formatDate(event.endDate*1000, 'yyyy-MM-ddTHH:mm', 'en-US');
   }
 
   public onEditEvent(event: Event) {
@@ -51,6 +51,7 @@ export class FarmerEventsComponent {
   public changeEventToEdit(field: string, event: any) {
     if (this.eventToEdit) {
       if (field === 'startDate' || field === 'endDate') {
+        console.log('Date', event.target.value);
         console.log('Date', event.target.value);
         this.eventToEdit[field] = new Date(event.target.value).getTime() / 1000;
       } else {

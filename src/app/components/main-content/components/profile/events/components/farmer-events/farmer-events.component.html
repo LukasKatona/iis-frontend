@@ -12,14 +12,14 @@
                 <mdui-text-field
                     variant="outlined"
                     label="Starts At"
-                    type="date"
+                    type="datetime-local"
                     [value]="startsAt"
                     (input)="changeEventToEdit('startDate', $event)"
                 ></mdui-text-field>
                 <mdui-text-field
                     variant="outlined"
                     label="Ends At"
-                    type="date"
+                    type="datetime-local"
                     [value]="endsAt"
                     (input)="changeEventToEdit('endDate', $event)"
                 ></mdui-text-field>
