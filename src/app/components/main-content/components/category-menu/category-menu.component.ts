@@ -38,7 +38,7 @@ export class CategoryMenuComponent {
 
   private buildCategoryTree(categories: ProductCategory[]) {
     const categoryMap = new Map<number, ProductCategory>();
-    categories.forEach(category => categoryMap.set(category.id, category));
+    categories.forEach(category => categoryMap.set(category.id ?? 0, category));
 
     categories.forEach(category => {
       if (category.parentCategoryId != null) {
@@ -69,6 +69,12 @@ export class CategoryMenuComponent {
               </mdui-collapse-item>
             `;
           this.buildChildren(category);
+        } else {
+          menu.innerHTML += `
+            <mdui-list-item class="menu-item-${category.id}" value="${category.id}">
+              <a style="color: rgb(var(--mdui-color-on-surface)); text-decoration: none" href="/shop/${category.name.toLowerCase()}" class="menu-link">${category.name}</a>
+            </mdui-list-item>
+          `;
         }
       });
     }

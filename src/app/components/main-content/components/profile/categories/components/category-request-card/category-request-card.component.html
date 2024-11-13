@@ -1,0 +1,41 @@
+
+<mdui-card class="ef-category-request-card__row">
+    <div 
+        class="ef-category-request-card__state-indicator"
+        [ngClass]="{
+            'ef-category-request-card__state-indicator--pending': categoryRequest.state === 'pending',
+            'ef-category-request-card__state-indicator--approved': categoryRequest.state === 'approved',
+            'ef-category-request-card__state-indicator--rejected': categoryRequest.state === 'rejected'
+    }">
+    </div>
+    <div class="ef-category-request-card">
+        <div>
+            Parent Category: {{ parentCategoryName }}
+            <div class="ef-category-request-card__row">
+                <i style="font-size: 32px;" class="ri-corner-down-right-line"></i>
+                <h3>
+                    {{ categoryRequest.newCategoryName }}
+                </h3>
+            </div>
+        </div>
+        <mdui-select
+            class="ef-category-request-card__state"
+            variant="outlined"
+            [value]="categoryRequest.state"
+            (change)="changeCategoryRequestState($event)"
+            [disabled]="categoryRequest.state === 'approved' || categoryRequest.state === 'rejected'"
+        >
+            <mdui-menu-item value="pending">Pending</mdui-menu-item>
+            <mdui-menu-item value="approved">Approved</mdui-menu-item>
+            <mdui-menu-item value="rejected">Rejected</mdui-menu-item>
+        </mdui-select>
+    </div>
+    <div 
+        class="ef-category-request-card__state-indicator"
+        [ngClass]="{
+            'ef-category-request-card__state-indicator--pending': categoryRequest.state === 'pending',
+            'ef-category-request-card__state-indicator--approved': categoryRequest.state === 'approved',
+            'ef-category-request-card__state-indicator--rejected': categoryRequest.state === 'rejected'
+    }">
+    </div>
+</mdui-card>

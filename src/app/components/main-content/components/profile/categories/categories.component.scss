@@ -1,0 +1,14 @@
+.ef-categories__column {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.ef-categories__editor {
+    padding: 1rem;
+}
+
+.ef-categories__editor-dropdown-options {
+    height: 50vh;
+    overflow: auto;
+}
