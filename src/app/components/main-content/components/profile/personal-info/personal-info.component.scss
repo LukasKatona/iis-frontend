@@ -1,19 +1,11 @@
-.ef-personal-info {
+.ef-personal-info__column {
     display: flex;
     flex-direction: column;
     gap: 1rem;
 }
 
-.ef-personal-info__user {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-.ef-personal-info__farmer {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+.ef-personal-info__editor {
+    padding: 1rem;
 }
 
 .ef-personal-info__row {
