@@ -1,6 +1,6 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA, EventEmitter, Input, Output } from '@angular/core';
 import { createEmptyEvent, Event } from '../../../../../../../../models/event.interface';
-import { CommonModule } from '@angular/common';
+import { CommonModule, formatDate } from '@angular/common';
 import { EventCardComponent } from '../event-card/event-card.component';
 import { environment } from '../../../../../../../../environments/environment';
 
@@ -17,6 +17,8 @@ export class FarmerEventsComponent {
 
   public eventToEdit?: Event;
   public isEventToEditLoading: boolean = false;
+  public startsAt: string = '';
+  public endsAt: string = '';
 
   @Input() farmerEvents: Event[] = [];
 
@@ -24,6 +26,12 @@ export class FarmerEventsComponent {
 
   constructor() {
     this.eventToEdit = createEmptyEvent(this.ueserId);
+  }
+
+  public fetchEventToEditor(event: Event) {
+    this.eventToEdit = { ...event };
+    this.startsAt = formatDate(event.startDate*1000, 'yyyy-MM-dd', 'en-US');
+    this.endsAt = formatDate(event.endDate*1000, 'yyyy-MM-dd', 'en-US');
   }
 
   public onEditEvent(event: Event) {
@@ -42,15 +50,17 @@ export class FarmerEventsComponent {
 
   public changeEventToEdit(field: string, event: any) {
     if (this.eventToEdit) {
-      this.eventToEdit[field] = event.target.value;
+      if (field === 'startDate' || field === 'endDate') {
+        console.log('Date', event.target.value);
+        this.eventToEdit[field] = new Date(event.target.value).getTime() / 1000;
+      } else {
+        this.eventToEdit[field] = event.target.value;
+      }
     }
   }
 
   public saveEvent() {
     this.isEventToEditLoading = true;
-    // convert start and end date to timestamp
-    this.eventToEdit!.startDate = new Date(this.eventToEdit!.startDate).getTime() / 1000;
-    this.eventToEdit!.endDate = new Date(this.eventToEdit!.endDate).getTime() / 1000;
     if (this.eventToEdit?.id) {
       fetch(environment.baseUri + '/events/' + this.eventToEdit?.id, {
         method: 'PATCH',
@@ -62,6 +72,8 @@ export class FarmerEventsComponent {
       .then(() => {
         this.isEventToEditLoading = false;
         this.eventToEdit = createEmptyEvent(this.ueserId);
+        this.startsAt = '';
+        this.endsAt = '';
         this.eventsChanged.emit();
       });
     } else {
@@ -75,6 +87,8 @@ export class FarmerEventsComponent {
       .then(() => {
         this.isEventToEditLoading = false;
         this.eventToEdit = createEmptyEvent(this.ueserId);
+        this.startsAt = '';
+        this.endsAt = '';
         this.eventsChanged.emit();
       });
     }
