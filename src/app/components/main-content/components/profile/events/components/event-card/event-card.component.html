@@ -1,6 +1,16 @@
 <mdui-card class="ef-event-card">
     <div class="ef-event-card__header">
-        <h3>{{ event.name }}</h3>
+        <div class="ef-event-card__title">
+            <mdui-button-icon
+                [selected]="event.isLikedByLoggedUser"
+                selectable icon="favorite_border"
+                (click)="onLikeEvent()"
+            >
+                <i class="ri-heart-line"></i>
+                <i slot="selected-icon" class="ri-heart-fill"></i>
+            </mdui-button-icon>
+            <h3>{{ event.name }}</h3>
+        </div>
         <p>Created on: {{ createdAt }}</p>
     </div>
     <mdui-divider></mdui-divider>

@@ -1,4 +1,4 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA, Input } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, EventEmitter, Input, Output } from '@angular/core';
 import { Event } from '../../../../../../../../models/event.interface';
 import { CommonModule, formatDate } from '@angular/common';
 
@@ -12,6 +12,9 @@ import { CommonModule, formatDate } from '@angular/common';
 })
 export class EventCardComponent {
   @Input() event!: Event;
+
+  @Output() likeEvent = new EventEmitter<Event>();
+
   public createdAt: string = '';
   public startsAt: string = '';
   public endsAt: string = '';
@@ -20,5 +23,9 @@ export class EventCardComponent {
     this.createdAt = formatDate(this.event.createdAt*1000, 'dd.MM.yyyy', 'en-US');
     this.startsAt = formatDate(this.event.startDate*1000, 'dd.MM.yyyy HH:MM', 'en-US');
     this.endsAt = formatDate(this.event.endDate*1000, 'dd.MM.yyyy  HH:MM', 'en-US');
+  }
+
+  public onLikeEvent() {
+    this.likeEvent.emit(this.event);
   }
 }

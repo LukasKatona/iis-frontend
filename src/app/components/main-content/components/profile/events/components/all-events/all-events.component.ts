@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { environment } from '../../../../../../../../environments/environment';
 import { EventCardComponent } from '../event-card/event-card.component';
 import { CommonModule } from '@angular/common';
+import { Event } from '../../../../../../../../models/event.interface';
 
 @Component({
   selector: 'app-all-events',
@@ -11,20 +12,10 @@ import { CommonModule } from '@angular/common';
   styleUrl: './all-events.component.scss'
 })
 export class AllEventsComponent {
+  @Input() allEvents: Event[] = [];
+  @Output() likeEvent = new EventEmitter<Event>();
 
-  events: Event[] = [];
-
-  constructor() {
-    this.fetchEvents();
-  }
-
-  private fetchEvents() {
-    let url = environment.baseUri + '/events';
-    fetch(url)
-      .then(response => response.json())
-      .then((data: Event[]) => {
-        this.events = data;
-        console.log(data);
-      });
+  public onLikeEvent(event: Event) {
+    this.likeEvent.emit(event);
   }
 }

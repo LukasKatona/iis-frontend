@@ -1,1 +1,7 @@
-<p>liked-events works!</p>
+<div class="ef-liked-events">
+    <app-event-card
+        *ngFor="let event of likedEvents"
+        [event]="event"
+        (likeEvent)="onLikeEvent(event)"
+    ></app-event-card>
+</div>

@@ -12,4 +12,6 @@ export interface Event {
     street?: string;
     streetNumber?: string;
     zipCode?: string;
+
+    isLikedByLoggedUser?: boolean;
 }

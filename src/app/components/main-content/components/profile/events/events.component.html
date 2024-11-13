@@ -4,10 +4,16 @@
     <mdui-tab value="my-events">My Events</mdui-tab>
 
     <mdui-tab-panel class="ef-events__tab-panel" slot="panel" value="liked-events">
-        <app-liked-events></app-liked-events>
+        <app-liked-events
+            [likedEvents]="likedEvents"
+            (likeEvent)="onLikeEvent($event)"
+        ></app-liked-events>
     </mdui-tab-panel>
     <mdui-tab-panel class="ef-events__tab-panel" slot="panel" value="all-events">
-        <app-all-events></app-all-events>
+        <app-all-events
+            [allEvents]="allEvents"
+            (likeEvent)="onLikeEvent($event)"
+        ></app-all-events>
     </mdui-tab-panel>
     <mdui-tab-panel class="ef-events__tab-panel" slot="panel" value="my-events">
         <app-farmer-events></app-farmer-events>
