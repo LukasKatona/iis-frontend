@@ -2,12 +2,25 @@
     <div class="ef-event-card__header">
         <div class="ef-event-card__title">
             <mdui-button-icon
+                *ngIf="showLikeButton"
                 [selected]="event.isLikedByLoggedUser"
                 selectable icon="favorite_border"
                 (click)="onLikeEvent()"
             >
                 <i class="ri-heart-line"></i>
                 <i slot="selected-icon" class="ri-heart-fill"></i>
+            </mdui-button-icon>
+            <mdui-button-icon
+                *ngIf="showEditButtons"
+                (click)="onEditEvent()"
+            >
+                <i class="ri-edit-line"></i>
+            </mdui-button-icon>
+            <mdui-button-icon
+                *ngIf="showEditButtons"
+                (click)="onDeleteEvent()"
+            >
+                <i class="ri-delete-bin-6-line"></i>
             </mdui-button-icon>
             <h3>{{ event.name }}</h3>
         </div>

@@ -1,1 +1,89 @@
-<p>farmer-events works!</p>
+<div class="ef-farmer-events">
+    <h2>Create or Edit Event</h2>
+    <mdui-card class="ef-farmer-events__editor" variant="outlined">
+        <mdui-text-field
+            label="Name"
+            type="text"
+            [value]="eventToEdit?.name"
+            (input)="changeEventToEdit('name', $event)"
+        ></mdui-text-field>
+        <div class="ef-farmer-events__editor-body">
+            <div class="ef-farmer-events__row">
+                <mdui-text-field
+                    variant="outlined"
+                    label="Starts At"
+                    type="date"
+                    [value]="eventToEdit?.startDate"
+                    (input)="changeEventToEdit('startDate', $event)"
+                ></mdui-text-field>
+                <mdui-text-field
+                    variant="outlined"
+                    label="Ends At"
+                    type="date"
+                    [value]="eventToEdit?.endDate"
+                    (input)="changeEventToEdit('endDate', $event)"
+                ></mdui-text-field>
+            </div>
+            <mdui-text-field
+                variant="outlined"
+                label="State"
+                type="text"
+                [value]="eventToEdit?.state"
+                (input)="changeEventToEdit('state', $event)"
+            ></mdui-text-field>
+            <mdui-text-field
+                variant="outlined"
+                label="City"
+                type="text"
+                [value]="eventToEdit?.city"
+                (input)="changeEventToEdit('city', $event)"
+            ></mdui-text-field>
+            <div class="ef-farmer-events__row">
+                <mdui-text-field
+                    variant="outlined"
+                    label="Street"
+                    type="text"
+                    [value]="eventToEdit?.street"
+                    (input)="changeEventToEdit('street', $event)"
+                ></mdui-text-field>
+                <mdui-text-field
+                    variant="outlined"
+                    label="Street Number"
+                    type="text"
+                    [value]="eventToEdit?.streetNumber"
+                    (input)="changeEventToEdit('streetNumber', $event)"
+                ></mdui-text-field>
+            </div>
+            <mdui-text-field
+                variant="outlined"
+                label="Zip Code"
+                type="text"
+                [value]="eventToEdit?.zipCode"
+                (input)="changeEventToEdit('zipCode', $event)"
+            ></mdui-text-field>
+            <mdui-text-field
+                variant="outlined"
+                label="Description"
+                type="text"
+                [value]="eventToEdit?.description"
+                (input)="changeEventToEdit('description', $event)"
+                autosize
+            ></mdui-text-field>
+            <mdui-button
+                style="width: 100%;"
+                [loading]="isEventToEditLoading"
+                (click)="saveEvent()">
+                Save Event
+            </mdui-button>
+        </div>
+    </mdui-card>
+    <h2>Created Events</h2>
+    <app-event-card
+        *ngFor="let event of farmerEvents"
+        [event]="event"
+        [showLikeButton]="false"
+        [showEditButtons]="true"
+        (editEvent)="onEditEvent(event)"
+        (deleteEvent)="onDeleteEvent(event)"
+    ></app-event-card>
+</div>

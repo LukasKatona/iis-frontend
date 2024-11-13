@@ -12,8 +12,12 @@ import { CommonModule, formatDate } from '@angular/common';
 })
 export class EventCardComponent {
   @Input() event!: Event;
+  @Input() showLikeButton: boolean = true;
+  @Input() showEditButtons: boolean = false;
 
   @Output() likeEvent = new EventEmitter<Event>();
+  @Output() editEvent = new EventEmitter<Event>();
+  @Output() deleteEvent = new EventEmitter<Event>();
 
   public createdAt: string = '';
   public startsAt: string = '';
@@ -27,5 +31,13 @@ export class EventCardComponent {
 
   public onLikeEvent() {
     this.likeEvent.emit(this.event);
+  }
+
+  public onEditEvent() {
+    this.editEvent.emit(this.event);
+  }
+
+  public onDeleteEvent() {
+    this.deleteEvent.emit(this.event);
   }
 }

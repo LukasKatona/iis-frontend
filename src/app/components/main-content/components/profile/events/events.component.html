@@ -16,6 +16,9 @@
         ></app-all-events>
     </mdui-tab-panel>
     <mdui-tab-panel class="ef-events__tab-panel" slot="panel" value="my-events">
-        <app-farmer-events></app-farmer-events>
+        <app-farmer-events
+            [farmerEvents]="farmerEvents"
+            (eventsChanged)="fetchAllData()"
+        ></app-farmer-events>
     </mdui-tab-panel>
 </mdui-tabs>

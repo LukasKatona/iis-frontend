@@ -14,21 +14,26 @@ import { Event } from '../../../../../../models/event.interface';
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class EventsComponent {
-  userId = 3;
+  userId = 1;
 
   public likedEvents: Event[] = [];
   public allEvents: Event[] = [];
+  public farmerEvents: Event[] = [];
 
   constructor() {
     this.fetchAllData();
   }
 
-  private fetchAllData() {
+  public fetchAllData() {
+    this.farmerEvents = [];
     Promise.all([this.fetchLikedEvents(), this.fetchAllEvents()])
       .then(() => {
         this.allEvents.forEach((event: Event) => {
           if (this.likedEvents.find((likedEvent: Event) => likedEvent.id === event.id)) {
             event.isLikedByLoggedUser = true;
+          }
+          if (event.createdById === this.userId) {
+            this.farmerEvents.push(event);
           }
         });
       });
