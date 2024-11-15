@@ -59,7 +59,7 @@ export class CategoriesComponent {
 
   public createRequest() {
     this.isCreateRequestLoading = true;
-    let url = environment.baseUri + '/category-request/';
+    let url = environment.baseUri + '/category-requests/';
     fetch(url, {
       method: 'POST',
       headers: {

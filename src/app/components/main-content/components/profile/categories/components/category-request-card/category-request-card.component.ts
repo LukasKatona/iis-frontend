@@ -19,7 +19,7 @@ export class CategoryRequestCardComponent {
 
   public changeCategoryRequestState(event: any) {
     this.categoryRequest.state = event.target.value;
-    let url = environment.baseUri + '/category-request/' + this.categoryRequest.id;
+    let url = environment.baseUri + '/category-requests/' + this.categoryRequest.id;
       fetch(url, {
         method: 'PATCH',
         headers: {
