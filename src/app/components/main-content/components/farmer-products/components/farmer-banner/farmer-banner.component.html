@@ -1,0 +1,11 @@
+<mdui-card variant="elevated" class="ef-farmer-banner">
+
+    <h1>{{ farmer.farmName }}</h1>
+    <p>{{ farmer.description }}</p>
+    <div>
+        <h3>Reviews</h3>
+        <p>stars ** <span class="text-yellow-500">
+                <i *ngFor="let star of stars" class="fas fa-star"></i>
+            </span></p>
+    </div>
+</mdui-card>

@@ -1,1 +1,9 @@
-<p>farmer-products works!</p>
+<mdui-card variant="elevated" class="ef-farmer-products">
+    <div class="ef-farmer-products__overview">
+        <app-farmer-banner *ngIf="farmer" [farmer]="farmer"></app-farmer-banner>
+        <app-farmer-add-product  #addProductForm (productUpdated)="onProductUpdated($event)"></app-farmer-add-product>
+    </div>
+    <div class="ef-farmer-products__products">
+        <app-farmer-product-card *ngFor="let product of products" [product]="product" (editRequested)="onEditProduct($event)"></app-farmer-product-card>
+    </div>
+</mdui-card>
