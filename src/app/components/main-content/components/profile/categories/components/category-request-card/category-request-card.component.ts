@@ -18,7 +18,6 @@ export class CategoryRequestCardComponent {
   @Input() parentCategoryName: string = '';
 
   public changeCategoryRequestState(event: any) {
-    console.log('Change category request state', event.target.value);
     this.categoryRequest.state = event.target.value;
     let url = environment.baseUri + '/category-request/' + this.categoryRequest.id;
       fetch(url, {

@@ -34,10 +34,6 @@ export class FarmerEventsComponent {
     this.endsAt = formatDate(event.endDate*1000, 'yyyy-MM-ddTHH:mm', 'en-US');
   }
 
-  public onEditEvent(event: Event) {
-    console.log('Edit event', event);
-  }
-
   public onDeleteEvent(event: Event) {
     let url = environment.baseUri + '/events/' + event.id;
     fetch(url, {
@@ -51,8 +47,6 @@ export class FarmerEventsComponent {
   public changeEventToEdit(field: string, event: any) {
     if (this.eventToEdit) {
       if (field === 'startDate' || field === 'endDate') {
-        console.log('Date', event.target.value);
-        console.log('Date', event.target.value);
         this.eventToEdit[field] = new Date(event.target.value).getTime() / 1000;
       } else {
         this.eventToEdit[field] = event.target.value;
