@@ -38,7 +38,7 @@ export class CategoryMenuComponent {
 
   private buildCategoryTree(categories: ProductCategory[]) {
     const categoryMap = new Map<number, ProductCategory>();
-    categories.forEach(category => categoryMap.set(category.id, category));
+    categories.forEach(category => categoryMap.set(category.id ?? 0, category));
 
     categories.forEach(category => {
       if (category.parentCategoryId != null) {
@@ -61,14 +61,20 @@ export class CategoryMenuComponent {
       this.categoryTree.forEach((category: ProductCategory) => {
         if (category.children != null) {
           menu.innerHTML += `
-            <mdui-collapse-item class="menu-item-${category.id}" value="${category.id}" trigger=".trigger-${category.id}">
-              <mdui-list-item slot="header">
-                <a style="color: rgb(var(--mdui-color-on-surface)); text-decoration: none" href="/shop/${category.name.toLowerCase()}" class="menu-link">${category.name}</a>
-                <mdui-icon slot="end-icon" class="trigger-${category.id}" name="keyboard_arrow_down"></mdui-icon>
-              </mdui-list-item>
-            </mdui-collapse-item>
-          `;
+              <mdui-collapse-item class="menu-item-${category.id}" value="${category.id}" trigger=".trigger-${category.id}">
+                <mdui-list-item slot="header">
+                  <a style="color: rgb(var(--mdui-color-on-surface)); text-decoration: none" href="/shop/${category.name.toLowerCase()}" class="menu-link">${category.name}</a>
+                  <mdui-icon slot="end-icon" class="trigger-${category.id}" name="keyboard_arrow_down"></mdui-icon>
+                </mdui-list-item>
+              </mdui-collapse-item>
+            `;
           this.buildChildren(category);
+        } else {
+          menu.innerHTML += `
+            <mdui-list-item class="menu-item-${category.id}" value="${category.id}">
+              <a style="color: rgb(var(--mdui-color-on-surface)); text-decoration: none" href="/shop/${category.name.toLowerCase()}" class="menu-link">${category.name}</a>
+            </mdui-list-item>
+          `;
         }
       });
     }

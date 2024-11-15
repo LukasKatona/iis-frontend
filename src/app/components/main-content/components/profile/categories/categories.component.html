@@ -1,0 +1,40 @@
+<div class="ef-categories__column">
+    <h2>Create New Category Request</h2>
+    <mdui-card variant="outlined">
+        <mdui-text-field
+            label="Name"
+            type="text"
+            [value]="newCategoryRequest.newCategoryName"
+            (input)="changeNewCategoryRequest('newCategoryName', $event)"
+        ></mdui-text-field>
+        <div class="ef-categories__editor ef-categories__column">
+            <mdui-select
+                variant="outlined"
+                label="Parent Category"
+                [value]="categoryDropdownValue"
+            >
+            <div class="ef-categories__editor-dropdown-options">
+                <mdui-menu-item
+                    *ngFor="let category of categoriesForDropdown"
+                    [value]="category.id"
+                    (click)="changeNewCategoryRequest('parentCategoryId', $event)"
+                >
+                    {{ category.name }}
+                </mdui-menu-item>
+            </div>
+            </mdui-select>
+            <mdui-button
+                style="width: 100%;"
+                [loading]="isCreateRequestLoading"
+                (click)="createRequest()">
+                Create Request
+            </mdui-button>
+        </div>
+    </mdui-card>
+    <h2>New Category Requests</h2>
+    <app-category-request-card
+        *ngFor="let categoryRequest of newCategoryRequests"
+        [categoryRequest]="categoryRequest"
+        [parentCategoryName]="getParentCategoryName(categoryRequest.parentCategoryId)"
+    ></app-category-request-card>
+</div>

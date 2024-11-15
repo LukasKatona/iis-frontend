@@ -1,0 +1,7 @@
+<div class="ef-all-events">
+    <app-event-card
+        *ngFor="let event of allEvents"
+        [event]="event"
+        (likeEvent)="onLikeEvent(event)"
+    ></app-event-card>
+</div>

@@ -1,10 +1,10 @@
 export interface Event {
-    id: number;
+    id?: number;
     name: string;
     description: string;
     startDate: number;
     endDate: number;
-    createdBId: number;
+    createdById: number;
     createdAt: number;
 
     state?: string;
@@ -12,4 +12,25 @@ export interface Event {
     street?: string;
     streetNumber?: string;
     zipCode?: string;
+
+    isLikedByLoggedUser?: boolean;
+
+    [key: string]: any;
+}
+
+export function createEmptyEvent(createdById: number): Event {
+    return {
+        name: '',
+        description: '',
+        startDate: 0,
+        endDate: 0,
+        createdById,
+        createdAt: 0,
+
+        state: '',
+        city: '',
+        street: '',
+        streetNumber: '',
+        zipCode: ''
+    };
 }

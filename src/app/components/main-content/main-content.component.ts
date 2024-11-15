@@ -1,7 +1,7 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CategoryMenuComponent } from './components/category-menu/category-menu.component';
 import { MostPopularComponent } from './components/most-popular/most-popular.component';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router, RouterModule } from '@angular/router';
 import { ProductsComponent } from './components/products/products.component';
 import { CommonModule } from '@angular/common';
 
@@ -15,13 +15,27 @@ import { CommonModule } from '@angular/common';
 })
 export class MainContentComponent {
 
-  constructor(private router: Router, private route: ActivatedRoute) {}
+  public showShopTabMenu = false;
+  public showProfileTabMenu = false;
 
-  routeToHomePage() {
-    this.router.navigate([`/shop`]);
+  constructor(private router: Router) {
+    router.events.subscribe((val: any) => {
+      if (val instanceof NavigationEnd) {
+        if (val.url.includes('shop')) {
+          this.showShopTabMenu = true;
+          this.showProfileTabMenu = false;
+        } else if (val.url.includes('profile')) {
+          this.showShopTabMenu = false;
+          this.showProfileTabMenu = true;
+        } else {
+          this.showShopTabMenu = false;
+          this.showProfileTabMenu = false;
+        }
+      }
+    });
   }
 
-  routeToFarmerPage() {
-    this.router.navigate([`/shop/farmer-products`]);
+  routeToPage(page: string) {
+    this.router.navigate([`${page}`]);
   }
 }
