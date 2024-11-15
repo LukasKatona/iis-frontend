@@ -5,6 +5,7 @@ import { Product } from '../../../../../../../models/product.interface';
 import { Unit } from '../../../../../../../models/unit.enum';
 import { FormsModule } from '@angular/forms';
 import { createEmptyProduct } from '../../../../../../../models/product.interface';
+import { ProductCategory } from '../../../../../../../models/product-category.interface';
 
 @Component({
   selector: 'app-farmer-add-product',
@@ -20,14 +21,34 @@ export class FarmerAddProductComponent {
   public isProductCreated: boolean = false;
   public isDeleting: boolean = false;
 
+  public categoriesForDropdown: ProductCategory[] = [];
+  public categoryDropdownValue: string = '';
+
+
   @Output() productUpdated = new EventEmitter<Product>();
 
   constructor() {
     this.initProduct(); 
+    this.fetchCategoriesForDropdown();
   }
 
   private initProduct() {
     this.product = createEmptyProduct(1);
+    this.categoryDropdownValue = '';
+  }
+
+  private fetchCategoriesForDropdown() {
+    let url = environment.baseUri + '/product-categories';
+    fetch(url)
+      .then(response => response.json())
+      .then((data: ProductCategory[]) => {
+        this.categoriesForDropdown = data;
+      });
+  }
+
+  public onCategoryClicked(category: ProductCategory): void {
+    this.categoryDropdownValue = category.name; 
+    this.createProduct('categoryId', { target: { value: category.id } });
   }
 
   public createProduct(field: string, event: any) {
@@ -38,6 +59,7 @@ export class FarmerAddProductComponent {
 
   public setProductForEditing(product: Product) {
     this.product = { ...product };
+    this.categoryDropdownValue = this.categoriesForDropdown.find(c => c.id === product.categoryId)?.name || '';
   }
 
   public saveProduct() {
