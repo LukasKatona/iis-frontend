@@ -19,7 +19,6 @@ export class FarmerAddProductComponent {
   public product?: Product;
   public unit = Unit;
   public isProductCreated: boolean = false;
-  public isDeleting: boolean = false;
 
   public categoriesForDropdown: ProductCategory[] = [];
   public categoryDropdownValue: string = '';
@@ -65,7 +64,6 @@ export class FarmerAddProductComponent {
   public saveProduct() {
     this.isProductCreated = true;
     const isNewProduct = !this.product?.id;
-    console.log('Product to save:', isNewProduct);
     const url = environment.baseUri + '/products' + (isNewProduct ? '' : '/' + this.product?.id);
     const method = isNewProduct ? 'POST' : 'PATCH';
 

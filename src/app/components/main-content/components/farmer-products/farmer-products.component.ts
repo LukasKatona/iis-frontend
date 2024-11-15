@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Farmer } from '../../../../../models/farmer.interface';
 import { FarmerBannerComponent } from './components/farmer-banner/farmer-banner.component';
 import { FarmerAddProductComponent } from './components/farmer-add-product/farmer-add-product.component';
@@ -13,7 +13,7 @@ import { Product } from '../../../../../models/product.interface';
   imports: [CommonModule, FarmerBannerComponent, FarmerAddProductComponent, FarmerProductCardComponent],
   templateUrl: './farmer-products.component.html',
   styleUrls: ['./farmer-products.component.scss'],
-  schemas: []
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class FarmerProductsComponent implements OnInit {
   public farmer: Farmer | undefined;
