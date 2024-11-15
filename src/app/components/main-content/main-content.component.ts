@@ -18,7 +18,7 @@ export class MainContentComponent {
   public showShopTabMenu = false;
   public showProfileTabMenu = false;
 
-  constructor(private router: Router, private route: ActivatedRoute) {
+  constructor(private router: Router) {
     router.events.subscribe((val: any) => {
       if (val instanceof NavigationEnd) {
         if (val.url.includes('shop')) {
@@ -27,6 +27,9 @@ export class MainContentComponent {
         } else if (val.url.includes('profile')) {
           this.showShopTabMenu = false;
           this.showProfileTabMenu = true;
+        } else {
+          this.showShopTabMenu = false;
+          this.showProfileTabMenu = false;
         }
       }
     });
