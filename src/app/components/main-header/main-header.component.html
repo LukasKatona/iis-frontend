@@ -3,6 +3,9 @@
         E-FARM
     </span>
     <div class="ef-main-header__buttons">
+        <mdui-button-icon (click)="openLoginDialog()">
+            <i class="ri-login-circle-line"></i>
+        </mdui-button-icon>
         <a routerLink="profile/info">
             <mdui-button-icon>
                 <i class="ri-account-circle-line"></i>
@@ -20,3 +23,5 @@
         </a>
     </div>
 </div>
+
+<app-login-dialog #loginDialog></app-login-dialog>
