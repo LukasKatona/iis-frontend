@@ -5,7 +5,6 @@ import { Farmer, createEmptyFarmer } from '../../../../../../models/farmer.inter
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { AuthStoreService } from '../../../../../services/auth-store.service';
-import { Role } from '../../../../../../models/role.enum';
 
 @Component({
   selector: 'app-personal-info',
@@ -29,7 +28,7 @@ export class PersonalInfoComponent implements OnInit {
     this.authStore.loggedUser$().subscribe(user => {
       if(user != null) {
         this.user = user;
-        if (this.user.farmerId) {
+        if (this.user.isFarmer) {
           this.fetchFarmer();
         }
       }
@@ -78,7 +77,7 @@ export class PersonalInfoComponent implements OnInit {
 
       if (this.user) {
         this.user.farmerId = this.farmer.id;
-        this.user.role = Role.FARMER;
+        this.user.isFarmer = true;
         this.savePersonalInfo();
       }
     });

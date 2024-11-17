@@ -81,12 +81,12 @@
     <div class="ef-personal-info__column">
         <h2>Farmer Information</h2>
         <mdui-button
-            *ngIf="user?.farmerId == null"
+            *ngIf="!user?.isFarmer"
             [loading]="isAddFarmerLoading"
             (click)="addFarmer()">
             Register as Farmer
         </mdui-button>
-        <mdui-card *ngIf="user?.farmerId != null" variant="outlined">
+        <mdui-card *ngIf="user?.isFarmer" variant="outlined">
             <mdui-text-field
                 label="Farm Name"
                 type="text"

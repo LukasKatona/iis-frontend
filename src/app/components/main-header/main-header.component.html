@@ -30,7 +30,7 @@
                 </mdui-button-icon>
             </mdui-tooltip>
         </a>
-        <a routerLink="" *ngIf="showAdminToolsButton">
+        <a routerLink="" *ngIf="user?.isAdmin">
             <mdui-tooltip content="Admin Tools">
                 <mdui-button-icon >
                     <i class="ri-tools-line"></i>
