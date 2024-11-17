@@ -2,7 +2,7 @@
     <div class="ef-login-dialog">
         <mdui-text-field
             variant="outlined"
-            label="Username"
+            label="Email"
             type="text"
             [value]="login?.username"
             (input)="changeLogin('username', $event)"
@@ -10,7 +10,8 @@
         <mdui-text-field
             variant="outlined"
             label="Password"
-            type="text"
+            type="password"
+            toggle-password
             [value]="login?.password"
             (input)="changeLogin('password', $event)"
         ></mdui-text-field>

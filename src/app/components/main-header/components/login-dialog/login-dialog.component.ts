@@ -1,6 +1,10 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { createEmptyLogin, Login } from '../../../../../models/login.interface';
 import { environment } from '../../../../../environments/environment';
+import { Token } from '../../../../../models/token.interface';
+import { AuthStoreService } from '../../../../services/auth-store.service';
+import { User } from '../../../../../models/user.interface';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-login-dialog',
@@ -17,6 +21,11 @@ export class LoginDialogComponent {
   public login?: Login;
 
   public isLoginLoading: boolean = false;
+
+  constructor(
+    private authStore: AuthStoreService,
+    private http: HttpClient
+  ) {}
 
   public open(): void {
     this.login = createEmptyLogin();
@@ -37,20 +46,27 @@ export class LoginDialogComponent {
     this.isLoginLoading = true;
     let url = environment.baseUri + '/token';
 
-    fetch(url, {
-      method: 'POST',
+    this.http.post<Token>(
+      url,
+      new URLSearchParams({
+      'username': this.login?.username || '',
+      'password': this.login?.password || ''
+    }),
+    {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      body: new URLSearchParams({
-        'username': this.login?.username || '',
-        'password': this.login?.password || ''
-      })
-    })
-    .then(response => response.json())
-    .then(() => {
-      this.isLoginLoading = false;
-      this.close();
-    })
+      }
+    }
+    ).subscribe((data: Token) => {
+      this.authStore.updateToken(data.access_token);
+      const userUrl = environment.baseUri + '/users/me';
+      
+      this.http.get<User>(userUrl).subscribe((data: User) => {
+        this.authStore.updateUserData(data);
+        this.isLoginLoading = false;
+        this.close();
+      });
+    }
+    );
   }
 }

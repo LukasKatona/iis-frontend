@@ -1,9 +1,10 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { createEmptyProductCategory, ProductCategory } from '../../../../../../models/product-category.interface';
+import { ProductCategory } from '../../../../../../models/product-category.interface';
 import { createEmptyNewCategoryRequest, NewCategoryRequest } from '../../../../../../models/new-category-request.interface';
 import { environment } from '../../../../../../environments/environment';
 import { CommonModule } from '@angular/common';
 import { CategoryRequestCardComponent } from './components/category-request-card/category-request-card.component';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-categories',
@@ -24,7 +25,7 @@ export class CategoriesComponent {
   public categoriesForDropdown: ProductCategory[] = [];
   public categoryDropdownValue: string = '';
 
-  constructor() {
+  constructor(private http: HttpClient) {
     this.newCategoryRequest = createEmptyNewCategoryRequest(this.userId);
     this.fetchNewCategoryRequests();
     this.fetchCategoriesForDropdown();
@@ -32,20 +33,16 @@ export class CategoriesComponent {
 
   private fetchNewCategoryRequests() {
     let url = environment.baseUri + '/category-requests/';
-    fetch(url)
-      .then(response => response.json())
-      .then((data: NewCategoryRequest[]) => {
-        this.newCategoryRequests = data;
-      });
+    this.http.get<NewCategoryRequest[]>(url).subscribe((data: NewCategoryRequest[]) => {
+      this.newCategoryRequests = data;
+    });
   }
 
   private fetchCategoriesForDropdown() {
     let url = environment.baseUri + '/product-categories';
-    fetch(url)
-      .then(response => response.json())
-      .then((data: ProductCategory[]) => {
-        this.categoriesForDropdown = data;
-      });
+    this.http.get<ProductCategory[]>(url).subscribe((data: ProductCategory[]) => {
+      this.categoriesForDropdown = data;
+    });
   }
 
   public changeNewCategoryRequest(field: string, event: any) {
@@ -60,14 +57,7 @@ export class CategoriesComponent {
   public createRequest() {
     this.isCreateRequestLoading = true;
     let url = environment.baseUri + '/category-requests/';
-    fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(this.newCategoryRequest)
-    })
-    .then(() => {
+    this.http.post(url, this.newCategoryRequest).subscribe(() => {
       this.isCreateRequestLoading = false;
       this.categoryDropdownValue = '';
       this.fetchNewCategoryRequests();

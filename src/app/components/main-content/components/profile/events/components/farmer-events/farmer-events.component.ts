@@ -3,6 +3,7 @@ import { createEmptyEvent, Event } from '../../../../../../../../models/event.in
 import { CommonModule, formatDate } from '@angular/common';
 import { EventCardComponent } from '../event-card/event-card.component';
 import { environment } from '../../../../../../../../environments/environment';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-farmer-events',
@@ -24,7 +25,7 @@ export class FarmerEventsComponent {
 
   @Output() eventsChanged = new EventEmitter<void>();
 
-  constructor() {
+  constructor(private http: HttpClient) {
     this.eventToEdit = createEmptyEvent(this.ueserId);
   }
 
@@ -36,10 +37,7 @@ export class FarmerEventsComponent {
 
   public onDeleteEvent(event: Event) {
     let url = environment.baseUri + '/events/' + event.id;
-    fetch(url, {
-      method: 'DELETE'
-    })
-    .then(() => {
+    this.http.delete(url).subscribe(() => {
       this.eventsChanged.emit();
     });
   }
@@ -57,35 +55,23 @@ export class FarmerEventsComponent {
   public saveEvent() {
     this.isEventToEditLoading = true;
     if (this.eventToEdit?.id) {
-      fetch(environment.baseUri + '/events/' + this.eventToEdit?.id, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(this.eventToEdit)
-      })
-      .then(() => {
-        this.isEventToEditLoading = false;
-        this.eventToEdit = createEmptyEvent(this.ueserId);
-        this.startsAt = '';
-        this.endsAt = '';
-        this.eventsChanged.emit();
-      });
+      this.http.patch(environment.baseUri + '/events/' + this.eventToEdit?.id, this.eventToEdit)
+        .subscribe(() => {
+          this.afterSaveEvent();
+        });
     } else {
-      fetch(environment.baseUri + '/events', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(this.eventToEdit)
-      })
-      .then(() => {
-        this.isEventToEditLoading = false;
-        this.eventToEdit = createEmptyEvent(this.ueserId);
-        this.startsAt = '';
-        this.endsAt = '';
-        this.eventsChanged.emit();
-      });
+      this.http.post(environment.baseUri + '/events', this.eventToEdit)
+        .subscribe(() => {
+          this.afterSaveEvent();
+        });
     }
+  }
+
+  private afterSaveEvent() {
+    this.isEventToEditLoading = false;
+    this.eventToEdit = createEmptyEvent(this.ueserId);
+    this.startsAt = '';
+    this.endsAt = '';
+    this.eventsChanged.emit();
   }
 }

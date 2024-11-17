@@ -4,6 +4,7 @@ import { FarmerEventsComponent } from './components/farmer-events/farmer-events.
 import { LikedEventsComponent } from './components/liked-events/liked-events.component';
 import { environment } from '../../../../../../environments/environment';
 import { Event } from '../../../../../../models/event.interface';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-events',
@@ -20,7 +21,7 @@ export class EventsComponent {
   public allEvents: Event[] = [];
   public farmerEvents: Event[] = [];
 
-  constructor() {
+  constructor(private http: HttpClient) {
     this.fetchAllData();
   }
 
@@ -41,19 +42,23 @@ export class EventsComponent {
 
   private fetchLikedEvents(): Promise<void> {
     let url = environment.baseUri + '/events/' + this.userId;
-    return fetch(url)
-      .then(response => response.json())
-      .then((data: Event[]) => {
-        this.likedEvents = data.map((event: Event) => { event.isLikedByLoggedUser = true; return event; });
+    return this.http.get<Event[]>(url)
+      .toPromise()
+      .then((data: Event[] | undefined) => {
+        if (data) {
+          this.likedEvents = data.map((event: Event) => { event.isLikedByLoggedUser = true; return event; });
+        }
       });
   }
 
   private fetchAllEvents(): Promise<void> {
     let url = environment.baseUri + '/events';
-    return fetch(url)
-      .then(response => response.json())
-      .then((data: Event[]) => {
-        this.allEvents = data;
+    return this.http.get<Event[]>(url)
+      .toPromise()
+      .then((data: Event[] | undefined) => {
+        if (data) {
+          this.allEvents = data;
+        }
       });
   }
 
@@ -67,17 +72,15 @@ export class EventsComponent {
 
   private joinEvent(event: Event) {
     let url = environment.baseUri + '/events/' + event.id + '/join/' + this.userId;
-    fetch(url, { method: 'POST' })
-      .then(() => {
-        this.fetchAllData();
-      });
+    this.http.post(url, {}).subscribe(() => {
+      this.fetchAllData();
+    });
   }
 
   private leaveEvent(event: Event) {
     let url = environment.baseUri + '/events/' + event.id + '/leave/' + this.userId;
-    fetch(url, { method: 'DELETE' })
-      .then(() => {
-        this.fetchAllData();
-      });
+    this.http.delete(url).subscribe(() => {
+      this.fetchAllData();
+    });
   }
 }
