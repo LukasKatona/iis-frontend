@@ -5,6 +5,7 @@ import { Farmer, createEmptyFarmer } from '../../../../../../models/farmer.inter
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { AuthStoreService } from '../../../../../services/auth-store.service';
+import { Role } from '../../../../../../models/role.enum';
 
 @Component({
   selector: 'app-personal-info',
@@ -15,23 +16,22 @@ import { AuthStoreService } from '../../../../../services/auth-store.service';
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class PersonalInfoComponent implements OnInit {
-  private userId = 3;
-
   public user?: User;
   public farmer?: Farmer;
 
   public isPersonalInfoLoading = false;
   public isFarmerInfoLoading = false;
+  public isAddFarmerLoading = false;
 
-  constructor(private http: HttpClient, private authStore: AuthStoreService) {
-    this.fetchFarmer();
-  }
+  constructor(private http: HttpClient, private authStore: AuthStoreService) {}
 
   ngOnInit(): void {
     this.authStore.loggedUser$().subscribe(user => {
       if(user != null) {
         this.user = user;
-        this.fetchFarmer();
+        if (this.user.farmerId) {
+          this.fetchFarmer();
+        }
       }
     });
   }
@@ -39,11 +39,7 @@ export class PersonalInfoComponent implements OnInit {
   private fetchFarmer() {
     let url = environment.baseUri + '/farmers/' + this.user?.id + '/by-user-id';
     this.http.get<Farmer>(url).subscribe((data: Farmer) => {
-      if (data !== null) {
       this.farmer = data;
-      } else {
-      this.farmer = createEmptyFarmer(this.userId);
-      }
     });
   }
 
@@ -64,17 +60,28 @@ export class PersonalInfoComponent implements OnInit {
 
   public saveFarmerInfo() {
     this.isFarmerInfoLoading = true;
-    if (this.farmer?.id) {
-      this.http.patch<Farmer>(environment.baseUri + '/farmers/' + this.farmer?.id, this.farmer).subscribe((data: Farmer) => {
-        this.isFarmerInfoLoading = false;
-        this.farmer = data;
-      });
-    } else {
-      this.http.post<Farmer>(environment.baseUri + '/farmers', this.farmer).subscribe((data: Farmer) => {
-        this.isFarmerInfoLoading = false;
-        this.farmer = data;
-      });
+    this.http.patch<Farmer>(environment.baseUri + '/farmers/' + this.farmer?.id, this.farmer).subscribe((data: Farmer) => {
+      this.isFarmerInfoLoading = false;
+      this.farmer = data;
+    });
+  }
+
+  public addFarmer() {
+    if (!this.user) {
+      return;
     }
+    this.isAddFarmerLoading = true;
+    this.farmer = createEmptyFarmer(this.user?.id);
+    this.http.post<Farmer>(environment.baseUri + '/farmers', this.farmer).subscribe((data: Farmer) => {
+      this.isAddFarmerLoading = false;
+      this.farmer = data;
+
+      if (this.user) {
+        this.user.farmerId = this.farmer.id;
+        this.user.role = Role.FARMER;
+        this.savePersonalInfo();
+      }
+    });
   }
 
   public changeFarmer(field: string, event: any) {
