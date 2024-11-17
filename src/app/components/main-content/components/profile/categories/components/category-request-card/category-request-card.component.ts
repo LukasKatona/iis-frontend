@@ -1,9 +1,11 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA, EventEmitter, Input, Output } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { NewCategoryRequest } from '../../../../../../../../models/new-category-request.interface';
 import { CommonModule } from '@angular/common';
 import { environment } from '../../../../../../../../environments/environment';
 import { ProductCategory } from '../../../../../../../../models/product-category.interface';
 import { HttpClient } from '@angular/common/http';
+import { AuthStoreService } from '../../../../../../../services/auth-store.service';
+import { User } from '../../../../../../../../models/user.interface';
 
 @Component({
   selector: 'app-category-request-card',
@@ -13,12 +15,20 @@ import { HttpClient } from '@angular/common/http';
   styleUrl: './category-request-card.component.scss',
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class CategoryRequestCardComponent {
+export class CategoryRequestCardComponent implements OnInit {
+
+  public user: User | null = null;
 
   @Input() categoryRequest!: NewCategoryRequest;
   @Input() parentCategoryName: string = '';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private authStore: AuthStoreService) {}
+
+  ngOnInit(): void {
+    this.authStore.loggedUser$().subscribe(user => {
+      this.user = user;
+    });
+  }
 
   public changeCategoryRequestState(event: any) {
     this.categoryRequest.state = event.target.value;

@@ -4,7 +4,7 @@
         <mdui-text-field
             label="Name"
             type="text"
-            [value]="newCategoryRequest.newCategoryName"
+            [value]="newCategoryRequest?.newCategoryName"
             (input)="changeNewCategoryRequest('newCategoryName', $event)"
         ></mdui-text-field>
         <div class="ef-categories__editor ef-categories__column">

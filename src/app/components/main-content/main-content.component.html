@@ -5,7 +5,7 @@
     <div class="ef-main-content__router-outlet">
         <mdui-tabs *ngIf="showShopTabMenu" value="products" full-width>
             <mdui-tab value="products" (click)="routeToPage('shop')">Products</mdui-tab>
-            <mdui-tab value="farmer-products" (click)="routeToPage('shop/farmer-products')">My Products</mdui-tab>
+            <mdui-tab *ngIf="user?.isFarmer" value="farmer-products" (click)="routeToPage('shop/farmer-products')">My Products</mdui-tab>
         </mdui-tabs>
         <mdui-tabs *ngIf="showProfileTabMenu" value="info" full-width>
             <mdui-tab value="info" (click)="routeToPage('profile/info')">Personal Info</mdui-tab>

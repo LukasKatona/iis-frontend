@@ -6,6 +6,8 @@ import { CommonModule } from '@angular/common';
 import { environment } from '../../../../../environments/environment';
 import { FarmerProductCardComponent } from './components/farmer-card-product/farmer-product-card/farmer-product-card.component';
 import { Product } from '../../../../../models/product.interface';
+import { AuthStoreService } from '../../../../services/auth-store.service';
+import { User } from '../../../../../models/user.interface';
 
 @Component({
   selector: 'app-farmer-products',
@@ -17,11 +19,13 @@ import { Product } from '../../../../../models/product.interface';
 })
 export class FarmerProductsComponent implements OnInit {
   public farmer: Farmer | undefined;
-  private staticUserId: number = 1;
-  private categoryId: number = 0;
   public categoryName: string = '';
   public products: Product[] = [];
   @ViewChild('addProductForm') addProductForm!: FarmerAddProductComponent;
+
+  private user: User | null = null;
+
+  constructor(private authStore: AuthStoreService) {}
 
   onEditProduct(product: Product) {
     if (this.addProductForm) {
@@ -32,8 +36,14 @@ export class FarmerProductsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getFarmerByUserId(this.staticUserId);
-    this.getProducts(this.staticUserId);
+    this.authStore.loggedUser$().subscribe(user => {
+      this.user = user;
+      if (!this.user) {
+        return;
+      }
+      this.getFarmerByUserId(this.user?.id);
+      this.getProducts(this.user?.id);
+    });
   }
 
   onProductUpdated(updatedProduct: Product) {

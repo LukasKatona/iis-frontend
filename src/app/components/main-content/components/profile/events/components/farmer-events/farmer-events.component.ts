@@ -1,9 +1,11 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA, EventEmitter, Input, Output } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { createEmptyEvent, Event } from '../../../../../../../../models/event.interface';
 import { CommonModule, formatDate } from '@angular/common';
 import { EventCardComponent } from '../event-card/event-card.component';
 import { environment } from '../../../../../../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
+import { AuthStoreService } from '../../../../../../../services/auth-store.service';
+import { User } from '../../../../../../../../models/user.interface';
 
 @Component({
   selector: 'app-farmer-events',
@@ -13,8 +15,9 @@ import { HttpClient } from '@angular/common/http';
   styleUrl: './farmer-events.component.scss',
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class FarmerEventsComponent {
-  ueserId = 1;
+export class FarmerEventsComponent implements OnInit {
+
+  user: User | null = null;
 
   public eventToEdit?: Event;
   public isEventToEditLoading: boolean = false;
@@ -25,8 +28,16 @@ export class FarmerEventsComponent {
 
   @Output() eventsChanged = new EventEmitter<void>();
 
-  constructor(private http: HttpClient) {
-    this.eventToEdit = createEmptyEvent(this.ueserId);
+  constructor(private http: HttpClient, private authStore: AuthStoreService) {}
+
+  ngOnInit(): void {
+    this.authStore.loggedUser$().subscribe(user => {
+      this.user = user;
+      if (!this.user) {
+        return;
+      }
+      this.eventToEdit = createEmptyEvent(this.user?.id);
+    });
   }
 
   public fetchEventToEditor(event: Event) {
@@ -69,7 +80,7 @@ export class FarmerEventsComponent {
 
   private afterSaveEvent() {
     this.isEventToEditLoading = false;
-    this.eventToEdit = createEmptyEvent(this.ueserId);
+    if (this.user) this.eventToEdit = createEmptyEvent(this.user?.id);
     this.startsAt = '';
     this.endsAt = '';
     this.eventsChanged.emit();
