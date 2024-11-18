@@ -18,16 +18,11 @@ export class FarmerProductCardComponent {
   constructor(private http: HttpClient) {}
 
   editProduct(product: Product) {
-    console.log('Product edited', product);
     this.editRequested.emit(product); 
   }
 
   removeProduct(product: Product) {
     const url = `${environment.baseUri}/products/${product.id}`;
-    this.http.delete(url).subscribe({
-      next: () => {
-        console.log('Product deleted successfully');
-      }
-    });
+    this.http.delete(url).subscribe({});
   }
 }

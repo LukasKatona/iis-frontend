@@ -34,7 +34,6 @@ export class AdminPageComponent {
 
   private getUsers(): void {
     let url = environment.baseUri + '/users';
-    console.log('Fetching users from:', url);
     this.url.get<User[]>(url).subscribe((data: User[]) => {
       this.users = data;
     });
