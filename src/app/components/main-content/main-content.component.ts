@@ -20,13 +20,17 @@ export class MainContentComponent {
 
   constructor(private router: Router) {
     router.events.subscribe((val: any) => {
+      
       if (val instanceof NavigationEnd) {
-        if (val.url.includes('shop')) {
-          this.showShopTabMenu = true;
+        if (val.url.includes('shopping-cart')) {
+          this.showShopTabMenu = false;
           this.showProfileTabMenu = false;
         } else if (val.url.includes('profile')) {
           this.showShopTabMenu = false;
           this.showProfileTabMenu = true;
+        } else if (val.url.includes('shop')) {
+            this.showShopTabMenu = true;
+            this.showProfileTabMenu = false;
         } else {
           this.showShopTabMenu = false;
           this.showProfileTabMenu = false;
