@@ -24,6 +24,8 @@ export class FarmerEventsComponent implements OnInit {
   public startsAt: string = '';
   public endsAt: string = '';
 
+  public isFormValid: boolean = false;
+
   @Input() farmerEvents: Event[] = [];
 
   @Output() eventsChanged = new EventEmitter<void>();
@@ -37,6 +39,7 @@ export class FarmerEventsComponent implements OnInit {
         return;
       }
       this.eventToEdit = createEmptyEvent(this.user?.id);
+      this.isFormValid = this.validateEvent();
     });
   }
 
@@ -44,6 +47,7 @@ export class FarmerEventsComponent implements OnInit {
     this.eventToEdit = { ...event };
     this.startsAt = formatDate(event.startDate*1000, 'yyyy-MM-ddTHH:mm', 'en-US');
     this.endsAt = formatDate(event.endDate*1000, 'yyyy-MM-ddTHH:mm', 'en-US');
+    this.isFormValid = this.validateEvent();
   }
 
   public onDeleteEvent(event: Event) {
@@ -57,10 +61,24 @@ export class FarmerEventsComponent implements OnInit {
     if (this.eventToEdit) {
       if (field === 'startDate' || field === 'endDate') {
         this.eventToEdit[field] = new Date(event.target.value).getTime() / 1000;
+        if (field === 'startDate') {
+          this.startsAt = event.target.value;
+        }
+        if (field === 'endDate') {
+          this.endsAt = event.target.value;
+        }
       } else {
         this.eventToEdit[field] = event.target.value;
       }
     }
+    this.isFormValid = this.validateEvent();
+  }
+
+  private validateEvent(): boolean {
+    if (this.eventToEdit?.name && this.startsAt && this.endsAt) {
+      return true;
+    }
+    return false;
   }
 
   public saveEvent() {
@@ -83,6 +101,7 @@ export class FarmerEventsComponent implements OnInit {
     if (this.user) this.eventToEdit = createEmptyEvent(this.user?.id);
     this.startsAt = '';
     this.endsAt = '';
+    this.isFormValid = false;
     this.eventsChanged.emit();
   }
 }

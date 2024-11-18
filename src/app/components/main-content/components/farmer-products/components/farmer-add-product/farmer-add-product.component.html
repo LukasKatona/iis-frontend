@@ -24,7 +24,7 @@
         </mdui-select>
         <mdui-text-field variant="outlined" label="Image URL" type="text" [value]="product?.imageUrl"
             (input)="createProduct('description',$event)"></mdui-text-field>
-        <mdui-button type="submit" [loading]="isProductCreated" (click)="saveProduct()">Add Product</mdui-button>
+        <mdui-button [disabled]="!isFormValid" type="submit" [loading]="isProductLoading" (click)="saveProduct()">Add Product</mdui-button>
     </div>
 
 </mdui-card>

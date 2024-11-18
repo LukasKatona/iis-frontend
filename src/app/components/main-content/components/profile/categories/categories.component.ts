@@ -27,9 +27,9 @@ export class CategoriesComponent implements OnInit {
   public categoriesForDropdown: ProductCategory[] = [];
   public categoryDropdownValue: string = '';
 
-  constructor(private http: HttpClient, private authStore: AuthStoreService) {
-    
-  }
+  public isFormValid: boolean = false;
+
+  constructor(private http: HttpClient, private authStore: AuthStoreService) {}
 
   ngOnInit(): void {
     this.authStore.loggedUser$().subscribe(user => {
@@ -62,7 +62,15 @@ export class CategoriesComponent implements OnInit {
         this.categoryDropdownValue = this.categoriesForDropdown.find((category: ProductCategory) => category.id === event.target.value)?.name || '';
       }
       this.newCategoryRequest[field] = event.target.value;
+      this.isFormValid = this.validateNewCategoryRequest();
     }
+  }
+
+  private validateNewCategoryRequest(): boolean {
+    if (this.newCategoryRequest?.newCategoryName) {
+      return true;
+    }
+    return false;
   }
 
   public createRequest() {
@@ -71,6 +79,7 @@ export class CategoriesComponent implements OnInit {
     this.http.post(url, this.newCategoryRequest).subscribe(() => {
       this.isCreateRequestLoading = false;
       this.categoryDropdownValue = '';
+      this.isFormValid = false;
       this.fetchNewCategoryRequests();
       if (this.user) this.newCategoryRequest = createEmptyNewCategoryRequest(this.user?.id);
     });

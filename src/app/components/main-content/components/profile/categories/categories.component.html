@@ -2,6 +2,7 @@
     <h2>Create New Category Request</h2>
     <mdui-card variant="outlined">
         <mdui-text-field
+            required
             label="Name"
             type="text"
             [value]="newCategoryRequest?.newCategoryName"
@@ -26,7 +27,8 @@
             <mdui-button
                 style="width: 100%;"
                 [loading]="isCreateRequestLoading"
-                (click)="createRequest()">
+                (click)="createRequest()"
+                [disabled]="!isFormValid">
                 Create Request
             </mdui-button>
         </div>

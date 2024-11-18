@@ -22,12 +22,16 @@ export class PersonalInfoComponent implements OnInit {
   public isFarmerInfoLoading = false;
   public isAddFarmerLoading = false;
 
+  public isPersonalInfoValid = true;
+  public isFarmerInfoValid = true;
+
   constructor(private http: HttpClient, private authStore: AuthStoreService) {}
 
   ngOnInit(): void {
     this.authStore.loggedUser$().subscribe(user => {
       if(user != null) {
         this.user = user;
+        this.isPersonalInfoValid = this.validatePersonalInfo();
         if (this.user.isFarmer) {
           this.fetchFarmer();
         }
@@ -40,6 +44,7 @@ export class PersonalInfoComponent implements OnInit {
     this.http.get<Farmer>(url).subscribe((data: Farmer) => {
       this.farmer = data;
     });
+    this.isFarmerInfoValid = this.validateFarmerInfo();
   }
 
   public savePersonalInfo() {
@@ -55,6 +60,14 @@ export class PersonalInfoComponent implements OnInit {
     if (this.user) {
       this.user[field] = event.target.value;
     }
+    this.isPersonalInfoValid = this.validatePersonalInfo();
+  }
+
+  private validatePersonalInfo(): boolean {
+    if (this.user?.name && this.user?.email && this.user?.phone) {
+      return true;
+    }
+    return false;
   }
 
   public saveFarmerInfo() {
@@ -63,6 +76,27 @@ export class PersonalInfoComponent implements OnInit {
       this.isFarmerInfoLoading = false;
       this.farmer = data;
     });
+  }
+
+  public changeFarmer(field: string, event: any) {
+    if (this.farmer) {
+      this.farmer[field] = event.target.value;
+    }
+    this.isFarmerInfoValid = this.validateFarmerInfo();
+  }
+
+  private validateFarmerInfo(): boolean {
+    if (
+      this.farmer?.farmName &&
+      this.farmer?.CIN &&
+      this.farmer?.VATIN &&
+      this.farmer?.VAT &&
+      this.farmer?.bankCode &&
+      this.farmer?.accountNumber
+    ) {
+      return true;
+    }
+    return false;
   }
 
   public addFarmer() {
@@ -81,11 +115,5 @@ export class PersonalInfoComponent implements OnInit {
         this.savePersonalInfo();
       }
     });
-  }
-
-  public changeFarmer(field: string, event: any) {
-    if (this.farmer) {
-      this.farmer[field] = event.target.value;
-    }
   }
 }

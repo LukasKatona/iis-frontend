@@ -2,6 +2,7 @@
     <h2>Create or Edit Event</h2>
     <mdui-card variant="outlined">
         <mdui-text-field
+            required
             label="Name"
             type="text"
             [value]="eventToEdit?.name"
@@ -10,6 +11,7 @@
         <div class="ef-farmer-events__editor-body">
             <div class="ef-farmer-events__row">
                 <mdui-text-field
+                    required
                     variant="outlined"
                     label="Starts At"
                     type="datetime-local"
@@ -17,6 +19,7 @@
                     (input)="changeEventToEdit('startDate', $event)"
                 ></mdui-text-field>
                 <mdui-text-field
+                    required
                     variant="outlined"
                     label="Ends At"
                     type="datetime-local"
@@ -72,7 +75,8 @@
             <mdui-button
                 style="width: 100%;"
                 [loading]="isEventToEditLoading"
-                (click)="saveEvent()">
+                (click)="saveEvent()"
+                [disabled]="!isFormValid">
                 Save Event
             </mdui-button>
         </div>

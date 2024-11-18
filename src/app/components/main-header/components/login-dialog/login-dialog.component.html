@@ -1,6 +1,7 @@
 <mdui-dialog [open]="isDialogOpen" headline="Log In">
     <div class="ef-login-dialog">
         <mdui-text-field
+            required
             variant="outlined"
             label="Email"
             type="text"
@@ -8,6 +9,7 @@
             (input)="changeLogin('username', $event)"
         ></mdui-text-field>
         <mdui-text-field
+            required
             variant="outlined"
             label="Password"
             type="password"
@@ -15,7 +17,10 @@
             [value]="login?.password"
             (input)="changeLogin('password', $event)"
         ></mdui-text-field>
+        <div *ngIf="loginError" class="ef-login-dialog__error">
+            <p>{{ loginError }}</p>
+        </div>
     </div>
     <mdui-button (click)="close()" slot="action" variant="text">Cancel</mdui-button>
-    <mdui-button [loading]="isLoginLoading" (click)="confirmLogin()" slot="action" variant="tonal">Confirm</mdui-button>
+    <mdui-button [disabled]="!isFormValid" [loading]="isLoginLoading" (click)="confirmLogin()" slot="action" variant="tonal">Confirm</mdui-button>
 </mdui-dialog>
