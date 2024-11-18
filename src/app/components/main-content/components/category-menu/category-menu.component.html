@@ -1,4 +1,15 @@
-<mdui-list>
-    <mdui-collapse class="menu-collapse">
-    </mdui-collapse>
-</mdui-list>
+<mdui-collapse class="menu-collapse">
+    <mdui-collapse-item *ngFor="let category of categoryTree" trigger=".trigger" [value]="category.id">
+        <mdui-list-item slot="header">
+            <a style="color: rgb(var(--mdui-color-on-surface)); text-decoration: none" [routerLink]="'/shop/'+category.name.toLowerCase()">{{category.name}}</a>
+            <mdui-icon class="trigger" slot="end-icon" name="keyboard_arrow_down"></mdui-icon>
+        </mdui-list-item>
+        <div style="display: flex; flex-direction: row; justify-content: space-between">
+            <div style="width: 2px; background-color: rgb(var(--mdui-color-primary)); margin-right: 5px"></div>
+            <div style="flex-grow: 1;">
+                <app-category-menu-item [category]="category"></app-category-menu-item>
+            </div>
+        </div>
+    </mdui-collapse-item> 
+</mdui-collapse>
+
