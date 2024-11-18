@@ -5,8 +5,8 @@
         </span>
     </a>
 
-    <mdui-tooltip content="Log In">
-        <mdui-button-icon *ngIf="user == null" (click)="openLoginDialog()">
+    <mdui-tooltip *ngIf="user == null" content="Log In">
+        <mdui-button-icon (click)="openLoginDialog()">
             <i class="ri-login-circle-line"></i>
         </mdui-button-icon>
     </mdui-tooltip>
