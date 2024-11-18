@@ -1,3 +1,9 @@
-<div *ngIf="user?.isAdmin">
+<div class="ef-admin-page" *ngIf="user?.isAdmin">
+    <div class="ef-admin-page__header">
+        <p>Moderator</p>
+        <p>Admin</p>
+        <p>Active</p>
+    </div>
     <app-admin-user-card  *ngFor="let user of users" [user]="user"></app-admin-user-card>
+
 </div>

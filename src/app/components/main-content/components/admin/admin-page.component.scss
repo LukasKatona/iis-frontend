@@ -1,0 +1,17 @@
+.ef-admin-page{
+    padding: 1rem;
+}
+
+.ef-admin-page__header{
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    align-items: center;
+    gap: 1rem;
+
+    p{
+       width: 5.5rem;
+       text-align: center;
+    }
+
+}

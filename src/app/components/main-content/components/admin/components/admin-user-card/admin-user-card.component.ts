@@ -24,10 +24,20 @@ export class AdminUserCardComponent {
     this.user.isModerator = !this.user.isModerator; 
     const url = `${environment.baseUri}/users/${this.user.id}`;
 
-    this.http.patch(url, this.user).subscribe({
-      next: () => {
-        console.log('User role updated successfully');
-      }
-    });
+    this.http.patch(url, this.user).subscribe({});
+  }
+
+  toggleAdmin() {
+    this.user.isAdmin = !this.user.isAdmin; 
+    const url = `${environment.baseUri}/users/${this.user.id}`;
+
+    this.http.patch(url, this.user).subscribe({});
+  }
+
+  toggleActive() {
+    this.user.isActive = !this.user.isActive; 
+    const url = `${environment.baseUri}/users/${this.user.id}`;
+
+    this.http.patch(url, this.user).subscribe({});
   }
 } 

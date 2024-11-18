@@ -6,11 +6,15 @@
 
         </div>
         <div class="ef-admin-user-card__button">
-            <!-- Role Toggle -->
-            <mdui-button (click)="toggleModerator()">
-                <ng-container *ngIf="user['isModerator']">Remove Mod</ng-container>
-                <ng-container *ngIf="!user['isModerator']">Make Mod</ng-container>
-            </mdui-button>
+            <div class="ef-admin-user-card__checkbox">
+                <mdui-checkbox (click)="toggleModerator()" [checked]="user.isModerator" />
+            </div>
+            <div class="ef-admin-user-card__checkbox">
+                <mdui-checkbox (click)="toggleAdmin()" [checked]="user.isAdmin" />
+            </div>
+            <div class="ef-admin-user-card__checkbox">
+                <mdui-checkbox (click)="toggleActive()" [checked]="user.isActive" />
+            </div>
         </div>
     </div>
 </mdui-card>
