@@ -5,11 +5,12 @@ import { Token } from '../../../../../models/token.interface';
 import { AuthStoreService } from '../../../../services/auth-store.service';
 import { User } from '../../../../../models/user.interface';
 import { HttpClient } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-login-dialog',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './login-dialog.component.html',
   styleUrl: './login-dialog.component.scss',
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
@@ -22,6 +23,10 @@ export class LoginDialogComponent {
 
   public isLoginLoading: boolean = false;
 
+  public isFormValid: boolean = false;
+
+  public loginError: string = '';
+
   constructor(
     private authStore: AuthStoreService,
     private http: HttpClient
@@ -30,6 +35,8 @@ export class LoginDialogComponent {
   public open(): void {
     this.login = createEmptyLogin();
     this.isDialogOpen = true;
+    this.isFormValid = false;
+    this.loginError = '';
   }
 
   public close(): void {
@@ -40,6 +47,14 @@ export class LoginDialogComponent {
     if (this.login) {
       this.login[field] = event.target.value;
     }
+    this.isFormValid = this.validateLogin();
+  }
+
+  private validateLogin(): boolean {
+    if (this.login) {
+      return this.login.username.length > 0 && this.login.password.length > 0;
+    }
+    return false;
   }
 
   public confirmLogin(): void {
@@ -54,10 +69,11 @@ export class LoginDialogComponent {
     }),
     {
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
+      'Content-Type': 'application/x-www-form-urlencoded'
       }
     }
-    ).subscribe((data: Token) => {
+    ).subscribe({
+      next: (data: Token) => {
       this.authStore.updateToken(data.access_token);
       const userUrl = environment.baseUri + '/users/me';
       
@@ -66,7 +82,13 @@ export class LoginDialogComponent {
         this.isLoginLoading = false;
         this.close();
       });
-    }
-    );
+      },
+      error: (error) => {
+      if (error.status === 401) {
+        this.loginError = 'Invalid username or password';
+      }
+      this.isLoginLoading = false;
+      }
+    });
   }
 }

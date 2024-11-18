@@ -3,12 +3,14 @@
         <h2>Personal Information</h2>
         <mdui-card variant="outlined">
             <mdui-text-field
+                required
                 label="Name"
                 type="text"
                 [value]="user?.name"
                 (input)="changeUser('name', $event)"
             ></mdui-text-field>
             <mdui-text-field
+                required
                 label="Surname"
                 type="text"
                 [value]="user?.surname"
@@ -18,6 +20,7 @@
                 <h3>Contact Information</h3>
                 <div class="ef-personal-info__row">
                     <mdui-text-field
+                        required
                         variant="outlined"
                         label="Email"
                         type="text"
@@ -72,7 +75,8 @@
                 ></mdui-text-field>
                 <mdui-button
                     [loading]="isPersonalInfoLoading"
-                    (click)="savePersonalInfo()">
+                    (click)="savePersonalInfo()"
+                    [disabled]="!isPersonalInfoValid">
                     Save Personal Information
                 </mdui-button>
             </div>
@@ -88,6 +92,7 @@
         </mdui-button>
         <mdui-card *ngIf="user?.isFarmer" variant="outlined">
             <mdui-text-field
+                required
                 label="Farm Name"
                 type="text"
                 [value]="farmer?.farmName"
@@ -105,6 +110,7 @@
                 <h3>Commerce Information</h3>
                 <div class="ef-personal-info__row">
                     <mdui-text-field
+                        required
                         variant="outlined"
                         label="CIN"
                         type="text"
@@ -112,6 +118,7 @@
                         (input)="changeFarmer('CIN', $event)"
                     ></mdui-text-field>
                     <mdui-text-field
+                        required
                         variant="outlined"
                         label="VATIN"
                         type="text"
@@ -121,6 +128,7 @@
                 </div>
                 <div class="ef-personal-info__row">
                     <mdui-text-field
+                        required
                         variant="outlined"
                         label="VAT"
                         type="text"
@@ -137,6 +145,7 @@
                 </div>
                 <div class="ef-personal-info__row">
                     <mdui-text-field
+                        required
                         variant="outlined"
                         label="Bank Code"
                         type="text"
@@ -144,6 +153,7 @@
                         (input)="changeFarmer('bankCode', $event)"
                     ></mdui-text-field>
                     <mdui-text-field
+                        required
                         variant="outlined"
                         label="Account Number"
                         type="text"
@@ -198,14 +208,11 @@
                 ></mdui-text-field>
                 <mdui-button
                     [loading]="isFarmerInfoLoading"
-                    (click)="saveFarmerInfo()">
+                    (click)="saveFarmerInfo()"
+                    [disabled]="!isFarmerInfoValid">
                     Save Farmer Information
                 </mdui-button>
             </div>
         </mdui-card>
     </div>
 </div>
-
-<!-- farmName?: string;
-description?: string; -->
-

@@ -22,6 +22,7 @@ export class ProductCardComponent {
   amoutToBuy = 0;
   user: User | null = null;
 
+  public isAmountValid = true;
 
   constructor(private authStore: AuthStoreService, private http: HttpClient) { }
 
@@ -55,6 +56,7 @@ export class ProductCardComponent {
     if (this.amount > 0 && this.amount < this.product.stock) {
       this.amoutToBuy = this.amount;
     }
+    this.isAmountValid = this.validateAmount();
   }
 
   onAmountChange(event: any) {
@@ -62,6 +64,7 @@ export class ProductCardComponent {
     if (this.amount > 0 && this.amount < this.product.stock) {
       this.amoutToBuy = this.amount;
     }
+    this.isAmountValid = this.validateAmount();
   }
 
   decrementAmount() {
@@ -69,6 +72,13 @@ export class ProductCardComponent {
     if (this.amount > 0 && this.amount < this.product.stock) {
       this.amoutToBuy = this.amount;
     }
+    this.isAmountValid = this.validateAmount();
   }
 
+  private validateAmount(): boolean {
+    if (this.amount > 0 && this.amount <= this.product.stock) {
+      return true;
+    }
+    return false;
+  }
 }

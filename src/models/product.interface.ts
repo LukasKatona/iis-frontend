@@ -7,7 +7,7 @@ export interface Product {
     unit: Unit;
     unitPrice: number;
     stock: number;
-    categoryId: number;
+    categoryId: number | null;
     farmerId: number;
 }
 
@@ -18,7 +18,7 @@ export function createEmptyProduct(farmerId: number): Product {
         unit: Unit.KILOGRAM,
         unitPrice: 0,
         stock: 0,
-        categoryId: 0,
+        categoryId: null,
         farmerId,
     };
 }

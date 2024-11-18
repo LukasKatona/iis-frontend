@@ -22,9 +22,11 @@ export class MainContentComponent implements OnInit {
   public showShopTabMenu = false;
   public showProfileTabMenu = false;
 
-  constructor(private router: Router, private authStore: AuthStoreService) {
+  public shopTabMenuValue = 'shop';
+  public profileTabMenuValue = 'profile';
+
+  constructor(private router: Router, private route: ActivatedRoute, private authStore: AuthStoreService) {
     router.events.subscribe((val: any) => {
-      
       if (val instanceof NavigationEnd) {
         if (val.url.includes('shopping-cart')) {
           this.showShopTabMenu = false;
@@ -32,9 +34,11 @@ export class MainContentComponent implements OnInit {
         } else if (val.url.includes('profile')) {
           this.showShopTabMenu = false;
           this.showProfileTabMenu = true;
+          this.profileTabMenuValue = val.url.split('/')[2];
         } else if (val.url.includes('shop')) {
-            this.showShopTabMenu = true;
-            this.showProfileTabMenu = false;
+          this.showShopTabMenu = true;
+          this.showProfileTabMenu = false;
+          this.shopTabMenuValue = val.url.split('/')[2] == 'farmer-products' ? 'farmer-products' : 'products';
         } else {
           this.showShopTabMenu = false;
           this.showProfileTabMenu = false;
