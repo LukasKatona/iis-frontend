@@ -17,7 +17,7 @@ import { User } from '../../../../../../../models/user.interface';
 export class ProductCardComponent {
   @Input()
   product!: Product;
-
+  isLoading = false;
   amount = 0;
   amoutToBuy = 0;
   user: User | null = null;
@@ -34,6 +34,7 @@ export class ProductCardComponent {
     });
   }
   addToCart() {
+    this.isLoading = true;
     const url = `${environment.baseUri}/orders/add-product?user_id=${this.user?.id}&product_id=${this.product.id}&quantity=${this.amoutToBuy}`;
     const body = {
       user_id: this.user?.id,
@@ -42,7 +43,9 @@ export class ProductCardComponent {
     };
     this.http.post(url, body).subscribe(
       (data: any) => {
-        console.log('Product added to cart:', data);
+        this.amount = 0;
+        this.amoutToBuy = 0;
+        this.isLoading = false;
       }
     );
   }

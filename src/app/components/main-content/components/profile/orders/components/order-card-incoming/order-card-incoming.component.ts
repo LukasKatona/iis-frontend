@@ -3,6 +3,7 @@ import { Order } from '../../../../../../../../models/order.interface';
 import { environment } from '../../../../../../../../environments/environment';
 import { CommonModule, formatDate } from '@angular/common';
 import { Product } from '../../../../../../../../models/product.interface';
+import { ProductWithQuantity } from '../../../../../../../../models/product-with-quantity.interface';
 import { OrderStatus } from '../../../../../../../../models/order-status.enum';
 import { HttpClient } from '@angular/common/http';
 
@@ -16,6 +17,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class OrderCardIncomingComponent {
   @Input() order!: Order;
+  public productsWithQuantity: ProductWithQuantity[] = [];
   public products: Product[] = [];
   public createdAt: string = '';
   public updatedAt: string = '';
@@ -38,37 +40,32 @@ export class OrderCardIncomingComponent {
   private fetchProducts() {
     if (!this.order?.id) return;
     const url = `${environment.baseUri}/orders/${this.order.id}/products`;
-    this.http.get<Product[]>(url).subscribe(
-      (data: Product[]) => {
-        this.products = data;
+    this.http.get<ProductWithQuantity[]>(url).subscribe(
+      (data: ProductWithQuantity[]) => {
+        this.productsWithQuantity = data;
       }
     );
   }
 
   getTotalPrice(): number {
     return parseFloat(
-      this.products.reduce((total, product) => {
-        return total + (product.unitPrice * product.stock);
+      this.productsWithQuantity.reduce((total, productWithQuantity) => {
+        return total + (productWithQuantity.product.unitPrice * productWithQuantity.quantity);
       }, 0).toFixed(2)
     );
   }
 
-  getProductTotalPrice(product: any): number {
-    return parseFloat((product.unitPrice * product.stock).toFixed(2));
+  getProductTotalPrice(product: any, quantity: number): number {
+    return parseFloat((product.unitPrice * quantity).toFixed(2));
   }
 
   changeOrderStatus(event: any) {
     this.order.status = event.target.value;
-    console.log('Changing status to:', this.order.status);
     const url = `${environment.baseUri}/orders/${this.order.id}/status`;
     this.http.patch(url, { status: this.order.status }, {
       headers: {
         'Content-Type': 'application/json'
       }
-    }).subscribe(
-      response => {
-        console.log('Status updated successfully', response);
-      }
-    );
+    }).subscribe({});
   }
 }

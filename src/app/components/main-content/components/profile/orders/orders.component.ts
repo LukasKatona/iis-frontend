@@ -27,7 +27,6 @@ export class OrdersComponent {
   ngOnInit(): void {
     this.authStore.loggedUser$().subscribe(user => {
       this.user = user;
-      console.log(this.user?.isFarmer);
       if (!this.user) {
         return;
       }

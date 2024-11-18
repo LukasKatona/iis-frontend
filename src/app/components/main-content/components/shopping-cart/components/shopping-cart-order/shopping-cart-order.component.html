@@ -15,13 +15,13 @@
                     <div><strong>Quantity</strong></div>
                     <div><strong>Price</strong></div>
                 </li>
-                <li *ngFor="let product of products">
-                    <div>{{ product.name }}</div>
-                    <input class="ef-shopping-cart__input" type="number" [(ngModel)]="product.stock" (change)="updateProductQuantity(product, product.stock)">
+                <li *ngFor="let product of productsWithQuantity">
+                    <div>{{ product.product.name }}</div>
+                    <input class="ef-shopping-cart__input" min="0" type="number" [(ngModel)]="product.quantity" (change)="updateProductQuantity(product)">
                     
-                    <div>{{ getProductTotalPrice(product) }}</div>
+                    <div>{{ getProductTotalPrice(product.product, product.quantity) }}</div>
                     <div>
-                        <mdui-button-icon (click)="deleteProduct(product)">
+                        <mdui-button-icon (click)="deleteProduct(product.product)">
                             <i class="ri-delete-bin-line"></i>
                         </mdui-button-icon>
                     </div>

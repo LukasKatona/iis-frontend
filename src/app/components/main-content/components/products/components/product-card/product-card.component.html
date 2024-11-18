@@ -17,10 +17,11 @@
                     <i class="ri-add-line"></i>
                 </mdui-button-icon>
             </div>
-            <mdui-button class="ef-product-card__add-button">
-                <mdui-button-icon color="secondary" raised (click)="addToCart()">
+            <mdui-button class="ef-product-card__add-button" (click)="addToCart()" [loading]="isLoading">
+                <div class="ef-product-card__add-button__text">
+                    Add to cart
                     <i class="ri-shopping-cart-2-fill"></i>
-                </mdui-button-icon>
+                </div>
             </mdui-button>
         </div>
     </div>

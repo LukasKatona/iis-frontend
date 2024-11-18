@@ -15,10 +15,10 @@
                 <div><strong>Quantity</strong></div>
                 <div><strong>Price</strong></div>
             </li>
-            <li *ngFor="let product of products">
-                <div>{{ product.name }}</div> 
-                <div>{{ product.stock }}</div>               
-                <div>{{ getProductTotalPrice(product) }}</div>
+            <li *ngFor="let product of productsWithQuantity">
+                <div>{{ product.product.name }}</div> 
+                <div>{{ product.quantity}}</div>               
+                <div>{{ getProductTotalPrice(product.product, product.quantity) }}</div>
             </li>
         </ul>
       </div>

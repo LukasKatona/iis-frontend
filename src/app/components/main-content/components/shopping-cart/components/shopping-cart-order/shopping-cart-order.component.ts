@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { environment } from '../../../../../../../environments/environment';
 import { Order } from '../../../../../../../models/order.interface';
 import { Product } from '../../../../../../../models/product.interface';
+import { ProductWithQuantity } from '../../../../../../../models/product-with-quantity.interface';
 import { OrderStatus } from '../../../../../../../models/order-status.enum';
 import { HttpClient } from '@angular/common/http';
 
@@ -19,6 +20,7 @@ export class ShoppingCartOrderComponent {
   @Input() order!: Order;
   @Output() refreshOrders = new EventEmitter<void>();
   public products: Product[] = [];
+  public productsWithQuantity: ProductWithQuantity[] = [];
   public createdAt: string = '';
   public status = OrderStatus;
 
@@ -35,40 +37,41 @@ export class ShoppingCartOrderComponent {
     }
   }
 
-  getProductTotalPrice(product: any): number {
-    return parseFloat((product.unitPrice * product.stock).toFixed(2));
+  getProductTotalPrice(product: any, quantity: number): number {
+    return parseFloat((product.unitPrice * quantity).toFixed(2));
   }
 
 
   private fetchProducts() {
     if (!this.order?.id) return;
     const url = `${environment.baseUri}/orders/${this.order.id}/products`;
-    this.http.get<Product[]>(url).subscribe({
-      next: (data: Product[]) => {
-        this.products = data;
+    this.http.get<ProductWithQuantity[]>(url).subscribe({
+      next: (data: ProductWithQuantity[]) => {
+        this.productsWithQuantity = data;
       }
     });
   }
 
   getTotalPrice(): number {
     return parseFloat(
-      this.products.reduce((total, product) => {
-        return total + (product.unitPrice * product.stock);
+      this.productsWithQuantity.reduce((total, productsWithQuantity) => {
+        return total + (productsWithQuantity.product.unitPrice * productsWithQuantity.quantity);
       }, 0).toFixed(2)
     );
   }
 
 
-  updateProductQuantity(product: Product, quantity: number) {
-    console.log('updateProductQuantity', product, quantity);
+
+  updateProductQuantity(product: ProductWithQuantity) {
+    const quantity = product.quantity;
     const url = `${environment.baseUri}/orders/${this.order.id}/edit-product`;
 
-    if (quantity < 0) {  //TODO?
+    if (quantity < 0) { 
       alert('Quantity must be greater than zero.');
       return;
     }
     const payload = {
-      productId: product.id,
+      productId: product.product.id,
       quantity: quantity
     };
     this.http.patch<Order>(url, payload, { headers: { 'Content-Type': 'application/json' } })
@@ -76,6 +79,7 @@ export class ShoppingCartOrderComponent {
         next: (updatedOrder: Order) => {
           this.order = updatedOrder;
           this.fetchProducts();
+          this.refreshOrders.emit();
         }
       });
   }
