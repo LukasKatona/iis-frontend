@@ -38,7 +38,7 @@ export class FarmerProductsComponent implements OnInit {
   ngOnInit(): void {
     this.authStore.loggedUser$().subscribe(user => {
       this.user = user;
-      if (!this.user) {
+      if (!this.user || !this.user.isFarmer) {
         return;
       }
       this.getFarmerByUserId(this.user?.id);
