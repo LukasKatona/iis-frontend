@@ -23,7 +23,7 @@
             variant="outlined"
             [value]="categoryRequest.state"
             (change)="changeCategoryRequestState($event)"
-            [disabled]="categoryRequest.state === 'approved' || categoryRequest.state === 'rejected'"
+            [disabled]="categoryRequest.state === 'approved' || categoryRequest.state === 'rejected' || !user?.isModerator"
         >
             <mdui-menu-item value="pending">Pending</mdui-menu-item>
             <mdui-menu-item value="approved">Approved</mdui-menu-item>

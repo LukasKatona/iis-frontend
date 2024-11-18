@@ -2,21 +2,42 @@
     <span class="ef-main-header__logo">
         E-FARM
     </span>
-    <div class="ef-main-header__buttons">
+
+    <mdui-tooltip content="Log In">
+        <mdui-button-icon *ngIf="user == null" (click)="openLoginDialog()">
+            <i class="ri-login-circle-line"></i>
+        </mdui-button-icon>
+    </mdui-tooltip>
+
+    
+    <div *ngIf="user != null" class="ef-main-header__buttons">
+        <mdui-tooltip content="Log Out">
+            <mdui-button-icon (click)="logOut()">
+                <i class="ri-logout-circle-line"></i>
+            </mdui-button-icon>
+        </mdui-tooltip>  
         <a routerLink="profile/info">
-            <mdui-button-icon>
-                <i class="ri-account-circle-line"></i>
-            </mdui-button-icon>
+            <mdui-tooltip [content]="user.name + ' ' + user.surname">
+                <mdui-button-icon>
+                    <i class="ri-account-circle-line"></i>
+                </mdui-button-icon>
+            </mdui-tooltip>
         </a>
         <a routerLink="">
-            <mdui-button-icon>
-                <i class="ri-shopping-cart-2-line"></i>
-            </mdui-button-icon>
+            <mdui-tooltip content="Shopping Cart">
+                <mdui-button-icon>
+                    <i class="ri-shopping-cart-2-line"></i>
+                </mdui-button-icon>
+            </mdui-tooltip>
         </a>
-        <a routerLink="">
-            <mdui-button-icon >
-                <i class="ri-tools-line"></i>
-            </mdui-button-icon>
+        <a routerLink="" *ngIf="user?.isAdmin">
+            <mdui-tooltip content="Admin Tools">
+                <mdui-button-icon >
+                    <i class="ri-tools-line"></i>
+                </mdui-button-icon>
+            </mdui-tooltip>
         </a>
     </div>
 </div>
+
+<app-login-dialog #loginDialog></app-login-dialog>

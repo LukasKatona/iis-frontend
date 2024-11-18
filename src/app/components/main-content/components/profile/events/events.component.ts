@@ -1,27 +1,39 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, OnInit } from '@angular/core';
 import { AllEventsComponent } from './components/all-events/all-events.component';
 import { FarmerEventsComponent } from './components/farmer-events/farmer-events.component';
 import { LikedEventsComponent } from './components/liked-events/liked-events.component';
 import { environment } from '../../../../../../environments/environment';
 import { Event } from '../../../../../../models/event.interface';
+import { HttpClient } from '@angular/common/http';
+import { AuthStoreService } from '../../../../../services/auth-store.service';
+import { User } from '../../../../../../models/user.interface';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-events',
   standalone: true,
-  imports: [LikedEventsComponent, AllEventsComponent, FarmerEventsComponent],
+  imports: [CommonModule, LikedEventsComponent, AllEventsComponent, FarmerEventsComponent],
   templateUrl: './events.component.html',
   styleUrl: './events.component.scss',
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class EventsComponent {
-  userId = 1;
+export class EventsComponent implements OnInit {
+  user: User | null = null;
 
   public likedEvents: Event[] = [];
   public allEvents: Event[] = [];
   public farmerEvents: Event[] = [];
 
-  constructor() {
-    this.fetchAllData();
+  constructor(private http: HttpClient, private authStore: AuthStoreService) {}
+
+  ngOnInit(): void {
+    this.authStore.loggedUser$().subscribe(user => {
+      this.user = user;
+      if (!this.user) {
+        return;
+      }
+      this.fetchAllData();
+    });
   }
 
   public fetchAllData() {
@@ -32,7 +44,7 @@ export class EventsComponent {
           if (this.likedEvents.find((likedEvent: Event) => likedEvent.id === event.id)) {
             event.isLikedByLoggedUser = true;
           }
-          if (event.createdById === this.userId) {
+          if (event.createdById === this.user?.id) {
             this.farmerEvents.push(event);
           }
         });
@@ -40,20 +52,24 @@ export class EventsComponent {
   }
 
   private fetchLikedEvents(): Promise<void> {
-    let url = environment.baseUri + '/events/' + this.userId;
-    return fetch(url)
-      .then(response => response.json())
-      .then((data: Event[]) => {
-        this.likedEvents = data.map((event: Event) => { event.isLikedByLoggedUser = true; return event; });
+    let url = environment.baseUri + '/events/' + this.user?.id;
+    return this.http.get<Event[]>(url)
+      .toPromise()
+      .then((data: Event[] | undefined) => {
+        if (data) {
+          this.likedEvents = data.map((event: Event) => { event.isLikedByLoggedUser = true; return event; });
+        }
       });
   }
 
   private fetchAllEvents(): Promise<void> {
     let url = environment.baseUri + '/events';
-    return fetch(url)
-      .then(response => response.json())
-      .then((data: Event[]) => {
-        this.allEvents = data;
+    return this.http.get<Event[]>(url)
+      .toPromise()
+      .then((data: Event[] | undefined) => {
+        if (data) {
+          this.allEvents = data;
+        }
       });
   }
 
@@ -66,18 +82,16 @@ export class EventsComponent {
   }
 
   private joinEvent(event: Event) {
-    let url = environment.baseUri + '/events/' + event.id + '/join/' + this.userId;
-    fetch(url, { method: 'POST' })
-      .then(() => {
-        this.fetchAllData();
-      });
+    let url = environment.baseUri + '/events/' + event.id + '/join/' + this.user?.id;
+    this.http.post(url, {}).subscribe(() => {
+      this.fetchAllData();
+    });
   }
 
   private leaveEvent(event: Event) {
-    let url = environment.baseUri + '/events/' + event.id + '/leave/' + this.userId;
-    fetch(url, { method: 'DELETE' })
-      .then(() => {
-        this.fetchAllData();
-      });
+    let url = environment.baseUri + '/events/' + event.id + '/leave/' + this.user?.id;
+    this.http.delete(url).subscribe(() => {
+      this.fetchAllData();
+    });
   }
 }

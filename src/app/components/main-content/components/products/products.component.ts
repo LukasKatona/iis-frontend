@@ -4,6 +4,7 @@ import { Product } from '../../../../../models/product.interface';
 import { CommonModule } from '@angular/common';
 import { ProductCardComponent } from './components/product-card/product-card.component';
 import { ActivatedRoute } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-products',
@@ -17,7 +18,7 @@ export class ProductsComponent {
   public categoryName: string = '';
   public products: Product[] = [];
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(private route: ActivatedRoute, private http: HttpClient) {}
 
   ngOnInit(): void {
     this.categoryId = this.route.snapshot.data['categoryId'];
@@ -28,28 +29,23 @@ export class ProductsComponent {
   private getProducts(nameFilter?: string, categoryIdFilter?: number, sortField?: string, sortDirection?: string): void {
     let url = environment.baseUri + '/products';
 
-    const params = new URLSearchParams();
+    const params: any = {};
 
     if (nameFilter) {
-      params.append('nameFilter', nameFilter);
+      params.nameFilter = nameFilter;
     }
     if (categoryIdFilter) {
-      params.append('categoryIdFilter', categoryIdFilter.toString());
+      params.categoryIdFilter = categoryIdFilter;
     }
     if (sortField) {
-      params.append('sortField', sortField.toString());
+      params.sortField = sortField;
     }
     if (sortDirection) {
-      params.append('sortDirection', sortDirection.toString());
+      params.sortDirection = sortDirection;
     }
 
-    if (params.toString()) {
-      url += `?${params.toString()}`;
-    }
-
-    fetch(url)
-      .then(response => response.json())
-      .then(data => {
+    this.http.get<Product[]>(url, { params })
+      .subscribe((data: Product[]) => {
         this.products = data;
       });
   }

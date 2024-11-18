@@ -1,9 +1,12 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { createEmptyProductCategory, ProductCategory } from '../../../../../../models/product-category.interface';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, OnInit } from '@angular/core';
+import { ProductCategory } from '../../../../../../models/product-category.interface';
 import { createEmptyNewCategoryRequest, NewCategoryRequest } from '../../../../../../models/new-category-request.interface';
 import { environment } from '../../../../../../environments/environment';
 import { CommonModule } from '@angular/common';
 import { CategoryRequestCardComponent } from './components/category-request-card/category-request-card.component';
+import { HttpClient } from '@angular/common/http';
+import { AuthStoreService } from '../../../../../services/auth-store.service';
+import { User } from '../../../../../../models/user.interface';
 
 @Component({
   selector: 'app-categories',
@@ -13,10 +16,10 @@ import { CategoryRequestCardComponent } from './components/category-request-card
   styleUrl: './categories.component.scss',
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class CategoriesComponent {
-  userId = 1;
+export class CategoriesComponent implements OnInit {
+  user: User | null = null;
 
-  public newCategoryRequest: NewCategoryRequest;
+  public newCategoryRequest?: NewCategoryRequest;
   public isCreateRequestLoading: boolean = false;
 
   public newCategoryRequests: NewCategoryRequest[] = [];
@@ -24,28 +27,33 @@ export class CategoriesComponent {
   public categoriesForDropdown: ProductCategory[] = [];
   public categoryDropdownValue: string = '';
 
-  constructor() {
-    this.newCategoryRequest = createEmptyNewCategoryRequest(this.userId);
-    this.fetchNewCategoryRequests();
-    this.fetchCategoriesForDropdown();
+  constructor(private http: HttpClient, private authStore: AuthStoreService) {
+    
+  }
+
+  ngOnInit(): void {
+    this.authStore.loggedUser$().subscribe(user => {
+      if(user != null) {
+        this.user = user;
+        this.newCategoryRequest = createEmptyNewCategoryRequest(this.user?.id);
+        this.fetchNewCategoryRequests();
+        this.fetchCategoriesForDropdown();
+      }
+    });
   }
 
   private fetchNewCategoryRequests() {
     let url = environment.baseUri + '/category-requests/';
-    fetch(url)
-      .then(response => response.json())
-      .then((data: NewCategoryRequest[]) => {
-        this.newCategoryRequests = data;
-      });
+    this.http.get<NewCategoryRequest[]>(url).subscribe((data: NewCategoryRequest[]) => {
+      this.newCategoryRequests = data;
+    });
   }
 
   private fetchCategoriesForDropdown() {
     let url = environment.baseUri + '/product-categories';
-    fetch(url)
-      .then(response => response.json())
-      .then((data: ProductCategory[]) => {
-        this.categoriesForDropdown = data;
-      });
+    this.http.get<ProductCategory[]>(url).subscribe((data: ProductCategory[]) => {
+      this.categoriesForDropdown = data;
+    });
   }
 
   public changeNewCategoryRequest(field: string, event: any) {
@@ -59,19 +67,12 @@ export class CategoriesComponent {
 
   public createRequest() {
     this.isCreateRequestLoading = true;
-    let url = environment.baseUri + '/category-request/';
-    fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(this.newCategoryRequest)
-    })
-    .then(() => {
+    let url = environment.baseUri + '/category-requests/';
+    this.http.post(url, this.newCategoryRequest).subscribe(() => {
       this.isCreateRequestLoading = false;
       this.categoryDropdownValue = '';
       this.fetchNewCategoryRequests();
-      this.newCategoryRequest = createEmptyNewCategoryRequest(this.userId);
+      if (this.user) this.newCategoryRequest = createEmptyNewCategoryRequest(this.user?.id);
     });
   }
 
