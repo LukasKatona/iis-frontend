@@ -28,8 +28,5 @@ export class OrdersComponent {
       .then((data: Order[]) => {
         this.orders = data;
       })
-      .catch(error => {
-        console.error('Error fetching orders for user:', error);
-      });
   }
 }
