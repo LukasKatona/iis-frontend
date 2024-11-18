@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import 'mdui/mdui.css';
 import 'mdui';
 import { setColorScheme } from 'mdui';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
@@ -18,7 +19,7 @@ import { setColorScheme } from 'mdui';
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  constructor(private router: Router) {}
+  constructor(private router: Router, private http: HttpClient) {}
 
   ngOnInit() {
     setColorScheme('#0D2216');
@@ -26,9 +27,8 @@ export class AppComponent {
   }
 
   private getProductCategories() {
-    fetch(environment.baseUri + '/product-categories')
-      .then(response => response.json())
-      .then(data => {
+    this.http.get<ProductCategory[]>(`${environment.baseUri}/product-categories`)
+      .subscribe((data: ProductCategory[]) => {
         this.populateRoutes(data);
       });
   }

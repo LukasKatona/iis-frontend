@@ -80,7 +80,13 @@
     </div>
     <div class="ef-personal-info__column">
         <h2>Farmer Information</h2>
-        <mdui-card variant="outlined">
+        <mdui-button
+            *ngIf="!user?.isFarmer"
+            [loading]="isAddFarmerLoading"
+            (click)="addFarmer()">
+            Register as Farmer
+        </mdui-button>
+        <mdui-card *ngIf="user?.isFarmer" variant="outlined">
             <mdui-text-field
                 label="Farm Name"
                 type="text"

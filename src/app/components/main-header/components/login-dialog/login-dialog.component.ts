@@ -1,0 +1,72 @@
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { createEmptyLogin, Login } from '../../../../../models/login.interface';
+import { environment } from '../../../../../environments/environment';
+import { Token } from '../../../../../models/token.interface';
+import { AuthStoreService } from '../../../../services/auth-store.service';
+import { User } from '../../../../../models/user.interface';
+import { HttpClient } from '@angular/common/http';
+
+@Component({
+  selector: 'app-login-dialog',
+  standalone: true,
+  imports: [],
+  templateUrl: './login-dialog.component.html',
+  styleUrl: './login-dialog.component.scss',
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+})
+export class LoginDialogComponent {
+
+  public isDialogOpen: boolean = false;
+
+  public login?: Login;
+
+  public isLoginLoading: boolean = false;
+
+  constructor(
+    private authStore: AuthStoreService,
+    private http: HttpClient
+  ) {}
+
+  public open(): void {
+    this.login = createEmptyLogin();
+    this.isDialogOpen = true;
+  }
+
+  public close(): void {
+    this.isDialogOpen = false;
+  }
+
+  public changeLogin(field: string, event: any): void {
+    if (this.login) {
+      this.login[field] = event.target.value;
+    }
+  }
+
+  public confirmLogin(): void {
+    this.isLoginLoading = true;
+    let url = environment.baseUri + '/token';
+
+    this.http.post<Token>(
+      url,
+      new URLSearchParams({
+      'username': this.login?.username || '',
+      'password': this.login?.password || ''
+    }),
+    {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    }
+    ).subscribe((data: Token) => {
+      this.authStore.updateToken(data.access_token);
+      const userUrl = environment.baseUri + '/users/me';
+      
+      this.http.get<User>(userUrl).subscribe((data: User) => {
+        this.authStore.updateUserData(data);
+        this.isLoginLoading = false;
+        this.close();
+      });
+    }
+    );
+  }
+}

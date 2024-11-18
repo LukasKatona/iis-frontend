@@ -1,9 +1,10 @@
-import { Role } from './role.enum';
-
 export interface User {
     id: number;
     farmerId?: number;
-    role: Role;
+    isAdmin?: boolean;
+    isModerator?: boolean;
+    isFarmer?: boolean;
+    
     name: string;
     surname: string;
     email: string;

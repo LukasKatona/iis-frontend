@@ -3,6 +3,7 @@ import { ProductCategory } from '../../../../../models/product-category.interfac
 import { CommonModule } from '@angular/common';
 import { environment } from '../../../../../environments/environment';
 import { Router, RouterModule } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-category-menu',
@@ -15,24 +16,23 @@ import { Router, RouterModule } from '@angular/router';
 export class CategoryMenuComponent {
   categoryTree: ProductCategory[] = [];
 
-  constructor(private router: Router, private elRef: ElementRef) {
+  constructor(private router: Router, private elRef: ElementRef, private http: HttpClient) {
     this.getProductCategories();
   }
 
   private getProductCategories() {
-    fetch(environment.baseUri + '/product-categories')
-      .then(response => response.json())
-      .then(data => {
-        this.buildCategoryTree(data);
-        const collapse = document.querySelector(".menu-collapse") as any;
-        if (collapse != null) {
-          collapse.value = [];
-          data.forEach((category: ProductCategory) => {
-            collapse.value.push(category.id);
-          });
-        }
-        this.buildMenu();
-        this.buildRouterLinks();
+    this.http.get<ProductCategory[]>(`${environment.baseUri}/product-categories`)
+      .subscribe((data: ProductCategory[]) => {
+      this.buildCategoryTree(data);
+      const collapse = document.querySelector(".menu-collapse") as any;
+      if (collapse != null) {
+        collapse.value = [];
+        data.forEach((category: ProductCategory) => {
+        collapse.value.push(category.id);
+        });
+      }
+      this.buildMenu();
+      this.buildRouterLinks();
       });
   }
 

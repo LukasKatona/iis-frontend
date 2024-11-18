@@ -1,7 +1,7 @@
 <mdui-tabs value="liked-events" full-width variant="secondary">
     <mdui-tab value="liked-events">Liked Events</mdui-tab>
     <mdui-tab value="all-events">All Events</mdui-tab>
-    <mdui-tab value="my-events">My Events</mdui-tab>
+    <mdui-tab *ngIf="user?.isFarmer" value="my-events">My Events</mdui-tab>
 
     <mdui-tab-panel class="ef-events__tab-panel" slot="panel" value="liked-events">
         <app-liked-events
@@ -15,7 +15,7 @@
             (likeEvent)="onLikeEvent($event)"
         ></app-all-events>
     </mdui-tab-panel>
-    <mdui-tab-panel class="ef-events__tab-panel" slot="panel" value="my-events">
+    <mdui-tab-panel *ngIf="user?.isFarmer" class="ef-events__tab-panel" slot="panel" value="my-events">
         <app-farmer-events
             [farmerEvents]="farmerEvents"
             (eventsChanged)="fetchAllData()"

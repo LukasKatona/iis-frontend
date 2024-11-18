@@ -1,0 +1,21 @@
+<mdui-dialog [open]="isDialogOpen" headline="Log In">
+    <div class="ef-login-dialog">
+        <mdui-text-field
+            variant="outlined"
+            label="Email"
+            type="text"
+            [value]="login?.username"
+            (input)="changeLogin('username', $event)"
+        ></mdui-text-field>
+        <mdui-text-field
+            variant="outlined"
+            label="Password"
+            type="password"
+            toggle-password
+            [value]="login?.password"
+            (input)="changeLogin('password', $event)"
+        ></mdui-text-field>
+    </div>
+    <mdui-button (click)="close()" slot="action" variant="text">Cancel</mdui-button>
+    <mdui-button [loading]="isLoginLoading" (click)="confirmLogin()" slot="action" variant="tonal">Confirm</mdui-button>
+</mdui-dialog>

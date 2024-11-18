@@ -1,9 +1,11 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, OnInit } from '@angular/core';
 import { CategoryMenuComponent } from './components/category-menu/category-menu.component';
 import { MostPopularComponent } from './components/most-popular/most-popular.component';
 import { ActivatedRoute, NavigationEnd, Router, RouterModule } from '@angular/router';
 import { ProductsComponent } from './components/products/products.component';
 import { CommonModule } from '@angular/common';
+import { AuthStoreService } from '../../services/auth-store.service';
+import { User } from '../../../models/user.interface';
 
 @Component({
   selector: 'app-main-content',
@@ -13,12 +15,14 @@ import { CommonModule } from '@angular/common';
   styleUrl: './main-content.component.scss',
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class MainContentComponent {
+export class MainContentComponent implements OnInit {
+
+  public user: User | null = null;
 
   public showShopTabMenu = false;
   public showProfileTabMenu = false;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private authStore: AuthStoreService) {
     router.events.subscribe((val: any) => {
       
       if (val instanceof NavigationEnd) {
@@ -36,6 +40,12 @@ export class MainContentComponent {
           this.showProfileTabMenu = false;
         }
       }
+    });
+  }
+
+  ngOnInit(): void {
+    this.authStore.loggedUser$().subscribe(user => {
+      this.user = user;
     });
   }
 
