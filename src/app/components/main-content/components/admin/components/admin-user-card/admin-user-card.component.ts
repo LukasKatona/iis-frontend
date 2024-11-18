@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { Role } from '../../../../../../../models/role.enum';
 import { U } from '@angular/cdk/keycodes';
 import { environment } from '../../../../../../../environments/environment';
+import { HttpClient } from '@angular/common/http';
 
 
 @Component({
@@ -16,18 +17,17 @@ import { environment } from '../../../../../../../environments/environment';
 })
 export class AdminUserCardComponent {
   @Input() user!: User;
-  public role = Role;
 
-  changeRole(event: any) {
-    this.user.role = event.target.value;
-    console.log('Changing role to:', this.user.role);
-    const url = environment.baseUri + '/users/' + this.user.id + '/role';
-    fetch(url, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(this.user)
-    })
+  constructor(private http: HttpClient) {}
+
+  toggleModerator() {
+    this.user.isModerator = !this.user.isModerator; 
+    const url = `${environment.baseUri}/users/${this.user.id}`;
+
+    this.http.patch(url, this.user).subscribe({
+      next: () => {
+        console.log('User role updated successfully');
+      }
+    });
   }
-}
+} 

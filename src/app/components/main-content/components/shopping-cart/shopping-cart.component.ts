@@ -3,6 +3,9 @@ import { CommonModule } from '@angular/common';
 import { environment } from '../../../../../environments/environment';
 import { Order } from '../../../../../models/order.interface';
 import { ShoppingCartOrderComponent } from './components/shopping-cart-order/shopping-cart-order.component';
+import { HttpClient } from '@angular/common/http';
+import { User } from '../../../../../models/user.interface';
+import { AuthStoreService } from '../../../../services/auth-store.service';
 
 @Component({
   selector: 'app-shopping-cart',
@@ -13,25 +16,32 @@ import { ShoppingCartOrderComponent } from './components/shopping-cart-order/sho
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class ShoppingCartComponent {
-  userId = 3;
+  user: User | null = null;
+
 
   public orders: Order[] = [];
 
-  constructor() {
-    this.fetchOrdersByUserId();
+  constructor(private authStore: AuthStoreService, private http: HttpClient) { }
+
+  ngOnInit(): void {
+    this.authStore.loggedUser$().subscribe(user => {
+      this.user = user;
+      if (!this.user) {
+        return;
+      }
+      this.fetchOrdersByUserId();
+    }
+    );
   }
 
   private fetchOrdersByUserId(): void {
-    const url = `${environment.baseUri}/orders?user_id=${this.userId}&status=in_cart`;
-    
-    fetch(url)
-      .then(response => response.json())
-      .then((data: Order[]) => {
+    const url = `${environment.baseUri}/orders?user_id=${this.user?.id}&status=in_cart`;
+
+    this.http.get<Order[]>(url).subscribe(
+      (data: Order[]) => {
         this.orders = data;
-      })
-      .catch(error => {
-        console.error('Error fetching orders for user:', error);
-      });
+      }
+    );
   }
 
 }

@@ -1,4 +1,16 @@
-<div class="ef-orders">
-    <app-order-component *ngFor="let order of orders" [order]="order">
-    </app-order-component>
-</div>
+<mdui-tabs value="outgoing-orders" full-width="secondary">
+    <mdui-tab value="outgoing-orders">Outgoing Orders</mdui-tab>
+    <mdui-tab *ngIf="user?.isFarmer"  value="incoming-orders">Incoming Orders</mdui-tab>
+    <mdui-tab-panel class="ef-orders__tab-panel" slot="panel" value="outgoing-orders">
+        <div class="ef-orders">
+            <app-order-card-outgoing *ngFor="let order of ordersOutgoing" [order]="order">
+            </app-order-card-outgoing>
+        </div>
+    </mdui-tab-panel>
+    <mdui-tab-panel *ngIf="user?.isFarmer" class="ef-orders__tab-panel" slot="panel" value="incoming-orders">
+        <div class="ef-orders">
+            <app-order-card-incoming *ngFor="let order of ordersIncoming" [order]="order">
+            </app-order-card-incoming>
+        </div>
+    </mdui-tab-panel>
+</mdui-tabs>

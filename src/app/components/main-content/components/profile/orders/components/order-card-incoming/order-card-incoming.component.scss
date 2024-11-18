@@ -29,16 +29,15 @@
 .ef-product-list {
     display: flex;
     flex-direction: column;
-    padding: 1rem;
     gap: 0.5rem;
 }
 
 .ef-product-list li {
-    display: flex;
-    flex-direction: row;
-
-    justify-content: space-between;
-    gap: 1rem;
+    display: grid;
+    grid-template-columns: 3fr 2fr 2fr ; 
+    align-items: center;
+    gap: 1rem; 
+    margin: 0;
 }
 
 
@@ -49,9 +48,12 @@
 .ef-order-card__content {
     display: flex;
     width: 100%;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-between;
-    gap: 1rem;
+    
+    h4 {
+        margin: 0;
+    }
 }
 
 .ef-order-card__products {
@@ -59,14 +61,20 @@
 }
 
 .ef-order-card__state{
-    width: 70% ;
+    width: 30% ;
 }
 
-.ef-order-card__right-content {
+.ef-order-card__content-under {
+    margin-top: 1rem;
     display: flex;
-    flex-direction: column;
-    align-items: flex-end;
+    flex-direction: row;
+    align-items: center;
     justify-content: space-between;
 
+}
+
+.ef-order-card__update {
+    display: flex;
+    flex-direction: row;
     gap: 1rem;
 }

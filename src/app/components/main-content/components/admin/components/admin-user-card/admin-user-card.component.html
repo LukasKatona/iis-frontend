@@ -1,17 +1,16 @@
 <mdui-card class="ef-admin-user-card">
-  <div class="ef-admin-user-card__header">
-    <div class="ef-admin-user-card__title">
-      <h3>{{ user.name }}</h3>
+    <div class="ef-admin-user-card__content">
+        <div class="ef-admin-user-card__name">
+            <h4>{{ user.name }}</h4>
+            <h4>{{ user.surname }}</h4>
+
+        </div>
+        <div class="ef-admin-user-card__button">
+            <!-- Role Toggle -->
+            <mdui-button (click)="toggleModerator()">
+                <ng-container *ngIf="user['isModerator']">Remove Mod</ng-container>
+                <ng-container *ngIf="!user['isModerator']">Make Mod</ng-container>
+            </mdui-button>
+        </div>
     </div>
-    <p>{{ user.email }}</p>
-  </div>
-  <mdui-divider></mdui-divider>
-  <div class="ef-admin-user-card__content">
-    <div class="ef-admin-user-card__right-content">
-      <mdui-select class="ef-admin-user-card__state" variant="outlined" [value]="user.role"
-        (change)="changeRole($event)">
-        <mdui-menu-item [value]="role.MODERATOR">User</mdui-menu-item>
-        <mdui-menu-item [value]="role.ADMIN">Admin</mdui-menu-item>
-      </mdui-select>
-    </div>
-  </div>
+</mdui-card>

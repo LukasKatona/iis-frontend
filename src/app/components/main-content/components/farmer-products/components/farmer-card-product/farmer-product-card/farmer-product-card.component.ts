@@ -1,6 +1,7 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA, Input, Output, EventEmitter } from '@angular/core';
 import { Product } from '../../../../../../../../models/product.interface';
 import { environment } from '../../../../../../../../environments/environment';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-farmer-product-card',
@@ -14,6 +15,8 @@ export class FarmerProductCardComponent {
   @Input() product!: Product;
   @Output() editRequested = new EventEmitter<Product>();
 
+  constructor(private http: HttpClient) {}
+
   editProduct(product: Product) {
     console.log('Product edited', product);
     this.editRequested.emit(product); 
@@ -21,21 +24,10 @@ export class FarmerProductCardComponent {
 
   removeProduct(product: Product) {
     const url = `${environment.baseUri}/products/${product.id}`;
-    fetch(url, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-    .then(response => {
-      if (response.ok) {
+    this.http.delete(url).subscribe({
+      next: () => {
         console.log('Product deleted successfully');
-      } else {
-        throw new Error('Failed to delete product');
       }
-    })
-    .catch(error => {
-      console.error('Error deleting product:', error);
     });
   }
 }

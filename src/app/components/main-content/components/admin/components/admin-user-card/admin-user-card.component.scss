@@ -1,0 +1,31 @@
+.ef-admin-user-card{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+    width: 100%;
+    padding: 0 1rem 0 1rem;
+}
+
+.ef-admin-user-card__content{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+}
+
+.ef-admin-user-card__name{
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+}
+
+.ef-admin-user-card__button{
+    display: flex;
+
+
+    mdui-button{
+        width: 7rem;
+    }
+}

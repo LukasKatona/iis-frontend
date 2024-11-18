@@ -4,24 +4,31 @@ import { environment } from '../../../../../../../../environments/environment';
 import { CommonModule, formatDate } from '@angular/common';
 import { Product } from '../../../../../../../../models/product.interface';
 import { OrderStatus } from '../../../../../../../../models/order-status.enum';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
-  selector: 'app-order-component',
+  selector: 'app-order-card-outgoing',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './order-card.component.html',
-  styleUrl: './order-card.component.scss',
+  templateUrl: './order-card-outgoing.component.html',
+  styleUrl: './order-card-outgoing.component.scss',
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class OrderComponentComponent implements OnChanges {
+export class OrderCardOutgoingComponent {
   @Input() order!: Order;
   public products: Product[] = [];
   public createdAt: string = '';
+  public updatedAt: string = '';
+
   public status = OrderStatus;
 
+  constructor(private http: HttpClient) {}
 
   ngOnInit() {
     this.createdAt = formatDate(this.order.createdAt * 1000, 'dd.MM.yyyy', 'en-US');
+    if (this.order.updatedAt) {
+      this.updatedAt = formatDate(this.order.updatedAt * 1000, 'HH:mm dd.MM.yyyy ', 'en-US');
+    }
   }
   ngOnChanges(changes: SimpleChanges) {
     if (changes['order'] && this.order) {
@@ -33,31 +40,37 @@ export class OrderComponentComponent implements OnChanges {
   private fetchProducts() {
     if (!this.order?.id) return;
     const url = `${environment.baseUri}/orders/${this.order.id}/products`;
-    fetch(url)
-      .then(response => response.json())
-      .then((data: Product[]) => {
+    this.http.get<Product[]>(url).subscribe(
+      (data: Product[]) => {
         this.products = data;
-      })
-      .catch(error => console.error('Error fetching products:', error));
+      }
+    );
   }
 
   getTotalPrice(): number {
-    return this.products.reduce((total, product) => {
-      return total + (product.unitPrice * product.stock); // Assuming stock is the quantity ordered
-    }, 0);
+    return parseFloat(
+      this.products.reduce((total, product) => {
+        return total + (product.unitPrice * product.stock);
+      }, 0).toFixed(2)
+    );
+  }
+
+  getProductTotalPrice(product: any): number {
+    return parseFloat((product.unitPrice * product.stock).toFixed(2));
   }
 
   changeOrderStatus(event: any) {
-    this.order.status = event.target.value;  // The new status selected by the user
+    this.order.status = event.target.value;  
     console.log('Changing status to:', this.order.status);
-    const url = environment.baseUri + '/orders/' + this.order.id + '/status';
-    fetch(url, {
-      method: 'PATCH',
+    const url = `${environment.baseUri}/orders/${this.order.id}/status`;
+    this.http.patch(url, { status: this.order.status }, {
       headers: {
         'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(this.order)
-    })
+      }
+    }).subscribe(
+      response => {
+        console.log('Status updated successfully', response);
+      }
+    );
   }
-  
 }
