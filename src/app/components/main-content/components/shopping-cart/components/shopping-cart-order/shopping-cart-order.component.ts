@@ -1,4 +1,4 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA, Input, SimpleChanges, EventEmitter } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, Input, Output, SimpleChanges, EventEmitter } from '@angular/core';
 import { CommonModule, formatDate } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { environment } from '../../../../../../../environments/environment';
@@ -17,9 +17,11 @@ import { HttpClient } from '@angular/common/http';
 })
 export class ShoppingCartOrderComponent {
   @Input() order!: Order;
+  @Output() refreshOrders = new EventEmitter<void>();
   public products: Product[] = [];
   public createdAt: string = '';
   public status = OrderStatus;
+
 
   constructor(private http: HttpClient) { }
 
@@ -80,22 +82,25 @@ export class ShoppingCartOrderComponent {
 
   deleteProduct(product: Product) {
     const url = `${environment.baseUri}/orders/${this.order.id}/product/${product.id}`;
-    this.http.delete(url).subscribe({
-      next: () => {
-        this.products = this.products.filter(p => p.id !== product.id); // Remove deleted product from list
-      }
+    this.http.delete(url).subscribe(() => {
+      this.products = this.products.filter(p => p.id !== product.id); // Remove deleted product from list
+      this.refreshOrders.emit();
     });
   }
 
   deleteOrder() {
     const url = `${environment.baseUri}/orders/${this.order.id}`;
-    this.http.delete(url).subscribe({});
+    this.http.delete(url).subscribe(() => {
+      this.refreshOrders.emit();
+    });
   }
 
   buyOrder() {
     this.order.status = OrderStatus.PENDING;
     const url = `${environment.baseUri}/orders/${this.order.id}/status`;
     this.http.patch(url, { status: this.order.status }, { headers: { 'Content-Type': 'application/json' } })
-      .subscribe({});
+      .subscribe(() => {
+        this.refreshOrders.emit();
+      });
   }
 }

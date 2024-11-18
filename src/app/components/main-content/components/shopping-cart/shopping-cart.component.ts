@@ -21,7 +21,7 @@ export class ShoppingCartComponent {
 
   public orders: Order[] = [];
 
-  constructor(private authStore: AuthStoreService, private http: HttpClient) { }
+  constructor(private authStore: AuthStoreService, private http: HttpClient) {}
 
   ngOnInit(): void {
     this.authStore.loggedUser$().subscribe(user => {
@@ -42,6 +42,10 @@ export class ShoppingCartComponent {
         this.orders = data;
       }
     );
+  }
+
+  onRefreshOrders(): void {
+    this.fetchOrdersByUserId();
   }
 
 }

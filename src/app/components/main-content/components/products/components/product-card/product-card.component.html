@@ -7,20 +7,21 @@
             <p>In stock: {{ product.stock }}</p>
         </div>
         <div class="ef-product-card__add">
-            <mdui-button-icon (click)="decrementAmount()">
-                <i class="ri-subtract-line"></i>
-            </mdui-button-icon>
-            <mdui-text-field
-                label="Amount"
-                type="number"
-                [value]="amount"
-                min="0"
-                max="{{ product.stock }}"
-                (input)="onAmountChange($event)"
-            ></mdui-text-field>
-            <mdui-button-icon (click)="incrementAmount()">
-                <i class="ri-add-line"></i>
-            </mdui-button-icon>
+            <div class="ef-product-card__amout">
+                <mdui-button-icon (click)="decrementAmount()">
+                    <i class="ri-subtract-line"></i>
+                </mdui-button-icon>
+                <mdui-text-field type="number" [value]="amount" min="0" max="{{ product.stock }}"
+                    (input)="onAmountChange($event)"></mdui-text-field>
+                <mdui-button-icon (click)="incrementAmount()">
+                    <i class="ri-add-line"></i>
+                </mdui-button-icon>
+            </div>
+            <div class="ef-product-card__add-button">
+                <mdui-button-icon color="primary" raised (click)="addToCart()">
+                    <i class="ri-shopping-cart-2-fill"></i>
+                </mdui-button-icon>
+            </div>
         </div>
     </div>
 </mdui-card>

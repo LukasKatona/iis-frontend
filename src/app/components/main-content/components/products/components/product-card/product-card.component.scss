@@ -21,13 +21,28 @@
 
 .ef-product-card__add{
     display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.ef-product-card__add-button {
+    text-align: right;
+}
+
+.ef-product-card__amout{
+    display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
     gap: 0.5rem;
+    
+    mdui-text-field {
+        height: 2.5rem;
+    }
 }
 
 i {
     margin: 0.5rem;
     font-size: 64;
 }
+

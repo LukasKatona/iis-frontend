@@ -1,4 +1,4 @@
 <div class="ef-shopping-cart">
-    <app-shopping-cart-order *ngFor="let order of orders" [order]="order">
+    <app-shopping-cart-order (refreshOrders)="onRefreshOrders()" *ngFor="let order of orders" [order]="order">
     </app-shopping-cart-order>
 </div>
