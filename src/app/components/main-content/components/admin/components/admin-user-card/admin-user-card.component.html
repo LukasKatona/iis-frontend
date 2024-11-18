@@ -1,0 +1,17 @@
+<mdui-card class="ef-admin-user-card">
+  <div class="ef-admin-user-card__header">
+    <div class="ef-admin-user-card__title">
+      <h3>{{ user.name }}</h3>
+    </div>
+    <p>{{ user.email }}</p>
+  </div>
+  <mdui-divider></mdui-divider>
+  <div class="ef-admin-user-card__content">
+    <div class="ef-admin-user-card__right-content">
+      <mdui-select class="ef-admin-user-card__state" variant="outlined" [value]="user.role"
+        (change)="changeRole($event)">
+        <mdui-menu-item [value]="role.MODERATOR">User</mdui-menu-item>
+        <mdui-menu-item [value]="role.ADMIN">Admin</mdui-menu-item>
+      </mdui-select>
+    </div>
+  </div>

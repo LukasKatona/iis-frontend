@@ -10,6 +10,11 @@
     color: rgb(var(--mdui-color-on-primary-container));
 }
 
+.ef-main-header a {
+    text-decoration: none;
+
+}
+
 .ef-main-header__search {
     width: 50%;
 }
@@ -23,3 +28,4 @@
 .ef-main-header__buttons i {
     color: rgb(var(--mdui-color-on-primary-container));
 }
+
