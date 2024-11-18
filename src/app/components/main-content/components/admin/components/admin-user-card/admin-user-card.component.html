@@ -1,0 +1,20 @@
+<mdui-card class="ef-admin-user-card">
+    <div class="ef-admin-user-card__content">
+        <div class="ef-admin-user-card__name">
+            <h4>{{ user.name }}</h4>
+            <h4>{{ user.surname }}</h4>
+
+        </div>
+        <div class="ef-admin-user-card__button">
+            <div class="ef-admin-user-card__checkbox">
+                <mdui-checkbox (click)="toggleModerator()" [checked]="user.isModerator" />
+            </div>
+            <div class="ef-admin-user-card__checkbox">
+                <mdui-checkbox (click)="toggleAdmin()" [checked]="user.isAdmin" />
+            </div>
+            <div class="ef-admin-user-card__checkbox">
+                <mdui-checkbox (click)="toggleActive()" [checked]="user.isActive" />
+            </div>
+        </div>
+    </div>
+</mdui-card>

@@ -8,6 +8,7 @@ import { FarmerProductCardComponent } from './components/farmer-card-product/far
 import { Product } from '../../../../../models/product.interface';
 import { AuthStoreService } from '../../../../services/auth-store.service';
 import { User } from '../../../../../models/user.interface';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-farmer-products',
@@ -25,7 +26,7 @@ export class FarmerProductsComponent implements OnInit {
 
   private user: User | null = null;
 
-  constructor(private authStore: AuthStoreService) {}
+  constructor(private authStore: AuthStoreService, private http: HttpClient) {}
 
   onEditProduct(product: Product) {
     if (this.addProductForm) {
@@ -42,7 +43,9 @@ export class FarmerProductsComponent implements OnInit {
         return;
       }
       this.getFarmerByUserId(this.user?.id);
-      this.getProducts(this.user?.id);
+      if(this.user?.farmerId){
+      this.getProducts(this.user?.farmerId);
+    }
     });
   }
 
@@ -56,30 +59,24 @@ export class FarmerProductsComponent implements OnInit {
   }
 
   private getProducts(userId: number): void {
-    let url = environment.baseUri + '/products';
-
+    const url = `${environment.baseUri}/products`;
     const params = new URLSearchParams();
-
     params.append('farmerIdFilter', userId.toString());
 
-    if (params.toString()) {
-      url += `?${params.toString()}`;
-    }
-
-    fetch(url)
-      .then(response => response.json())
-      .then(data => {
+    this.http.get<Product[]>(`${url}?${params.toString()}`).subscribe(
+      (data) => {
         this.products = data;
-      });
+      }
+    );
   }
 
   private getFarmerByUserId(userId: number): void {
-  const url = environment.baseUri + '/farmers/' + userId + '/by-user-id';
+    const url = `${environment.baseUri}/farmers/${userId}/by-user-id`;
 
-  fetch(url)
-      .then(response => response.json())
-    .then((data: Farmer) => {
-      this.farmer = data;
-    });
-}
+    this.http.get<Farmer>(url).subscribe(
+      (data) => {
+        this.farmer = data;
+      }
+    );
+  }
 }

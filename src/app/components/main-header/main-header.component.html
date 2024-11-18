@@ -1,7 +1,9 @@
 <div class="ef-main-header">
-    <span class="ef-main-header__logo">
-        E-FARM
-    </span>
+    <a routerLink="shop">
+        <span class="ef-main-header__logo">
+            E-FARM
+        </span>
+    </a>
 
     <mdui-tooltip content="Log In">
         <mdui-button-icon *ngIf="user == null" (click)="openLoginDialog()">
@@ -23,16 +25,16 @@
                 </mdui-button-icon>
             </mdui-tooltip>
         </a>
-        <a routerLink="">
+        <a routerLink="shopping-cart">
             <mdui-tooltip content="Shopping Cart">
                 <mdui-button-icon>
                     <i class="ri-shopping-cart-2-line"></i>
                 </mdui-button-icon>
             </mdui-tooltip>
         </a>
-        <a routerLink="" *ngIf="user?.isAdmin">
+        <a routerLink="admin-page" *ngIf="user?.isAdmin">
             <mdui-tooltip content="Admin Tools">
-                <mdui-button-icon >
+                <mdui-button-icon>
                     <i class="ri-tools-line"></i>
                 </mdui-button-icon>
             </mdui-tooltip>

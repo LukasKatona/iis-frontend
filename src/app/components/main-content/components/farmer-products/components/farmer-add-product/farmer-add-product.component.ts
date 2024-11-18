@@ -6,6 +6,7 @@ import { Unit } from '../../../../../../../models/unit.enum';
 import { FormsModule } from '@angular/forms';
 import { createEmptyProduct } from '../../../../../../../models/product.interface';
 import { ProductCategory } from '../../../../../../../models/product-category.interface';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-farmer-add-product',
@@ -26,7 +27,7 @@ export class FarmerAddProductComponent {
 
   @Output() productUpdated = new EventEmitter<Product>();
 
-  constructor() {
+  constructor(private http: HttpClient) {
     this.initProduct(); 
     this.fetchCategoriesForDropdown();
   }
@@ -38,11 +39,11 @@ export class FarmerAddProductComponent {
 
   private fetchCategoriesForDropdown() {
     let url = environment.baseUri + '/product-categories';
-    fetch(url)
-      .then(response => response.json())
-      .then((data: ProductCategory[]) => {
+    this.http.get<ProductCategory[]>(url).subscribe(
+      (data: ProductCategory[]) => {
         this.categoriesForDropdown = data;
-      });
+      }
+    );
   }
 
   public onCategoryClicked(category: ProductCategory): void {
@@ -67,23 +68,18 @@ export class FarmerAddProductComponent {
     const url = environment.baseUri + '/products' + (isNewProduct ? '' : '/' + this.product?.id);
     const method = isNewProduct ? 'POST' : 'PATCH';
 
-    fetch(url, {
-      method: method,
+    this.http.request<Product>(method, url, {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(this.product),
+      body: this.product,
     })
-      .then((response) => response.json())
-      .then((updatedProduct) => {
-        this.isProductCreated = false;
-        this.productUpdated.emit(updatedProduct);
-
-        this.initProduct();
-      })
-      .catch((error) => {
-        console.error('Error creating/updating product:', error);
-        this.isProductCreated = false;
-      });
+      .subscribe(
+        (updatedProduct: Product) => {
+          this.isProductCreated = false;
+          this.productUpdated.emit(updatedProduct);
+          this.initProduct();
+        }
+      );
   }
 }

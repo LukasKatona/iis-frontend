@@ -1,0 +1,51 @@
+<mdui-card class="ef-order-card">
+    <div class="ef-order-card__header">
+      <div class="ef-order-card__title">
+        <h3>Order ID: {{ order.id }}</h3>
+      </div>
+      <p>Order Date: {{ createdAt }}</p>
+    </div>
+    <mdui-divider></mdui-divider>
+    <div class="ef-order-card__content">
+      <div class="ef-order-card__products">
+        <h4>Products</h4>
+        <ul class="ef-product-list">
+            <li>
+                <div><strong>Name</strong></div>
+                <div><strong>Quantity</strong></div>
+                <div><strong>Price</strong></div>
+            </li>
+            <li *ngFor="let product of productsWithQuantity">
+                <div>{{ product.product.name }}</div> 
+                <div>{{ product.quantity}}</div>               
+                <div>{{ getProductTotalPrice(product.product, product.quantity) }}</div>
+            </li>
+        </ul>
+      </div>
+      <mdui-divider></mdui-divider>
+      <div class="ef-order-card__order-price">
+        <p><strong>Total Price:</strong> {{ getTotalPrice() }}</p>
+      </div>
+      <mdui-divider></mdui-divider>
+      <div class="ef-order-card__content-under">
+        <div class="ef-order-card__update">
+            <strong>Updated At:</strong>
+          {{ updatedAt}}
+        </div>
+        <mdui-select class="ef-order-card__state" variant="outlined" [value]="order.status"
+          (change)="changeOrderStatus($event)" [disabled]="order.status === 'supplied'">
+          <mdui-menu-item [value]="status.IN_CART">In-cart</mdui-menu-item>
+          <mdui-menu-item [value]="status.PENDING">Pending</mdui-menu-item>
+          <mdui-menu-item [value]="status.ACCEPTED">Accepted</mdui-menu-item>
+          <mdui-menu-item [value]="status.REJECTED">Rejected</mdui-menu-item>
+          <mdui-menu-item [value]="status.CANCELLED">Canceled</mdui-menu-item>
+          <mdui-menu-item [value]="status.SHIPPED">Shipped</mdui-menu-item>
+          <mdui-menu-item [value]="status.SUPPLIED">Supplied</mdui-menu-item>
+          <mdui-menu-item [value]="status.REFUNDED">Refunded</mdui-menu-item>
+        </mdui-select>
+    
+      </div>
+    </div>                                
+  
+  
+  </mdui-card>

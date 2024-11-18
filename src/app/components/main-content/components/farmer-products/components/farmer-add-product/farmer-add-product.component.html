@@ -11,7 +11,7 @@
                 <mdui-menu-item [value]="unit.PIECE">{{ unit.PIECE }}</mdui-menu-item>
             </mdui-select>
         </div>
-        <mdui-text-field variant="outlined" label="Unit Price" type="fl" [value]="product?.unitPrice"
+        <mdui-text-field variant="outlined" label="Unit Price"  [value]="product?.unitPrice"
             (input)="createProduct('unitPrice',$event)"></mdui-text-field>
 
         <mdui-select variant="outlined" label="Category" [value]="categoryDropdownValue">

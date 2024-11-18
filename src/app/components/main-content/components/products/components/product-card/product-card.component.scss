@@ -1,6 +1,6 @@
 .ef-product-card {
     width: 15rem;
-    height: 30rem;
+    height: 32rem;
     background-color: rgb(var(--mdui-color-surface-container));
 }
 
@@ -11,7 +11,7 @@
 }
 
 .ef-product-card__content {
-    height: 15rem;
+    height: 17rem;
     padding: 1rem;
     display: flex;
     flex-direction: column;
@@ -21,13 +21,36 @@
 
 .ef-product-card__add{
     display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.ef-product-card__add-button {
+    text-align: right;
+    i {
+        color: rgb(var(--mdui-color-on-primary));
+    }
+}
+
+.ef-product-card__amout{
+    display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
     gap: 0.5rem;
+    
+    mdui-text-field {
+        height: 2.5rem;
+    }
 }
 
 i {
     margin: 0.5rem;
     font-size: 64;
+}
+.ef-product-card__add-button__text{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }

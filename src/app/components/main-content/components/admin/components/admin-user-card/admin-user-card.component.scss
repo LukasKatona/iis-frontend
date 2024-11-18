@@ -1,0 +1,33 @@
+.ef-admin-user-card{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+    width: 100%;
+}
+
+.ef-admin-user-card__content{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+}
+
+.ef-admin-user-card__name{
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+}
+
+.ef-admin-user-card__button{
+    display: flex;
+    gap: 1rem
+}
+
+.ef-admin-user-card__checkbox{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 5.5rem;
+}

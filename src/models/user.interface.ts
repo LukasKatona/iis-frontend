@@ -4,6 +4,7 @@ export interface User {
     isAdmin?: boolean;
     isModerator?: boolean;
     isFarmer?: boolean;
+    isActive?: boolean;
     
     name: string;
     surname: string;
