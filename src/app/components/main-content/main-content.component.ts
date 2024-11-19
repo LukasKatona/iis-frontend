@@ -19,13 +19,13 @@ export class MainContentComponent implements OnInit {
 
   public user: User | null = null;
 
-  public showShopTabMenu = false;
+  public showShopTabMenu = true;
   public showProfileTabMenu = false;
 
   public shopTabMenuValue = 'shop';
   public profileTabMenuValue = 'profile';
 
-  constructor(private router: Router, private route: ActivatedRoute, private authStore: AuthStoreService) {
+  constructor(private router: Router, private authStore: AuthStoreService) {
     router.events.subscribe((val: any) => {
       if (val instanceof NavigationEnd) {
         if (val.url.includes('shopping-cart')) {
