@@ -6,7 +6,7 @@
             <p>Price: {{ product.unitPrice }} / {{ product.unit }}</p>
             <p>In stock: {{ product.stock }}</p>
         </div>
-        <div class="ef-product-card__add">
+        <div *ngIf="user" class="ef-product-card__add">
             <div class="ef-product-card__amout">
                 <mdui-button-icon (click)="decrementAmount()">
                     <i class="ri-subtract-line"></i>

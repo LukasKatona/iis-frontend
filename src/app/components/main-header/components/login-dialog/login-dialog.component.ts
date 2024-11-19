@@ -25,8 +25,6 @@ export class LoginDialogComponent {
 
   public isFormValid: boolean = false;
 
-  public loginError: string = '';
-
   constructor(
     private authStore: AuthStoreService,
     private http: HttpClient
@@ -36,7 +34,6 @@ export class LoginDialogComponent {
     this.login = createEmptyLogin();
     this.isDialogOpen = true;
     this.isFormValid = false;
-    this.loginError = '';
   }
 
   public close(): void {
@@ -66,27 +63,29 @@ export class LoginDialogComponent {
       new URLSearchParams({
       'username': this.login?.username || '',
       'password': this.login?.password || ''
-    }),
-    {
+      }),
+      {
       headers: {
-      'Content-Type': 'application/x-www-form-urlencoded'
+        'Content-Type': 'application/x-www-form-urlencoded'
       }
-    }
+      }
     ).subscribe({
       next: (data: Token) => {
       this.authStore.updateToken(data.access_token);
       const userUrl = environment.baseUri + '/users/me';
       
-      this.http.get<User>(userUrl).subscribe((data: User) => {
+      this.http.get<User>(userUrl).subscribe({
+        next: (data: User) => {
         this.authStore.updateUserData(data);
         this.isLoginLoading = false;
         this.close();
+        },
+        error: (err) => {
+        this.isLoginLoading = false;
+        }
       });
       },
-      error: (error) => {
-      if (error.status === 401) {
-        this.loginError = 'Invalid username or password';
-      }
+      error: (err) => {
       this.isLoginLoading = false;
       }
     });

@@ -5,11 +5,12 @@ import { Farmer } from '../../../../../../../models/farmer.interface';
 import { HttpClient } from '@angular/common/http';
 import { AuthStoreService } from '../../../../../../services/auth-store.service';
 import { User } from '../../../../../../../models/user.interface';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-product-card',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './product-card.component.html',
   styleUrl: './product-card.component.scss',
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

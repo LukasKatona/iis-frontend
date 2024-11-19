@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { User } from '../../models/user.interface';
+import { AuthError } from '../../models/auth-error.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -8,17 +9,28 @@ import { User } from '../../models/user.interface';
 export class AuthStoreService {
   private userSubject: BehaviorSubject<User | null>;
   private tokenSubject: BehaviorSubject<string | null>;
+  private authErrorSubject: BehaviorSubject<AuthError | null>;
 
   constructor() {
     const storedUser = localStorage.getItem('user');
     const storedToken = localStorage.getItem('token');
+    const storedAuthError = localStorage.getItem('authError');
 
     this.userSubject = new BehaviorSubject<User | null>(storedUser ? JSON.parse(storedUser) : null);
     this.tokenSubject = new BehaviorSubject<string | null>(storedToken);
+    this.authErrorSubject = new BehaviorSubject<AuthError | null>(storedAuthError ? JSON.parse(storedAuthError) : null);
   }
 
   public loggedUser$(): Observable<User | null> {
     return this.userSubject.asObservable();
+  }
+
+  public token$(): Observable<string | null> {
+    return this.tokenSubject.asObservable();
+  }
+
+  public authError$(): Observable<AuthError | null> {
+    return this.authErrorSubject.asObservable();
   }
 
   public loggedUser(): User | null {
@@ -27,6 +39,10 @@ export class AuthStoreService {
 
   public token(): string | null {
     return this.tokenSubject.value;
+  }
+
+  public authError(): AuthError | null {
+    return this.authErrorSubject.value;
   }
 
   public updateAuthData(user: User | null, token: string | null): void {
@@ -46,10 +62,17 @@ export class AuthStoreService {
     localStorage.setItem('user', JSON.stringify(user));
   }
 
+  public updateAuthError(authError: AuthError | null): void {
+    this.authErrorSubject.next(authError);
+    localStorage.setItem('authError', JSON.stringify(authError));
+  }
+
   public clearAuthData(): void {
     this.userSubject.next(null);
     this.tokenSubject.next(null);
+    this.authErrorSubject.next(null);
     localStorage.removeItem('user');
     localStorage.removeItem('token');
+    localStorage.removeItem('authError');
   }
 }
