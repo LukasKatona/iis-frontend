@@ -1,11 +1,14 @@
 <mdui-card variant="elevated" class="ef-product-card">
-    <img class="ef-product-card__image" [src]="product.imageUrl" alt="product image">
+    <div class="ef-product-card__image">
+        <img *ngIf="product.imageUrl" class="ef-product-card__image" [src]="product.imageUrl" alt="missing image">
+        <i *ngIf="!product.imageUrl" class="ri-image-circle-line" style="font-size: 64px;"></i>
+    </div>
     <div class="ef-product-card__content">
         <div>
             <h3>{{ product.name }}</h3>
             <p>Price: {{ product.unitPrice }} / {{ product.unit }}</p>
             <p>In stock: {{ product.stock }}</p>
-            <p>Rating: {{ product.rating }}/5</p>
+            <p>Rating: {{ product.rating | number: '1.1-1' }}/5</p>
             <div class="ef-product-card__rating">
                 <p>0</p>
                 <mdui-linear-progress [value]="product.rating ?? 0" max="5"></mdui-linear-progress>
