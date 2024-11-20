@@ -2,7 +2,6 @@ import { Component, CUSTOM_ELEMENTS_SCHEMA, Input, OnChanges, SimpleChanges, Eve
 import { Order } from '../../../../../../../../models/order.interface';
 import { environment } from '../../../../../../../../environments/environment';
 import { CommonModule, formatDate } from '@angular/common';
-import { Product } from '../../../../../../../../models/product.interface';
 import { ProductWithQuantity } from '../../../../../../../../models/product-with-quantity.interface';
 import { OrderStatus } from '../../../../../../../../models/order-status.enum';
 import { HttpClient } from '@angular/common/http';
