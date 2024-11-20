@@ -1,4 +1,4 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA, Input, OnChanges, SimpleChanges, EventEmitter } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, Input, OnChanges, SimpleChanges, EventEmitter, OnInit } from '@angular/core';
 import { Order } from '../../../../../../../../models/order.interface';
 import { environment } from '../../../../../../../../environments/environment';
 import { CommonModule, formatDate } from '@angular/common';
@@ -6,37 +6,46 @@ import { Product } from '../../../../../../../../models/product.interface';
 import { ProductWithQuantity } from '../../../../../../../../models/product-with-quantity.interface';
 import { OrderStatus } from '../../../../../../../../models/order-status.enum';
 import { HttpClient } from '@angular/common/http';
+import { createEmptyReview, Review } from '../../../../../../../../models/review.interface';
+import { AuthStoreService } from '../../../../../../../services/auth-store.service';
+import { User } from '../../../../../../../../models/user.interface';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-order-card-outgoing',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './order-card-outgoing.component.html',
   styleUrl: './order-card-outgoing.component.scss',
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class OrderCardOutgoingComponent {
+export class OrderCardOutgoingComponent implements OnInit, OnChanges {
+
+  user: User | null = null;
+
   @Input() order!: Order;
   public productsWithQuantity: ProductWithQuantity[] = [];
-  public products: Product[] = [];
   public createdAt: string = '';
   public updatedAt: string = '';
 
   public status = OrderStatus;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private authStore: AuthStoreService) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
+    this.authStore.loggedUser$().subscribe(user => {
+      this.user = user;
+    });
     this.createdAt = formatDate(this.order.createdAt * 1000, 'dd.MM.yyyy', 'en-US');
     if (this.order.updatedAt) {
       this.updatedAt = formatDate(this.order.updatedAt * 1000, 'HH:mm dd.MM.yyyy ', 'en-US');
     }
   }
+
   ngOnChanges(changes: SimpleChanges) {
     if (changes['order'] && this.order) {
       this.fetchProducts();
     }
-
   }
 
   private fetchProducts() {
@@ -45,6 +54,13 @@ export class OrderCardOutgoingComponent {
     this.http.get<ProductWithQuantity[]>(url).subscribe(
       (data: ProductWithQuantity[]) => {
         this.productsWithQuantity = data;
+        for (const productWithQuantity of this.productsWithQuantity) {
+          if (!productWithQuantity.review && this.user) {
+            if (this.user?.id != null && this.order.id != null) {
+              productWithQuantity.review = createEmptyReview(this.user.id, this.order.id, productWithQuantity.product.id ?? null);
+            }
+          }
+        }
       }
     );
   }
@@ -69,5 +85,26 @@ export class OrderCardOutgoingComponent {
         'Content-Type': 'application/json'
       }
     }).subscribe({});
+  }
+
+  updateProductRating(review: Review) {
+    if (review.id) {
+      const url = environment.baseUri + "/reviews/" + review.id;
+      this.http.patch<Review>(url, review).subscribe((data: Review) => {
+        this.updateProductWithNewReview(data);
+      });
+    } else {
+      const url = environment.baseUri + "/reviews";
+      this.http.post<Review>(url, review).subscribe((data: Review) => {
+        this.updateProductWithNewReview(data);
+      });
+    }
+  }
+
+  private updateProductWithNewReview(review: Review) {
+    let product = this.productsWithQuantity.find(p => p.product.id === review.productId);
+    if (product) {
+      product.review = review;
+    }
   }
 }

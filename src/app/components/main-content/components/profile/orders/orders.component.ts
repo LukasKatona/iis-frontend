@@ -31,7 +31,9 @@ export class OrdersComponent {
         return;
       }
       this.fetchOrdersByUserId();
-      this.fetchOrderByFarmId();
+      if (user?.isFarmer) {
+        this.fetchOrderByFarmId();
+      }
     }
     );
   }

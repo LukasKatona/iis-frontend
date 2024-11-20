@@ -34,7 +34,7 @@
 
 .ef-product-list li {
     display: grid;
-    grid-template-columns: 3fr 2fr 2fr ; 
+    grid-template-columns: 2fr 2fr 2fr 2fr ; 
     align-items: center;
     gap: 1rem; 
     margin: 0;
@@ -87,4 +87,13 @@
     display: flex;
     flex-direction: row;
     gap: 1rem;
+}
+
+.ef-order-card__rating-input{
+    max-width: 5rem;
+    height: 1.5rem;
+    display: inline-block;
+    font-family: 'Roboto', 'Arial', sans-serif;
+    font-size: 14px;
+    color: #d6d6d6;
 }
