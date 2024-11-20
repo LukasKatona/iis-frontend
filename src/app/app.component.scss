@@ -22,3 +22,12 @@
 .ef-app__footer {
     width: 100%;
 }
+
+.ef-app__error-snackbar {
+    background-color: rgb(var(--mdui-color-error-container));
+    color: rgb(var(--mdui-color-on-error-container));
+
+    i {
+        color: rgb(var(--mdui-color-on-error-container));
+    }
+}

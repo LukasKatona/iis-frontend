@@ -17,9 +17,6 @@
             [value]="login?.password"
             (input)="changeLogin('password', $event)"
         ></mdui-text-field>
-        <div *ngIf="loginError" class="ef-login-dialog__error">
-            <p>{{ loginError }}</p>
-        </div>
     </div>
     <mdui-button (click)="close()" slot="action" variant="text">Cancel</mdui-button>
     <mdui-button [disabled]="!isFormValid" [loading]="isLoginLoading" (click)="confirmLogin()" slot="action" variant="tonal">Confirm</mdui-button>
