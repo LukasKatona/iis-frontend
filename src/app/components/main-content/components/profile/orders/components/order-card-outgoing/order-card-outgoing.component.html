@@ -1,7 +1,7 @@
 <mdui-card class="ef-order-card">
     <div class="ef-order-card__header">
         <div class="ef-order-card__title">
-            <h3>Order ID: {{ order.id }}</h3>
+            <h3>Order Number: {{ order.orderNumber }}</h3>
         </div>
         <p>Order Date: {{ createdAt }}</p>
     </div>
@@ -14,11 +14,13 @@
                     <div><strong>Name</strong></div>
                     <div><strong>Quantity</strong></div>
                     <div><strong>Price</strong></div>
+                    <div><strong>Rating</strong></div>
                 </li>
                 <li *ngFor="let product of productsWithQuantity">
                     <div> {{ product.product.name }}</div>
                     <div>{{ product.quantity }}</div>
                     <div>{{ getProductTotalPrice(product.product, product.quantity) }}</div>
+                    <input *ngIf="product.review" class="ef-order-card__rating-input" min="0" max="5" type="number" [(ngModel)]="product.review.rating" (change)="updateProductRating(product.review)">
                 </li>
             </ul>
         </div>

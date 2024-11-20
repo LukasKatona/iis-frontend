@@ -1,5 +1,8 @@
 <mdui-card variant="elevated" class="ef-product-card">
-    <img class="ef-product-card__image" [src]="product.imageUrl" alt="product image">
+    <div class="ef-product-card__image">
+        <img *ngIf="product.imageUrl" class="ef-product-card__image" [src]="product.imageUrl" alt="missing image">
+        <i *ngIf="!product.imageUrl" class="ri-image-circle-line" style="font-size: 64px;"></i>
+    </div>
     <div class="ef-product-card__content">
         <div>
             <h3>{{ product.name }}</h3>
