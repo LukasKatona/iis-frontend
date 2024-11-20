@@ -10,6 +10,7 @@ export interface Product {
     categoryId: number | null;
     farmerId: number;
     rating?: number;
+    categoryAtributes?: string;
 }
 
 export function createEmptyProduct(farmerId: number): Product {

@@ -6,6 +6,7 @@ import { ProductCategory } from '../../../../../../../../models/product-category
 import { HttpClient } from '@angular/common/http';
 import { AuthStoreService } from '../../../../../../../services/auth-store.service';
 import { User } from '../../../../../../../../models/user.interface';
+import { Atribute } from '../../../../../../../../models/atribute.interface';
 
 @Component({
   selector: 'app-category-request-card',
@@ -22,12 +23,17 @@ export class CategoryRequestCardComponent implements OnInit {
   @Input() categoryRequest!: NewCategoryRequest;
   @Input() parentCategoryName: string = '';
 
+  public atributes: Atribute[] = [];
+
   constructor(private http: HttpClient, private authStore: AuthStoreService) {}
 
   ngOnInit(): void {
     this.authStore.loggedUser$().subscribe(user => {
       this.user = user;
     });
+    if (this.categoryRequest.atributes) {
+      this.atributes = JSON.parse(this.categoryRequest.atributes);
+    }
   }
 
   public changeCategoryRequestState(event: any) {
@@ -44,7 +50,8 @@ export class CategoryRequestCardComponent implements OnInit {
     let url = environment.baseUri + '/product-categories/';
     const category: ProductCategory = {
       name: this.categoryRequest.newCategoryName,
-      parentCategoryId: this.categoryRequest.parentCategoryId
+      parentCategoryId: this.categoryRequest.parentCategoryId,
+      atributes: this.categoryRequest.atributes
     };
     this.http.post(url, category).subscribe();
   }

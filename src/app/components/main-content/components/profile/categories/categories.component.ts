@@ -7,6 +7,7 @@ import { CategoryRequestCardComponent } from './components/category-request-card
 import { HttpClient } from '@angular/common/http';
 import { AuthStoreService } from '../../../../../services/auth-store.service';
 import { User } from '../../../../../../models/user.interface';
+import { Atribute, createEmptyAtribute } from '../../../../../../models/atribute.interface';
 
 @Component({
   selector: 'app-categories',
@@ -20,6 +21,9 @@ export class CategoriesComponent implements OnInit {
   user: User | null = null;
 
   public newCategoryRequest?: NewCategoryRequest;
+
+  public categoryAtributes: Atribute[] = []
+
   public isCreateRequestLoading: boolean = false;
 
   public newCategoryRequests: NewCategoryRequest[] = [];
@@ -67,15 +71,23 @@ export class CategoriesComponent implements OnInit {
   }
 
   private validateNewCategoryRequest(): boolean {
-    if (this.newCategoryRequest?.newCategoryName) {
-      return true;
+    if (!this.newCategoryRequest?.newCategoryName) {
+      return false;
     }
-    return false;
+
+    for (const atribute of this.categoryAtributes) {
+      if (!atribute.name || !atribute.type) {
+        return false;
+      }
+    }
+
+    return true;
   }
 
   public createRequest() {
     this.isCreateRequestLoading = true;
     let url = environment.baseUri + '/category-requests/';
+    if (this.newCategoryRequest) this.newCategoryRequest.atributes = JSON.stringify(this.categoryAtributes);
     this.http.post(url, this.newCategoryRequest).subscribe(() => {
       this.isCreateRequestLoading = false;
       this.categoryDropdownValue = '';
@@ -87,5 +99,22 @@ export class CategoriesComponent implements OnInit {
 
   public getParentCategoryName(id: number | null | undefined): string {
     return this.categoriesForDropdown.find((category: ProductCategory) => category.id === id)?.name || '';
+  }
+
+  public createNewAtribute() {
+    this.isFormValid = false;
+    this.categoryAtributes.push(createEmptyAtribute());
+  }
+  public deleteAtribute(atribute: Atribute) {
+    this.categoryAtributes = this.categoryAtributes.filter(a => a !== atribute);
+  }
+
+  public changeAtribute(atribute: Atribute, field: string, event: any) {
+    if (field === 'isRequired') {
+      atribute[field] = event.target.checked;
+    } else {
+      atribute[field] = event.target.value;
+    }
+    this.isFormValid = this.validateNewCategoryRequest();
   }
 }

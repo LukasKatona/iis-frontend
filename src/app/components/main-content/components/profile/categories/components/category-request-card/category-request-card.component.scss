@@ -3,6 +3,13 @@
     width: 100%;
     background-color: rgb(var(--mdui-color-surface-container));
     display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.ef-category-request-info {
+    width: 100%;
+    display: flex;
     flex-direction: row;
     justify-content: space-between;
     gap: 1rem;
@@ -37,4 +44,18 @@
 
 .ef-category-request-card__state-indicator--rejected {
     background-color: rgb(var(--mdui-color-error-container));
+}
+
+.ef-product-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.ef-product-list li {
+    display: grid;
+    grid-template-columns: 2fr 2fr 2fr; 
+    align-items: center;
+    gap: 1rem; 
+    margin: 0;
 }
