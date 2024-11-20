@@ -54,3 +54,14 @@ i {
     justify-content: center;
     align-items: center;
 }
+
+.ef-product-card__rating {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+    align-items: center;
+
+    p {
+        margin: 0;
+    }
+}
