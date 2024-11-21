@@ -38,6 +38,6 @@ export function createEmptyUser(): User {
         isAdmin: false,
         isModerator: false,
         isFarmer: false,
-        isActive: false
+        isActive: true
     };
 }

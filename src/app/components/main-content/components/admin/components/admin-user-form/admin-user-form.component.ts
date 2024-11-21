@@ -111,7 +111,7 @@ export class AdminUserFormComponent {
   }
 
   private validatePersonalInfo(): boolean {
-    if (this.user?.name && this.user?.email && this.user?.phone) {
+    if (this.user?.name && this.user?.email && this.user?.password) {
       return true;
     }
     return false;

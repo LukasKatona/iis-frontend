@@ -64,7 +64,7 @@ export class PersonalInfoComponent implements OnInit {
   }
 
   private validatePersonalInfo(): boolean {
-    if (this.user?.name && this.user?.email && this.user?.phone) {
+    if (this.user?.name && this.user?.email) {
       return true;
     }
     return false;

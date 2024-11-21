@@ -9,6 +9,7 @@ import { Farmer } from '../../../../../models/farmer.interface';
 import { Review } from '../../../../../models/review.interface';
 import { FormsModule } from '@angular/forms';
 import { FarmerBannerComponent } from './components/farmer-banner/farmer-banner.component';
+import { N } from '@angular/cdk/keycodes';
 
 @Component({
   selector: 'app-products',
@@ -43,28 +44,9 @@ export class ProductsComponent {
     this.getProducts(undefined, this.categoryId, undefined, undefined);
   }
 
-  private fetchReviews(): void {
-    const url = `${environment.baseUri}/reviews`;
-    this.http.get<Review[]>(url).subscribe((reviews: Review[]) => {
-      this.reviews = reviews;
-      this.calculateRatings();
-    });
-  }
-
   public sortProductsByRating(): void {
-    this.fetchReviews();
-    this.products.sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0));
-  }
-
-  private calculateRatings(): void {
-    this.products.forEach(product => {
-      const productReviews = this.reviews.filter(review => review.productId === product.id);
-      const averageRating = productReviews.length > 0
-        ? productReviews.reduce((sum, review) => sum + (review.rating ?? 0), 0) / productReviews.length
-        : 0;
-      product.rating = averageRating;
-    });
-    this.sortProductsByRating();
+    console.log('Sorting by rating');
+    this.filteredProducts.sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0));
   }
 
   private getProducts(nameFilter?: string, categoryIdFilter?: number, farmerIdFilter?: number, sortField?: string, sortDirection?: string): void {

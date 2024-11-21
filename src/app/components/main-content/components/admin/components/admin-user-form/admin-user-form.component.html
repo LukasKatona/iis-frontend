@@ -25,7 +25,7 @@
                 (input)="changeUser('surname', $event)"
             ></mdui-text-field>
             <div class="ef-personal-info__column ef-personal-info__editor">
-                <h3>Contact Information</h3>
+                <h3>Credentials</h3>
                 <div class="ef-personal-info__row">
                     <mdui-text-field
                         required
@@ -36,13 +36,23 @@
                         (input)="changeUser('email', $event)"
                     ></mdui-text-field>
                     <mdui-text-field
+                        required
                         variant="outlined"
-                        label="Phone"
-                        type="text"
-                        [value]="user?.phone"
-                        (input)="changeUser('phone', $event)"
+                        label="Password"
+                        type="Password"
+                        toggle-password
+                        [value]="user?.password"
+                        (input)="changeUser('password', $event)"
                     ></mdui-text-field>
                 </div>
+                <h3>Contact Information</h3>
+                <mdui-text-field
+                variant="outlined"
+                label="Phone"
+                type="text"
+                [value]="user?.phone"
+                (input)="changeUser('phone', $event)"
+            ></mdui-text-field>
                 <h3>Billing Address</h3>
                 <mdui-text-field
                     variant="outlined"
@@ -95,7 +105,8 @@
         <mdui-button
             *ngIf="!user?.isFarmer"
             [loading]="isAddFarmerLoading"
-            (click)="addFarmer()">
+            (click)="addFarmer()"
+            [disabled]="!user?.id">
             Register as Farmer
         </mdui-button>
         <mdui-card *ngIf="user?.isFarmer" variant="outlined">
