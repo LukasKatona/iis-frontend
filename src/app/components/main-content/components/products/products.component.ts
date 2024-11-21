@@ -9,7 +9,6 @@ import { Farmer } from '../../../../../models/farmer.interface';
 import { Review } from '../../../../../models/review.interface';
 import { FormsModule } from '@angular/forms';
 import { FarmerBannerComponent } from './components/farmer-banner/farmer-banner.component';
-import { N } from '@angular/cdk/keycodes';
 
 @Component({
   selector: 'app-products',
@@ -25,6 +24,7 @@ export class ProductsComponent {
   public products: Product[] = [];
   public filteredProducts: Product[] = [];
   public farmers: Farmer[] = [];
+  private farmerId?: number = undefined;
   public farmDropdownValue: string = "";
   public farmsForDropdown: Farmer[] = [];
   public farmerBanner?: Farmer;
@@ -41,12 +41,7 @@ export class ProductsComponent {
     this.categoryId = this.route.snapshot.data['categoryId'];
     this.categoryName = this.route.snapshot.data['categoryName'];
     this.fetchFarmsForDropdown();
-    this.getProducts(undefined, this.categoryId, undefined, undefined);
-  }
-
-  public sortProductsByRating(): void {
-    console.log('Sorting by rating');
-    this.filteredProducts.sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0));
+    this.getProducts(undefined, this.categoryId, this.farmerId, this.sortField, this.sortDirection);
   }
 
   private getProducts(nameFilter?: string, categoryIdFilter?: number, farmerIdFilter?: number, sortField?: string, sortDirection?: string): void {
@@ -95,7 +90,7 @@ export class ProductsComponent {
   public sortProducts(field: string, direction: string): void {
     this.sortField = field;
     this.sortDirection = direction;
-    this.getProducts(undefined, this.categoryId, undefined, field, direction);
+    this.getProducts(undefined, this.categoryId, this.farmerId, this.sortField, this.sortDirection);
   }
 
   private fetchFarmsForDropdown(): void {
@@ -108,10 +103,11 @@ export class ProductsComponent {
   }
 
   public onFarmClicked(farmer: Farmer): void {
+    this.farmerId = farmer.id;
     this.farmDropdownValue = farmer.farmName ?? '';
     this.Banner = true;
     this.farmerBanner = farmer;
-    this.getProducts(undefined, this.categoryId, farmer.id, undefined, undefined);
+    this.getProducts(undefined, this.categoryId, this.farmerId, this.sortField, this.sortDirection);
   }
 
 }
