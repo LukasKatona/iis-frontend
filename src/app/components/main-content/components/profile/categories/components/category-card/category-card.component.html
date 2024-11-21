@@ -1,0 +1,42 @@
+
+<mdui-card class="ef-category-card__row">
+    <div class="ef-category-card">
+        <div class="ef-category-info">
+            <div>
+                Parent Category: {{ parentCategoryName }}
+                <div class="ef-category-card__row">
+                    <i style="font-size: 32px;" class="ri-corner-down-right-line"></i>
+                    <h3>
+                        {{ category.name }}
+                    </h3>
+                </div>
+            </div>
+            <div>
+                <mdui-button-icon (click)="onEditcategory()">
+                    <i class="ri-edit-line"></i>
+                </mdui-button-icon>
+                <mdui-button-icon (click)="onDeleteCategory()">
+                    <i class="ri-delete-bin-6-line"></i>
+                </mdui-button-icon>
+            </div>
+        </div>
+        <div *ngIf="category.atributes">
+            <h4>Atributes</h4>
+            <ul class="ef-product-list">
+                <li>
+                    <div><strong>Name</strong></div>
+                    <div><strong>Type</strong></div>
+                    <div><strong>Is Required</strong></div>
+                </li>
+                <li *ngFor="let atribute of atributes">
+                    <div> {{ atribute.name }}</div>
+                    <div>{{ atribute.type }}</div>
+                    <mdui-checkbox
+                    disabled
+                    [checked]="atribute.isRequired">
+                </mdui-checkbox>
+                </li>
+            </ul>
+        </div>
+    </div>
+</mdui-card>

@@ -6,6 +6,7 @@ export interface NewCategoryRequest {
     state: CategoryRequestState;
     parentCategoryId?: number | null;  
     createdById?: number; 
+    atributes?: string;
 
     [key: string]: any;
 }

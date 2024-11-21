@@ -12,3 +12,15 @@
     height: 50vh;
     overflow: auto;
 }
+
+.ef-categories__editor-atribute-row{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+.ef-categories__tab-panel {
+    padding-top: 1rem;
+}

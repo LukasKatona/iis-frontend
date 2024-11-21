@@ -1,4 +1,4 @@
-.ef-category-request-card {
+.ef-category-card {
     padding: 1rem;
     width: 100%;
     background-color: rgb(var(--mdui-color-surface-container));
@@ -7,7 +7,7 @@
     gap: 1rem;
 }
 
-.ef-category-request-info {
+.ef-category-info {
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -19,31 +19,14 @@
     }
 }
 
-.ef-category-request-card__row {
+.ef-category-card__row {
     display: flex;
     flex-direction: row;
     align-items: center;
 }
 
-.ef-category-request-card__state {
+.ef-category-card__state {
     width: 30%;
-}
-
-.ef-category-request-card__state-indicator {
-    width: 1rem;
-    align-self: stretch;
-}
-
-.ef-category-request-card__state-indicator--pending {
-    background-color: rgb(var(--mdui-color-on-surface));
-}
-
-.ef-category-request-card__state-indicator--approved {
-    background-color: rgb(var(--mdui-color-primary-container));
-}
-
-.ef-category-request-card__state-indicator--rejected {
-    background-color: rgb(var(--mdui-color-error-container));
 }
 
 .ef-product-list {

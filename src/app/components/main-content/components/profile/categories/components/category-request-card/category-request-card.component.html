@@ -9,26 +9,46 @@
     }">
     </div>
     <div class="ef-category-request-card">
-        <div>
-            Parent Category: {{ parentCategoryName }}
-            <div class="ef-category-request-card__row">
-                <i style="font-size: 32px;" class="ri-corner-down-right-line"></i>
-                <h3>
-                    {{ categoryRequest.newCategoryName }}
-                </h3>
+        <div class="ef-category-request-info">
+            <div>
+                Parent Category: {{ parentCategoryName }}
+                <div class="ef-category-request-card__row">
+                    <i style="font-size: 32px;" class="ri-corner-down-right-line"></i>
+                    <h3>
+                        {{ categoryRequest.newCategoryName }}
+                    </h3>
+                </div>
             </div>
+            <mdui-select
+                class="ef-category-request-card__state"
+                variant="outlined"
+                [value]="categoryRequest.state"
+                (change)="changeCategoryRequestState($event)"
+                [disabled]="categoryRequest.state === 'approved' || categoryRequest.state === 'rejected' || (!user?.isModerator && !user?.isAdmin)"
+            >
+                <mdui-menu-item value="pending">Pending</mdui-menu-item>
+                <mdui-menu-item value="approved">Approved</mdui-menu-item>
+                <mdui-menu-item value="rejected">Rejected</mdui-menu-item>
+            </mdui-select>
         </div>
-        <mdui-select
-            class="ef-category-request-card__state"
-            variant="outlined"
-            [value]="categoryRequest.state"
-            (change)="changeCategoryRequestState($event)"
-            [disabled]="categoryRequest.state === 'approved' || categoryRequest.state === 'rejected' || !user?.isModerator"
-        >
-            <mdui-menu-item value="pending">Pending</mdui-menu-item>
-            <mdui-menu-item value="approved">Approved</mdui-menu-item>
-            <mdui-menu-item value="rejected">Rejected</mdui-menu-item>
-        </mdui-select>
+        <div *ngIf="categoryRequest.atributes">
+            <h4>Atributes</h4>
+            <ul class="ef-product-list">
+                <li>
+                    <div><strong>Name</strong></div>
+                    <div><strong>Type</strong></div>
+                    <div><strong>Is Required</strong></div>
+                </li>
+                <li *ngFor="let atribute of atributes">
+                    <div> {{ atribute.name }}</div>
+                    <div>{{ atribute.type }}</div>
+                    <mdui-checkbox
+                    disabled
+                    [checked]="atribute.isRequired">
+                </mdui-checkbox>
+                </li>
+            </ul>
+        </div>
     </div>
     <div 
         class="ef-category-request-card__state-indicator"
