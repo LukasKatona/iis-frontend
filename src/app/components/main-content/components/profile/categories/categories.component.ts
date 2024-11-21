@@ -223,6 +223,7 @@ export class CategoriesComponent implements OnInit {
   private afterCategorySave() {
     this.categoryToEditParentCategoryDropdownValue = '';
     this.isCategoryToEditValid = false;
+    this.isEditCategoryLoading = false;
     this.categoryToEditAtributes = [];
     this.fetchCategoriesForDropdown();
     this.categoryToEdit = createEmptyProductCategory();
