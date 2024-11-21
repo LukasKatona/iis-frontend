@@ -8,11 +8,12 @@ import { HttpClient } from '@angular/common/http';
 import { AuthStoreService } from '../../../../../services/auth-store.service';
 import { User } from '../../../../../../models/user.interface';
 import { Atribute, createEmptyAtribute } from '../../../../../../models/atribute.interface';
+import { CategoryCardComponent } from './components/category-card/category-card.component';
 
 @Component({
   selector: 'app-categories',
   standalone: true,
-  imports: [CommonModule, CategoryRequestCardComponent],
+  imports: [CommonModule, CategoryRequestCardComponent, CategoryCardComponent],
   templateUrl: './categories.component.html',
   styleUrl: './categories.component.scss',
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
@@ -22,13 +23,15 @@ export class CategoriesComponent implements OnInit {
 
   public newCategoryRequest?: NewCategoryRequest;
 
-  public categoryAtributes: Atribute[] = []
+  public categoryToEdit?: ProductCategory;
+
+  public categoryRequestAtributes: Atribute[] = []
 
   public isCreateRequestLoading: boolean = false;
 
   public newCategoryRequests: NewCategoryRequest[] = [];
 
-  public categoriesForDropdown: ProductCategory[] = [];
+  public categories: ProductCategory[] = [];
   public categoryDropdownValue: string = '';
 
   public isFormValid: boolean = false;
@@ -56,14 +59,14 @@ export class CategoriesComponent implements OnInit {
   private fetchCategoriesForDropdown() {
     let url = environment.baseUri + '/product-categories';
     this.http.get<ProductCategory[]>(url).subscribe((data: ProductCategory[]) => {
-      this.categoriesForDropdown = data;
+      this.categories = data;
     });
   }
 
   public changeNewCategoryRequest(field: string, event: any) {
     if (this.newCategoryRequest) {
       if (field === 'parentCategoryId') {
-        this.categoryDropdownValue = this.categoriesForDropdown.find((category: ProductCategory) => category.id === event.target.value)?.name || '';
+        this.categoryDropdownValue = this.categories.find((category: ProductCategory) => category.id === event.target.value)?.name || '';
       }
       this.newCategoryRequest[field] = event.target.value;
       this.isFormValid = this.validateNewCategoryRequest();
@@ -75,7 +78,7 @@ export class CategoriesComponent implements OnInit {
       return false;
     }
 
-    for (const atribute of this.categoryAtributes) {
+    for (const atribute of this.categoryRequestAtributes) {
       if (!atribute.name || !atribute.type) {
         return false;
       }
@@ -87,7 +90,7 @@ export class CategoriesComponent implements OnInit {
   public createRequest() {
     this.isCreateRequestLoading = true;
     let url = environment.baseUri + '/category-requests/';
-    if (this.newCategoryRequest) this.newCategoryRequest.atributes = JSON.stringify(this.categoryAtributes);
+    if (this.newCategoryRequest && this.categoryRequestAtributes.length > 0) this.newCategoryRequest.atributes = JSON.stringify(this.categoryRequestAtributes);
     this.http.post(url, this.newCategoryRequest).subscribe(() => {
       this.isCreateRequestLoading = false;
       this.categoryDropdownValue = '';
@@ -98,15 +101,15 @@ export class CategoriesComponent implements OnInit {
   }
 
   public getParentCategoryName(id: number | null | undefined): string {
-    return this.categoriesForDropdown.find((category: ProductCategory) => category.id === id)?.name || '';
+    return this.categories.find((category: ProductCategory) => category.id === id)?.name || '';
   }
 
   public createNewAtribute() {
     this.isFormValid = false;
-    this.categoryAtributes.push(createEmptyAtribute());
+    this.categoryRequestAtributes.push(createEmptyAtribute());
   }
   public deleteAtribute(atribute: Atribute) {
-    this.categoryAtributes = this.categoryAtributes.filter(a => a !== atribute);
+    this.categoryRequestAtributes = this.categoryRequestAtributes.filter(a => a !== atribute);
   }
 
   public changeAtribute(atribute: Atribute, field: string, event: any) {
@@ -116,5 +119,9 @@ export class CategoriesComponent implements OnInit {
       atribute[field] = event.target.value;
     }
     this.isFormValid = this.validateNewCategoryRequest();
+  }
+
+  public removeCategoryFromList(category: ProductCategory) {
+    this.categories = this.categories.filter(c => c !== category);
   }
 }
