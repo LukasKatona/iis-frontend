@@ -72,7 +72,6 @@ export class AdminUserFormComponent {
   }
 
   setUserForCreating(): void {
-    console.log('setUserForCreating');
     this.isCreatingNewUser = true;
     this.user = createEmptyUser();
     this.farmer = undefined;

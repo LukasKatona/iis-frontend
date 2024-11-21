@@ -15,6 +15,7 @@ import { CommonModule } from '@angular/common';
 export class FarmerProductCardComponent {
   @Input() product!: Product;
   @Output() editRequested = new EventEmitter<Product>();
+  @Output() productUpdated = new EventEmitter<Product>();
 
   constructor(private http: HttpClient) {}
 
@@ -24,6 +25,8 @@ export class FarmerProductCardComponent {
 
   deleteProduct(product: Product) {
     const url = `${environment.baseUri}/products/${product.id}`;
-    this.http.delete(url).subscribe({});
+    this.http.delete(url).subscribe(() => {
+      this.productUpdated.emit(undefined);
+    });
   }
 }

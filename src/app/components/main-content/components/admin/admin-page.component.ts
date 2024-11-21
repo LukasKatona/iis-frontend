@@ -35,31 +35,29 @@ export class AdminPageComponent {
       }
     });
   }
-  
-  public refreshUserList(): void {
-    console.log('Refreshing user list...');
-    this.url.get<User[]>(`${environment.baseUri}/users`).subscribe({
-        next: (data) => {
-            this.users = data;
-        },
-        error: (err) => console.error('Failed to fetch users:', err),
-    });
-}
 
-onUserUpdated(updatedUser: User | undefined): void {
+  public refreshUserList(): void {
+    this.url.get<User[]>(`${environment.baseUri}/users`).subscribe({
+      next: (data) => {
+        this.users = data;
+      },
+      error: (err) => console.error('Failed to fetch users:', err),
+    });
+  }
+
+  onUserUpdated(updatedUser: User | undefined): void {
     if (!updatedUser) {
-        console.warn('User is undefined.');
-        this.refreshUserList();
+      console.warn('User is undefined.');
+      this.refreshUserList();
     } else {
-        console.log('User updated:', updatedUser);
-        const index = this.users.findIndex((u) => u.id === updatedUser.id);
-        if (index !== -1) {
-            this.users[index] = updatedUser;
-        } else {
-            this.users.push(updatedUser);
-        }
+      const index = this.users.findIndex((u) => u.id === updatedUser.id);
+      if (index !== -1) {
+        this.users[index] = updatedUser;
+      } else {
+        this.users.push(updatedUser);
+      }
     }
-}
+  }
 
 
   onFormClosed(): void {

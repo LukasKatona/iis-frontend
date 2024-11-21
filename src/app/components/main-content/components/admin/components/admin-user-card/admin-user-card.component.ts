@@ -35,7 +35,6 @@ export class AdminUserCardComponent {
   public deleteUser(user: User) {
     const url = `${environment.baseUri}/users/${this.user.id}`;
     this.http.delete(url).subscribe(() => {
-      console.log('User deleted:', user);
       this.userUpdated.emit(undefined);
     });
   }
