@@ -18,6 +18,7 @@ export class CategoryCardComponent {
   @Input() category!: ProductCategory;
   @Input() parentCategoryName: string = '';
 
+  @Output() categoryToEdit = new EventEmitter<void>();
   @Output() categoryDeleted = new EventEmitter<void>();
 
   public atributes: Atribute[] = [];
@@ -31,7 +32,7 @@ export class CategoryCardComponent {
   }
 
   public onEditcategory() {
-    console.log('Edit category');
+    this.categoryToEdit.emit();
   }
 
   public onDeleteCategory() {

@@ -1,5 +1,5 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA, OnInit } from '@angular/core';
-import { ProductCategory } from '../../../../../../models/product-category.interface';
+import { createEmptyProductCategory, ProductCategory } from '../../../../../../models/product-category.interface';
 import { createEmptyNewCategoryRequest, NewCategoryRequest } from '../../../../../../models/new-category-request.interface';
 import { environment } from '../../../../../../environments/environment';
 import { CommonModule } from '@angular/common';
@@ -25,16 +25,20 @@ export class CategoriesComponent implements OnInit {
 
   public categoryToEdit?: ProductCategory;
 
+  public categoryToEditAtributes: Atribute[] = []
   public categoryRequestAtributes: Atribute[] = []
 
   public isCreateRequestLoading: boolean = false;
+  public isEditCategoryLoading: boolean = false;
 
   public newCategoryRequests: NewCategoryRequest[] = [];
 
   public categories: ProductCategory[] = [];
-  public categoryDropdownValue: string = '';
+  public newCategoryRequestParentCategoryDropdownValue: string = '';
+  public categoryToEditParentCategoryDropdownValue: string = '';
 
-  public isFormValid: boolean = false;
+  public isNewCategoryRequestValid: boolean = false;
+  public isCategoryToEditValid: boolean = false;
 
   constructor(private http: HttpClient, private authStore: AuthStoreService) {}
 
@@ -43,6 +47,7 @@ export class CategoriesComponent implements OnInit {
       if(user != null) {
         this.user = user;
         this.newCategoryRequest = createEmptyNewCategoryRequest(this.user?.id);
+        this.categoryToEdit = createEmptyProductCategory();
         this.fetchNewCategoryRequests();
         this.fetchCategoriesForDropdown();
       }
@@ -66,10 +71,10 @@ export class CategoriesComponent implements OnInit {
   public changeNewCategoryRequest(field: string, event: any) {
     if (this.newCategoryRequest) {
       if (field === 'parentCategoryId') {
-        this.categoryDropdownValue = this.categories.find((category: ProductCategory) => category.id === event.target.value)?.name || '';
+        this.newCategoryRequestParentCategoryDropdownValue = this.categories.find((category: ProductCategory) => category.id === event.target.value)?.name || '';
       }
       this.newCategoryRequest[field] = event.target.value;
-      this.isFormValid = this.validateNewCategoryRequest();
+      this.isNewCategoryRequestValid = this.validateNewCategoryRequest();
     }
   }
 
@@ -93,8 +98,9 @@ export class CategoriesComponent implements OnInit {
     if (this.newCategoryRequest && this.categoryRequestAtributes.length > 0) this.newCategoryRequest.atributes = JSON.stringify(this.categoryRequestAtributes);
     this.http.post(url, this.newCategoryRequest).subscribe(() => {
       this.isCreateRequestLoading = false;
-      this.categoryDropdownValue = '';
-      this.isFormValid = false;
+      this.newCategoryRequestParentCategoryDropdownValue = '';
+      this.isNewCategoryRequestValid = false;
+      this.categoryRequestAtributes = [];
       this.fetchNewCategoryRequests();
       if (this.user) this.newCategoryRequest = createEmptyNewCategoryRequest(this.user?.id);
     });
@@ -104,24 +110,100 @@ export class CategoriesComponent implements OnInit {
     return this.categories.find((category: ProductCategory) => category.id === id)?.name || '';
   }
 
-  public createNewAtribute() {
-    this.isFormValid = false;
+  public createNewAtributeForNewCategoryRequest() {
+    this.isNewCategoryRequestValid = false;
     this.categoryRequestAtributes.push(createEmptyAtribute());
   }
-  public deleteAtribute(atribute: Atribute) {
+
+  public createNewAtributeForCategoryToEdit() {
+    this.isCategoryToEditValid = false;
+    this.categoryToEditAtributes.push(createEmptyAtribute());
+  }
+
+  public deleteAtributeForNewCategoryRequest(atribute: Atribute) {
     this.categoryRequestAtributes = this.categoryRequestAtributes.filter(a => a !== atribute);
   }
 
-  public changeAtribute(atribute: Atribute, field: string, event: any) {
+  public deleteAtributeForCategoryToEdit(atribute: Atribute) {
+    this.categoryToEditAtributes = this.categoryToEditAtributes.filter(a => a !== atribute);
+    this.isCategoryToEditValid = this.validateCategoryToEdit();
+  }
+
+  public changeNewCategoryRequestAtribute(atribute: Atribute, field: string, event: any) {
+    this.changeAtribute(atribute, field, event);
+    this.isNewCategoryRequestValid = this.validateNewCategoryRequest();
+  }
+
+  public changeCategoryToEditAtribute(atribute: Atribute, field: string, event: any) {
+    this.changeAtribute(atribute, field, event);
+    this.isCategoryToEditValid = this.validateCategoryToEdit();
+  }
+
+  private changeAtribute(atribute: Atribute, field: string, event: any) {
     if (field === 'isRequired') {
       atribute[field] = event.target.checked;
     } else {
       atribute[field] = event.target.value;
     }
-    this.isFormValid = this.validateNewCategoryRequest();
+    this.isNewCategoryRequestValid = this.validateNewCategoryRequest();
   }
 
   public removeCategoryFromList(category: ProductCategory) {
     this.categories = this.categories.filter(c => c !== category);
+  }
+
+  public fetchCategoryToEditor(category: ProductCategory) {
+    this.categoryToEdit = category;
+    if (category.atributes) {
+      this.categoryToEditAtributes = JSON.parse(category.atributes);
+    }
+    this.categoryToEditParentCategoryDropdownValue = this.getParentCategoryName(category.parentCategoryId);
+    this.isCategoryToEditValid = this.validateCategoryToEdit();
+  }
+
+  public changeCategoryToEdit(field: string, event: any) {
+    if (this.categoryToEdit) {
+      if (field === 'parentCategoryId') {
+        this.categoryToEditParentCategoryDropdownValue = this.categories.find((category: ProductCategory) => category.id === event.target.value)?.name || '';
+      }
+      this.categoryToEdit[field] = event.target.value;
+      this.isCategoryToEditValid = this.validateCategoryToEdit();
+    }
+  }
+
+  private validateCategoryToEdit(): boolean {
+    console.log(this.categoryToEdit);
+    if (!this.categoryToEdit?.name) {
+      console.log('here');
+      return false;
+     
+    }
+
+    for (const atribute of this.categoryToEditAtributes) {
+      if (!atribute.name || !atribute.type) {
+        console.log('here');
+        return false;
+      
+      }
+    }
+
+    return true;
+  }
+
+  public saveCategory() {
+    if(this.categoryToEdit?.id) {
+      let url = environment.baseUri + '/product-categories/' + this.categoryToEdit.id;
+      if (this.categoryToEditAtributes.length > 0) this.categoryToEdit.atributes = JSON.stringify(this.categoryToEditAtributes);
+      this.isEditCategoryLoading = true;
+
+      this.http.patch(url, this.categoryToEdit).subscribe(() => {
+        this.isEditCategoryLoading = false;
+        this.categoryToEditParentCategoryDropdownValue = '';
+        this.isCategoryToEditValid = false;
+        this.categoryToEditAtributes = [];
+        this.fetchCategoriesForDropdown();
+        this.categoryToEdit = createEmptyProductCategory();
+      });
+    }
   }
 }

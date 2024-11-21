@@ -17,7 +17,7 @@
                     <mdui-select
                         variant="outlined"
                         label="Parent Category"
-                        [value]="categoryDropdownValue"
+                        [value]="newCategoryRequestParentCategoryDropdownValue"
                     >
                     <div class="ef-categories__editor-dropdown-options">
                         <mdui-menu-item
@@ -36,37 +36,37 @@
                             label="Atribute Name"
                             type="text"
                             [value]="atribute.name"
-                            (input)="changeAtribute(atribute, 'name', $event)">
+                            (input)="changeNewCategoryRequestAtribute(atribute, 'name', $event)">
                         </mdui-text-field>
                         <mdui-select
                             required
                             variant="outlined"
                             label="Atribute Type"
                             [value]="atribute.type"
-                            (change)="changeAtribute(atribute, 'type', $event)">
+                            (change)="changeNewCategoryRequestAtribute(atribute, 'type', $event)">
                             <mdui-menu-item value="text">Text</mdui-menu-item>
                             <mdui-menu-item value="number">Number</mdui-menu-item>
                             <mdui-menu-item value="boolean">Boolean</mdui-menu-item>
                         </mdui-select>
                         <mdui-checkbox
                             [checked]="atribute.isRequired"
-                            (change)="changeAtribute(atribute, 'isRequired', $event)">
+                            (change)="changeNewCategoryRequestAtribute(atribute, 'isRequired', $event)">
                             Required
                         </mdui-checkbox>
-                        <mdui-button-icon (click)="deleteAtribute(atribute)">
+                        <mdui-button-icon (click)="deleteAtributeForNewCategoryRequest(atribute)">
                             <i class="ri-delete-bin-6-line"></i>
                         </mdui-button-icon>
                     </div>
                     <mdui-button
                         style="width: 100%;"
-                        (click)="createNewAtribute()">
+                        (click)="createNewAtributeForNewCategoryRequest()">
                         Create New Atribute
                     </mdui-button>
                     <mdui-button
                         style="width: 100%;"
                         [loading]="isCreateRequestLoading"
                         (click)="createRequest()"
-                        [disabled]="!isFormValid">
+                        [disabled]="!isNewCategoryRequestValid">
                         Create Request
                     </mdui-button>
                 </div>
@@ -88,63 +88,63 @@
                     required
                     label="Name"
                     type="text"
-                    [value]="newCategoryRequest?.newCategoryName"
-                    (input)="changeNewCategoryRequest('newCategoryName', $event)"
+                    [value]="categoryToEdit?.name"
+                    (input)="changeCategoryToEdit('name', $event)"
                 ></mdui-text-field>
                 <div class="ef-categories__editor ef-categories__column">
                     <mdui-select
                         variant="outlined"
                         label="Parent Category"
-                        [value]="categoryDropdownValue"
+                        [value]="categoryToEditParentCategoryDropdownValue"
                     >
                     <div class="ef-categories__editor-dropdown-options">
                         <mdui-menu-item
                             *ngFor="let category of categories"
                             [value]="category.id"
-                            (click)="changeNewCategoryRequest('parentCategoryId', $event)"
+                            (click)="changeCategoryToEdit('parentCategoryId', $event)"
                         >
                             {{ category.name }}
                         </mdui-menu-item>
                     </div>
                     </mdui-select>
-                    <div *ngFor="let atribute of categoryRequestAtributes" class="ef-categories__editor-atribute-row">
+                    <div *ngFor="let atribute of categoryToEditAtributes" class="ef-categories__editor-atribute-row">
                         <mdui-text-field
                             required
                             variant="outlined"
                             label="Atribute Name"
                             type="text"
                             [value]="atribute.name"
-                            (input)="changeAtribute(atribute, 'name', $event)">
+                            (input)="changeCategoryToEditAtribute(atribute, 'name', $event)">
                         </mdui-text-field>
                         <mdui-select
                             required
                             variant="outlined"
                             label="Atribute Type"
                             [value]="atribute.type"
-                            (change)="changeAtribute(atribute, 'type', $event)">
+                            (change)="changeCategoryToEditAtribute(atribute, 'type', $event)">
                             <mdui-menu-item value="text">Text</mdui-menu-item>
                             <mdui-menu-item value="number">Number</mdui-menu-item>
                             <mdui-menu-item value="boolean">Boolean</mdui-menu-item>
                         </mdui-select>
                         <mdui-checkbox
                             [checked]="atribute.isRequired"
-                            (change)="changeAtribute(atribute, 'isRequired', $event)">
+                            (change)="changeCategoryToEditAtribute(atribute, 'isRequired', $event)">
                             Required
                         </mdui-checkbox>
-                        <mdui-button-icon (click)="deleteAtribute(atribute)">
+                        <mdui-button-icon (click)="deleteAtributeForCategoryToEdit(atribute)">
                             <i class="ri-delete-bin-6-line"></i>
                         </mdui-button-icon>
                     </div>
                     <mdui-button
                         style="width: 100%;"
-                        (click)="createNewAtribute()">
+                        (click)="createNewAtributeForCategoryToEdit()">
                         Create New Atribute
                     </mdui-button>
                     <mdui-button
                         style="width: 100%;"
-                        [loading]="isCreateRequestLoading"
-                        (click)="createRequest()"
-                        [disabled]="!isFormValid">
+                        [loading]="isEditCategoryLoading"
+                        (click)="saveCategory()"
+                        [disabled]="!isCategoryToEditValid">
                         Save Category
                     </mdui-button>
                 </div>
@@ -154,6 +154,7 @@
                 *ngFor="let category of categories"
                 [category]="category"
                 [parentCategoryName]="getParentCategoryName(category.parentCategoryId)"
+                (categoryToEdit)="fetchCategoryToEditor(category)"
                 (categoryDeleted)="removeCategoryFromList(category)">
             </app-category-card>
         </div>
