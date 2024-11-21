@@ -196,14 +196,35 @@ export class CategoriesComponent implements OnInit {
       if (this.categoryToEditAtributes.length > 0) this.categoryToEdit.atributes = JSON.stringify(this.categoryToEditAtributes);
       this.isEditCategoryLoading = true;
 
-      this.http.patch(url, this.categoryToEdit).subscribe(() => {
-        this.isEditCategoryLoading = false;
-        this.categoryToEditParentCategoryDropdownValue = '';
-        this.isCategoryToEditValid = false;
-        this.categoryToEditAtributes = [];
-        this.fetchCategoriesForDropdown();
-        this.categoryToEdit = createEmptyProductCategory();
+      this.http.patch(url, this.categoryToEdit).subscribe({
+        next: () => {
+          this.afterCategorySave();
+        },
+        error: (err) => {
+          this.isEditCategoryLoading = false;
+        }
+      });
+    } else {
+      let url = environment.baseUri + '/product-categories';
+      if (this.categoryToEditAtributes.length > 0 && this.categoryToEdit) this.categoryToEdit.atributes = JSON.stringify(this.categoryToEditAtributes);
+      this.isEditCategoryLoading = true;
+
+      this.http.post(url, this.categoryToEdit).subscribe({
+        next: () => {
+          this.afterCategorySave();
+        },
+        error: (err) => {
+          this.isEditCategoryLoading = false;
+        }
       });
     }
+  }
+
+  private afterCategorySave() {
+    this.categoryToEditParentCategoryDropdownValue = '';
+    this.isCategoryToEditValid = false;
+    this.categoryToEditAtributes = [];
+    this.fetchCategoriesForDropdown();
+    this.categoryToEdit = createEmptyProductCategory();
   }
 }
