@@ -124,6 +124,7 @@ export class CategoriesComponent implements OnInit {
 
   public deleteAtributeForNewCategoryRequest(atribute: Atribute) {
     this.categoryRequestAtributes = this.categoryRequestAtributes.filter(a => a !== atribute);
+    this.isNewCategoryRequestValid = this.validateNewCategoryRequest();
   }
 
   public deleteAtributeForCategoryToEdit(atribute: Atribute) {
@@ -195,7 +196,11 @@ export class CategoriesComponent implements OnInit {
   public saveCategory() {
     if(this.categoryToEdit?.id) {
       let url = environment.baseUri + '/product-categories/' + this.categoryToEdit.id;
-      if (this.categoryToEditAtributes.length > 0) this.categoryToEdit.atributes = JSON.stringify(this.categoryToEditAtributes);
+      if (this.categoryToEditAtributes.length > 0) {
+        this.categoryToEdit.atributes = JSON.stringify(this.categoryToEditAtributes);
+      } else {
+        this.categoryToEdit.atributes = "";
+      }
       this.isEditCategoryLoading = true;
 
       this.http.patch(url, this.categoryToEdit).subscribe({
