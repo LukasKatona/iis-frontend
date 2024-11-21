@@ -8,14 +8,12 @@ import { HttpClient } from '@angular/common/http';
 import { Farmer } from '../../../../../models/farmer.interface';
 import { Review } from '../../../../../models/review.interface';
 import { FormsModule } from '@angular/forms';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { Subject } from 'rxjs';
-
+import { FarmerBannerComponent } from './components/farmer-banner/farmer-banner.component';
 
 @Component({
   selector: 'app-products',
   standalone: true,
-  imports: [CommonModule, ProductCardComponent, FormsModule],
+  imports: [CommonModule, ProductCardComponent, FormsModule, FarmerBannerComponent],
   templateUrl: './products.component.html',
   styleUrl: './products.component.scss',
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
@@ -24,17 +22,16 @@ export class ProductsComponent {
   private categoryId: number = 0;
   public categoryName: string = '';
   public products: Product[] = [];
+  public filteredProducts: Product[] = [];
   public farmers: Farmer[] = [];
   public farmDropdownValue: string = "";
+  public farmsForDropdown: Farmer[] = [];
+  public farmerBanner?: Farmer;
+  public Banner: boolean = false;
   public sortField: string = "";
   public sortDirection: string = "";
-  public farmsForDropdown: Farmer[] = [];
   public reviews: Review[] = [];
-  public maxPrice: number = 0;
-  public priceRange: number[] = [0, this.maxPrice];
   public searchQuery: string = '';
-  private searchSubject: Subject<string> = new Subject<string>();
-  public filteredProducts: Product[] = [];
 
   constructor(private route: ActivatedRoute, private http: HttpClient) { }
 
@@ -44,27 +41,6 @@ export class ProductsComponent {
     this.categoryName = this.route.snapshot.data['categoryName'];
     this.fetchFarmsForDropdown();
     this.getProducts(undefined, this.categoryId, undefined, undefined);
-  }
-
-  private filterByPrice(): void {
-    this.products = this.products.filter(product =>
-      product.unitPrice >= this.priceRange[0] && product.unitPrice <= this.priceRange[1]
-    );
-  }
-
-  private calculateMaxPrice(): void {
-    const prices = this.products.map(product => product.unitPrice);
-    this.maxPrice = Math.max(...prices);
-    this.priceRange = [0, this.maxPrice];
-  }
-
-  public onPriceChange(event: any): void {
-    console.log('Price slider event:', event);
-    if (event && Array.isArray(event.value) && event.value.length === 2) {
-      const [minPrice, maxPrice] = event.value;
-      this.priceRange = [minPrice, maxPrice];
-      this.getProducts();
-    }
   }
 
   private fetchReviews(): void {
@@ -115,11 +91,23 @@ export class ProductsComponent {
     this.http.get<Product[]>(url, { params })
       .subscribe((data: Product[]) => {
         this.products = data;
-        if (this.maxPrice === 0 && this.products.length > 0) {
-          this.calculateMaxPrice();
-        }
-        this.filterByPrice();
+        this.filteredProducts = [...this.products];
+        this.filterBySearchQuery();
       });
+  }
+
+  private filterBySearchQuery(): void {
+    if (this.searchQuery.trim() === '') {
+      this.filteredProducts = [...this.products];
+    } else {
+      this.filteredProducts = this.products.filter(product =>
+        product.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+      );
+    }
+  }
+
+  public onSearchChange(): void {
+    this.filterBySearchQuery();
   }
 
   public sortProducts(field: string, direction: string): void {
@@ -139,6 +127,8 @@ export class ProductsComponent {
 
   public onFarmClicked(farmer: Farmer): void {
     this.farmDropdownValue = farmer.farmName ?? '';
+    this.Banner = true;
+    this.farmerBanner = farmer;
     this.getProducts(undefined, this.categoryId, farmer.id, undefined, undefined);
   }
 
