@@ -33,9 +33,11 @@ export class CategoriesComponent implements OnInit {
 
   ngOnInit(): void {
     this.authStore.loggedUser$().subscribe(user => {
-      if(user != null) {
+      if (user != null) {
         this.user = user;
-        this.newCategoryRequest = createEmptyNewCategoryRequest(this.user?.id);
+        if (this.user?.id) {
+          this.newCategoryRequest = createEmptyNewCategoryRequest(this.user?.id);
+        }
         this.fetchNewCategoryRequests();
         this.fetchCategoriesForDropdown();
       }
@@ -81,7 +83,7 @@ export class CategoriesComponent implements OnInit {
       this.categoryDropdownValue = '';
       this.isFormValid = false;
       this.fetchNewCategoryRequests();
-      if (this.user) this.newCategoryRequest = createEmptyNewCategoryRequest(this.user?.id);
+      if (this.user?.id) this.newCategoryRequest = createEmptyNewCategoryRequest(this.user?.id);
     });
   }
 

@@ -4,6 +4,6 @@
         <app-farmer-add-product  #addProductForm (productUpdated)="onProductUpdated($event)"></app-farmer-add-product>
     </div>
     <div class="ef-farmer-products__products">
-        <app-farmer-product-card *ngFor="let product of products" [product]="product" (editRequested)="onEditProduct($event)"></app-farmer-product-card>
+        <app-farmer-product-card *ngFor="let product of products" [product]="product" (productUpdated)="onProductUpdated($event)" (editRequested)="onEditProduct($event)"></app-farmer-product-card>
     </div>
 </div>

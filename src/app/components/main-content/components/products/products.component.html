@@ -1,7 +1,38 @@
-<h5 *ngIf="categoryName">
-    {{ categoryName }}
-</h5>
 <div class="ef-products">
-    <app-product-card *ngFor="let product of products" [product]="product"></app-product-card>
+    <mdui-card variant="elevated" class="ef-products__filters">
+        <div class="ef-products__filters-content">
+            <div class="ef-products__search">
+                <input type="text" [(ngModel)]="searchQuery" (input)="onSearchChange()" placeholder="Search products..."
+                    class="ef-products__search-input" />
+
+                <mdui-select variant="outlined" label="Farm" [value]="farmDropdownValue">
+                    <div class="ef-products__dropdown-farmers">
+                        <mdui-menu-item *ngFor="let farm of farmsForDropdown" [value]="farm.id"
+                            (click)="onFarmClicked(farm)">
+                            {{ farm.farmName }}
+                        </mdui-menu-item>
+                    </div>
+                </mdui-select>
+
+            </div>
+            <div class="ef-products__filters-buttons">
+                <p>Sort by:</p>
+                <mdui-button (click)="sortProducts('unitPrice', 'asc')">Cheapest</mdui-button>
+                <mdui-button (click)="sortProducts('unitPrice', 'desc')">Most Expensive</mdui-button>
+                <mdui-button (click)="sortProductsByRating()">Reviews</mdui-button>
+
+            </div>
+        </div>
+    </mdui-card>
+    <div class="ef-products__category-name">
+        <h3 *ngIf="categoryName">
+            {{ categoryName }}
+        </h3>
+    </div>
+    <div class="ef-products__farmer-banner" *ngIf="Banner">
+        <app-farmer-banner *ngIf="farmerBanner" [farmer]="farmerBanner"></app-farmer-banner>
+    </div>
+    <div class="ef-products__products">
+        <app-product-card *ngFor="let product of filteredProducts" [product]="product"></app-product-card>
+    </div>
 </div>
-  
