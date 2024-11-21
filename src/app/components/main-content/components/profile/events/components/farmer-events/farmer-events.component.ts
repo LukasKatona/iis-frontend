@@ -38,7 +38,9 @@ export class FarmerEventsComponent implements OnInit {
       if (!this.user) {
         return;
       }
-      this.eventToEdit = createEmptyEvent(this.user?.id);
+      if (this.user?.id) {
+        this.eventToEdit = createEmptyEvent(this.user?.id);
+      }
       this.isFormValid = this.validateEvent();
     });
   }
@@ -98,7 +100,7 @@ export class FarmerEventsComponent implements OnInit {
 
   private afterSaveEvent() {
     this.isEventToEditLoading = false;
-    if (this.user) this.eventToEdit = createEmptyEvent(this.user?.id);
+    if (this.user?.id) this.eventToEdit = createEmptyEvent(this.user?.id);
     this.startsAt = '';
     this.endsAt = '';
     this.isFormValid = false;

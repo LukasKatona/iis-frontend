@@ -42,17 +42,19 @@ export class FarmerProductsComponent implements OnInit {
       if (!this.user || !this.user.isFarmer) {
         return;
       }
-      this.getFarmerByUserId(this.user?.id);
-      if(this.user?.farmerId){
-      this.getProducts(this.user?.farmerId);
-    }
+      if (this.user?.id) {
+        this.getFarmerByUserId(this.user?.id);
+      }
+      if (this.user?.farmerId) {
+        this.getProducts(this.user?.farmerId);
+      }
     });
   }
 
   onProductUpdated(updatedProduct: Product) {
     const index = this.products.findIndex((p) => p.id === updatedProduct.id);
     if (index !== -1) {
-      this.products[index] = updatedProduct; 
+      this.products[index] = updatedProduct;
     } else {
       this.products.push(updatedProduct);
     }

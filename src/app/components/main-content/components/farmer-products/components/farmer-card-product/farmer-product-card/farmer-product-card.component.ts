@@ -22,7 +22,7 @@ export class FarmerProductCardComponent {
     this.editRequested.emit(product); 
   }
 
-  removeProduct(product: Product) {
+  deleteProduct(product: Product) {
     const url = `${environment.baseUri}/products/${product.id}`;
     this.http.delete(url).subscribe({});
   }
