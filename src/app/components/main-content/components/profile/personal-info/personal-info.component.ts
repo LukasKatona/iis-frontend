@@ -64,7 +64,7 @@ export class PersonalInfoComponent implements OnInit {
   }
 
   private validatePersonalInfo(): boolean {
-    if (this.user?.name && this.user?.email && this.user?.phone) {
+    if (this.user?.name && this.user?.email) {
       return true;
     }
     return false;
@@ -104,16 +104,18 @@ export class PersonalInfoComponent implements OnInit {
       return;
     }
     this.isAddFarmerLoading = true;
-    this.farmer = createEmptyFarmer(this.user?.id);
-    this.http.post<Farmer>(environment.baseUri + '/farmers', this.farmer).subscribe((data: Farmer) => {
-      this.isAddFarmerLoading = false;
-      this.farmer = data;
+    if (this.user.id) {
+      this.farmer = createEmptyFarmer(this.user?.id);
+      this.http.post<Farmer>(environment.baseUri + '/farmers', this.farmer).subscribe((data: Farmer) => {
+        this.isAddFarmerLoading = false;
+        this.farmer = data;
 
-      if (this.user) {
-        this.user.farmerId = this.farmer.id;
-        this.user.isFarmer = true;
-        this.savePersonalInfo();
-      }
-    });
+        if (this.user) {
+          this.user.farmerId = this.farmer.id;
+          this.user.isFarmer = true;
+          this.savePersonalInfo();
+        }
+      });
+    }
   }
 }

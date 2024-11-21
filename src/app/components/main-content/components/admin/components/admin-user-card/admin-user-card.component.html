@@ -5,7 +5,16 @@
             <h4>{{ user.surname }}</h4>
 
         </div>
+
         <div class="ef-admin-user-card__button">
+            <div class="ef-admin-user-card__button-modify">
+                <mdui-button-icon (click)="editUser(user)">
+                    <i class="ri-pencil-fill"></i>
+                </mdui-button-icon>
+                <mdui-button-icon (click)="deleteUser(user)">
+                    <i class="ri-delete-bin-6-fill"></i>
+                </mdui-button-icon>
+            </div>
             <div class="ef-admin-user-card__checkbox">
                 <mdui-checkbox (click)="toggleModerator()" [checked]="user.isModerator" />
             </div>

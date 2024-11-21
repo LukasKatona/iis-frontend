@@ -50,8 +50,10 @@ export class FarmerAddProductComponent implements OnInit {
   }
 
   private initProduct() {
-    if (this.user) this.product = createEmptyProduct(this.user?.id);
-    this.categoryDropdownValue = '';
+    if (this.user?.id){
+      this.product = createEmptyProduct(this.user.id);
+      this.categoryDropdownValue = '';
+    }
   }
 
   private fetchCategoriesForDropdown() {

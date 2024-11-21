@@ -1,5 +1,5 @@
 export interface User {
-    id: number;
+    id?: number;
     farmerId?: number;
     isAdmin?: boolean;
     isModerator?: boolean;
@@ -20,4 +20,24 @@ export interface User {
     zipCode?: string;
 
     [key: string]: any;
+}
+
+export function createEmptyUser(): User {
+    return {
+        name: '',
+        surname: '',
+        email: '',
+        password: '',
+        phone: '',
+        imageUrl: '',
+        state: '',
+        city: '',
+        street: '',
+        streetNumber: '',
+        zipCode: '',
+        isAdmin: false,
+        isModerator: false,
+        isFarmer: false,
+        isActive: true
+    };
 }

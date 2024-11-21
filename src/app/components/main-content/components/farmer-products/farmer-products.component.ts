@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Component, OnInit, ViewChild, CUSTOM_ELEMENTS_SCHEMA, EventEmitter } from '@angular/core';
 import { Farmer } from '../../../../../models/farmer.interface';
 import { FarmerBannerComponent } from './components/farmer-banner/farmer-banner.component';
 import { FarmerAddProductComponent } from './components/farmer-add-product/farmer-add-product.component';
@@ -26,7 +26,7 @@ export class FarmerProductsComponent implements OnInit {
 
   private user: User | null = null;
 
-  constructor(private authStore: AuthStoreService, private http: HttpClient) {}
+  constructor(private authStore: AuthStoreService, private http: HttpClient) { }
 
   onEditProduct(product: Product) {
     if (this.addProductForm) {
@@ -42,19 +42,35 @@ export class FarmerProductsComponent implements OnInit {
       if (!this.user || !this.user.isFarmer) {
         return;
       }
-      this.getFarmerByUserId(this.user?.id);
-      if(this.user?.farmerId){
-      this.getProducts(this.user?.farmerId);
-    }
+      if (this.user?.id) {
+        this.getFarmerByUserId(this.user?.id);
+      }
+      if (this.user?.farmerId) {
+        this.getProducts(this.user?.farmerId);
+      }
     });
   }
 
-  onProductUpdated(updatedProduct: Product) {
-    const index = this.products.findIndex((p) => p.id === updatedProduct.id);
-    if (index !== -1) {
-      this.products[index] = updatedProduct; 
-    } else {
-      this.products.push(updatedProduct);
+  private refreshProducts(): void {
+    if (!this.user || !this.user.isFarmer) {
+      return;
+    }
+    if (this.user?.farmerId) {
+      this.getProducts(this.user?.farmerId);
+    }
+  }
+
+  onProductUpdated(updatedProduct: Product | undefined): void {
+    if (!updatedProduct) {
+      this.refreshProducts();
+    }
+    else {
+      const index = this.products.findIndex((p) => p.id === updatedProduct.id);
+      if (index !== -1) {
+        this.products[index] = updatedProduct;
+      } else {
+        this.products.push(updatedProduct);
+      }
     }
   }
 
