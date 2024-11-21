@@ -31,3 +31,11 @@
     align-items: center;
     width: 5.5rem;
 }
+
+.ef-admin-user-card__button-modify {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    justify-self: end;
+    padding-right: 3rem;
+}

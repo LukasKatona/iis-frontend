@@ -1,0 +1,29 @@
+.ef-personal-info__column {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding-bottom: 1rem;
+}
+
+.ef-personal-info__editor {
+    padding: 1rem;
+}
+
+.ef-personal-info__row {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
+
+.ef-personal-info__checkbox {
+    width: 100%;
+}
+
+.ef-admin-user-form__header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+}
+
