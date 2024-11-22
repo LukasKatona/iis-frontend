@@ -45,9 +45,9 @@ export class AppComponent {
 
   private populateRoutes(categories: ProductCategory[]) {
     const dynamicRoutes = categories.map(category => ({
-      path: "shop/" + category.name.toLowerCase(),
+      path: "shop/" + category.name.replace(/\s/g, '_').toLowerCase(),
       component: ProductsComponent,
-      data: { categoryId: category.id, categoryName: category.name }
+      data: { categoryId: category.id, categoryName: category.name, atributes: category.atributes }
     }));
 
     this.router.resetConfig([...this.router.config, ...dynamicRoutes]);

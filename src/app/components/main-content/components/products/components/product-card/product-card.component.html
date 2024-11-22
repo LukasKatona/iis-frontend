@@ -8,6 +8,7 @@
             <h3>{{ product.name }}</h3>
             <p>Price: {{ product.unitPrice }} Kč/ {{ product.unit }}</p>
             <p>In stock: {{ product.stock }}</p>
+            <p *ngFor="let atribute of productAtributes">{{ atribute.name }}: {{ atribute.value }}</p>
             <p>Rating: {{ product.rating | number: '1.1-1' }}/5</p>
             <div class="ef-product-card__rating">
                 <p>0</p>
@@ -29,7 +30,7 @@
             <mdui-button [disabled]="!isAmountValid" class="ef-product-card__add-button" (click)="addToCart()" [loading]="isLoading">
                 <div class="ef-product-card__add-button__text">
                     Add to cart
-                    <i class="ri-shopping-cart-2-fill"></i>
+                    <i class="ri-shopping-cart-2-line"></i>
                 </div>
             </mdui-button>
         </div>

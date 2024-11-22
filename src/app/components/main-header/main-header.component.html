@@ -25,12 +25,13 @@
                 </mdui-button-icon>
             </mdui-tooltip>
         </a>
-        <a routerLink="shopping-cart">
+        <a routerLink="shopping-cart" class="ef-main-header__cart-icon">
             <mdui-tooltip content="Shopping Cart">
                 <mdui-button-icon>
                     <i class="ri-shopping-cart-2-line"></i>
                 </mdui-button-icon>
             </mdui-tooltip>
+            <mdui-badge *ngIf="numberOfProductsInCart" class="ef-main-header__cart-badge">{{ numberOfProductsInCart }}</mdui-badge>
         </a>
         <a routerLink="admin-page" *ngIf="user?.isAdmin">
             <mdui-tooltip content="Admin Tools">

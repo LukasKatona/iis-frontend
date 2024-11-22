@@ -20,7 +20,7 @@
                     <div> {{ product.product.name }}</div>
                     <div>{{ product.quantity }}</div>
                     <div>{{ getProductTotalPrice(product.product, product.quantity) }} Kč</div>
-                    <input *ngIf="product.review" class="ef-order-card__rating-input" min="0" max="5" type="number" [(ngModel)]="product.review.rating" (change)="updateProductRating(product.review)">
+                    <input [disabled]="order.status != 'supplied'" *ngIf="product.review" class="ef-order-card__rating-input" min="0" max="5" type="number" [(ngModel)]="product.review.rating" (change)="updateProductRating(product.review)">
                 </li>
             </ul>
         </div>

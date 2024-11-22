@@ -1,4 +1,4 @@
-import { Component, Input,CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Component, Input,CUSTOM_ELEMENTS_SCHEMA, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Farmer } from '../../../../../../../models/farmer.interface';
 import { User } from '../../../../../../../models/user.interface';
@@ -14,14 +14,19 @@ import { HttpClient } from '@angular/common/http';
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class FarmerBannerComponent {
-  @Input()
-  farmer!: Farmer;
-  public user: User | undefined
+  @Input() farmer!: Farmer;
+  public user: User | undefined;
 
   constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
     this.getFarmerInfo(this.farmer.userId);
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['farmer'] && changes['farmer'].currentValue) {
+      this.getFarmerInfo(changes['farmer'].currentValue.userId);
+    }
   }
 
   public getFarmerInfo(userId: number): void {

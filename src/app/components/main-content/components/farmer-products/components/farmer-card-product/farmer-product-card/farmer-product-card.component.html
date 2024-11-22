@@ -8,14 +8,15 @@
             <h3>{{ product.name }}</h3>
             <p>Price: {{ product.unitPrice }} Kč/ {{ product.unit }}</p>
             <p>In stock: {{ product.stock }}</p>
+            <p *ngFor="let atribute of productAtributes">{{ atribute.name }}: {{ atribute.value }}</p>
         </div>
         <div class="ef-product-card__actions">
             <mdui-button-icon (click)="editProduct(product)">
-                <i class="ri-pencil-fill"></i>
+                <i class="ri-edit-line"></i>
             </mdui-button-icon>
 
             <mdui-button-icon (click)="deleteProduct(product)">
-                <i class="ri-delete-bin-fill"></i>
+                <i class="ri-delete-bin-6-line"></i>
             </mdui-button-icon>
         </div>
     </div>

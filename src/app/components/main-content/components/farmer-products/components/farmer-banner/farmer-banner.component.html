@@ -4,16 +4,20 @@
     <p>{{ farmer.description }}</p>
     
     
-    <div class="ef-farmer-banner__contact">
-        <mdui-icon>email</mdui-icon>
+    <div class="ef-farmer-banner__contact" *ngIf="user?.name || user?.surname">
+        <mdui-icon><i class="ri-user-line"></i></mdui-icon>
+        <p>{{ user?.name }} {{ user?.surname }}</p>
+    </div>
+    <div class="ef-farmer-banner__contact" *ngIf="user?.email">
+        <mdui-icon><i class="ri-mail-line"></i></mdui-icon>
         <p>{{ user?.email }}</p>
     </div>
-    <div class="ef-farmer-banner__contact">
-        <mdui-icon>phone</mdui-icon>
+    <div class="ef-farmer-banner__contact" *ngIf="user?.phone">
+        <mdui-icon><i class="ri-phone-line"></i></mdui-icon>
         <p>{{ user?.phone }}</p>
     </div>
-    <div class="ef-farmer-banner__contact">
-        <mdui-icon>location_on</mdui-icon>
-        <p>{{ user?.street }} {{user?.streetNumber}}, {{user?.city}}, {{user?.state}}</p>
+    <div class="ef-farmer-banner__contact" *ngIf="farmer?.street || farmer?.streetNumber || farmer?.city || farmer?.zipCode || farmer?.state">
+        <mdui-icon><i class="ri-map-pin-line"></i></mdui-icon>
+        <p>{{ farmer.street }} {{farmer.streetNumber}}, {{farmer.zipCode}}, {{farmer.city}}, {{farmer.state}}</p>
     </div>
 </mdui-card>

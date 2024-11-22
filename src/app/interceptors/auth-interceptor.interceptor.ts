@@ -18,16 +18,19 @@ export const authInterceptorInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(modifiedRequest).pipe(
     catchError((error) => {
+      
+      if (error.status === 401 && error.error.detail === 'Could not validate credentials') {
+        authStoreService.clearAuthData();
+        router.navigate(['/']);
+      }
+
       if (error.status !== 0) {
         authStoreService.updateAuthError({
           message: error.error.detail,
           status: error.status
         });
       }
-      if (error.status === 401 && error.error.detail === 'Could not validate credentials') {
-        authStoreService.clearAuthData();
-        router.navigate(['/']);
-      }
+      
       return throwError(error);
     })
   );

@@ -16,6 +16,7 @@ import { AuthStoreService } from '../../services/auth-store.service';
 export class MainHeaderComponent implements OnInit {
 
   user: User | null = null;
+  numberOfProductsInCart: number | null = null;
 
   @ViewChild('loginDialog') loginDialog!: LoginDialogComponent;
 
@@ -24,6 +25,11 @@ export class MainHeaderComponent implements OnInit {
   ngOnInit(): void {
     this.authStore.loggedUser$().subscribe(user => {
       this.user = user;
+    });
+
+    this.authStore.updateNumberOfProductsInCart();
+    this.authStore.numberOfProductsInCart$().subscribe(products => {
+      this.numberOfProductsInCart = products;
     });
   }
 

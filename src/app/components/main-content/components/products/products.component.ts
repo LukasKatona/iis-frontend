@@ -8,7 +8,9 @@ import { HttpClient } from '@angular/common/http';
 import { Farmer } from '../../../../../models/farmer.interface';
 import { Review } from '../../../../../models/review.interface';
 import { FormsModule } from '@angular/forms';
-import { FarmerBannerComponent } from './components/farmer-banner/farmer-banner.component';
+import { FarmerBannerComponent } from '../farmer-products/components/farmer-banner/farmer-banner.component';
+import { Atribute } from '../../../../../models/atribute.interface';
+import { ProductAtribute } from '../../../../../models/product-atribute.interface';
 
 @Component({
   selector: 'app-products',
@@ -21,6 +23,7 @@ import { FarmerBannerComponent } from './components/farmer-banner/farmer-banner.
 export class ProductsComponent {
   private categoryId: number = 0;
   public categoryName: string = '';
+  public categoryAtributes: Atribute[] = [];
   public products: Product[] = [];
   public filteredProducts: Product[] = [];
   public farmers: Farmer[] = [];
@@ -34,12 +37,16 @@ export class ProductsComponent {
   public reviews: Review[] = [];
   public searchQuery: string = '';
 
+  public productAtributesFilter: ProductAtribute[] = [];
+
   constructor(private route: ActivatedRoute, private http: HttpClient) { }
 
   ngOnInit(): void {
-
     this.categoryId = this.route.snapshot.data['categoryId'];
     this.categoryName = this.route.snapshot.data['categoryName'];
+    this.categoryAtributes = JSON.parse(this.route.snapshot.data['atributes'] || '[]');
+    this.productAtributesFilter = this.route.snapshot.data['atributes'] ? this.categoryAtributes.map(a => ({ name: a.name, value: null, comparator: '=' })) : [];
+
     this.fetchFarmsForDropdown();
     this.getProducts(undefined, this.categoryId, this.farmerId, this.sortField, this.sortDirection);
   }
@@ -69,11 +76,11 @@ export class ProductsComponent {
       .subscribe((data: Product[]) => {
         this.products = data;
         this.filteredProducts = [...this.products];
-        this.filterBySearchQuery();
+        this.filterProducts();
       });
   }
 
-  private filterBySearchQuery(): void {
+  private filterProducts(): void {
     if (this.searchQuery.trim() === '') {
       this.filteredProducts = [...this.products];
     } else {
@@ -81,11 +88,72 @@ export class ProductsComponent {
         product.name.toLowerCase().includes(this.searchQuery.toLowerCase())
       );
     }
+    this.filterProductsByAtributes();
+  }
+
+  private filterProductsByAtributes(): void {
+    this.filteredProducts = this.filteredProducts.filter(product => {
+      return this.productAtributesFilter.every(atribute => {
+
+        const productAtribute = JSON.parse(product.categoryAtributes || '[]').find((a: ProductAtribute) => a.name === atribute.name);
+                
+        if (!productAtribute) {
+          return false;
+        }
+
+        if (atribute.value === null) {
+          return true;
+        }
+
+        if (typeof atribute.value === 'string' && typeof productAtribute.value === 'string') {
+          return productAtribute.value.toLowerCase().includes(atribute.value.toLowerCase());
+        }
+
+        if (typeof atribute.value === 'number' && typeof productAtribute.value === 'number') {
+          return this.compareNumbers(atribute, productAtribute);
+        }
+
+        if (typeof atribute.value === 'boolean' && typeof productAtribute.value === 'boolean') {
+          return atribute.value === productAtribute.value;
+        }
+
+        return false;
+      });
+    });
+  }
+
+  private compareNumbers(filterAtribute: ProductAtribute, productAtribute: ProductAtribute): boolean {
+    if (filterAtribute.comparator === null) {
+      return productAtribute.value === filterAtribute.value;
+    }
+
+    if (productAtribute.value === null) {
+      return false;
+    }
+
+    if (filterAtribute.value === null || isNaN(filterAtribute.value as number)) {
+      return true;
+    }
+    
+    switch (filterAtribute.comparator) {
+      case '=':
+        return productAtribute.value === filterAtribute.value;
+      case '>':
+        return productAtribute.value > filterAtribute.value;
+      case '<':
+        return productAtribute.value < filterAtribute.value;
+      case '>=':
+        return productAtribute.value >= filterAtribute.value;
+      case '<=':
+        return productAtribute.value <= filterAtribute.value;
+      default:
+        return false;
+    }
   }
 
   public onSearchChange( event: any): void {
     this.searchQuery = event.target.value;
-    this.filterBySearchQuery();
+    this.filterProducts();
   }
 
   public sortProducts(field: string, direction: string): void {
@@ -111,4 +179,16 @@ export class ProductsComponent {
     this.getProducts(undefined, this.categoryId, this.farmerId, this.sortField, this.sortDirection);
   }
 
+  public changeProductAtributeFilterValue(atribute: ProductAtribute, event: any, fieldType: string) {
+    if (fieldType === 'boolean') {
+      atribute.value = event.target.checked;
+    } else if (fieldType === 'number') {
+      atribute.value = parseFloat(event.target.value);
+    } else if (fieldType === 'comparator') {
+      atribute.comparator = event.target.value;
+    } else {
+      atribute.value = event.target.value;
+    }
+    this.filterProducts();
+  }
 }

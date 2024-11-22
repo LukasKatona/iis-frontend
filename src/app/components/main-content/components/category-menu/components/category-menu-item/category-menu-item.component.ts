@@ -14,4 +14,8 @@ import { RouterLink } from '@angular/router';
 export class CategoryMenuItemComponent {
 
   @Input() category!: ProductCategory;
+
+  public getCategoryLink(category: ProductCategory): string {
+    return "/shop/" + category.name.replace(/\s/g, '_').toLowerCase();
+  }
 }

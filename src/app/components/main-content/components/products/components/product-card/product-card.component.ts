@@ -6,6 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import { AuthStoreService } from '../../../../../../services/auth-store.service';
 import { User } from '../../../../../../../models/user.interface';
 import { CommonModule } from '@angular/common';
+import { ProductAtribute } from '../../../../../../../models/product-atribute.interface';
 
 @Component({
   selector: 'app-product-card',
@@ -18,6 +19,7 @@ import { CommonModule } from '@angular/common';
 export class ProductCardComponent {
   @Input()
   product!: Product;
+  productAtributes: ProductAtribute[] = [];
   isLoading = false;
   amount = 0;
   amoutToBuy = 0;
@@ -34,6 +36,7 @@ export class ProductCardComponent {
         return;
       }
     });
+    this.productAtributes = JSON.parse(this.product.categoryAtributes || '[]');
   }
   addToCart() {
     this.isLoading = true;
@@ -47,6 +50,7 @@ export class ProductCardComponent {
       (data: any) => {
         this.amount = 0;
         this.amoutToBuy = 0;
+        this.authStore.updateNumberOfProductsInCart();
         this.isLoading = false;
       }
     );
