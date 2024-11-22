@@ -55,8 +55,8 @@
   
     <!-- Dialog Actions -->
     <mdui-button (click)="close()" slot="action" variant="text">Cancel</mdui-button>
-    <mdui-button *ngIf="!isRegisterMode" (click)="toggleRegisterMode()" slot="action" variant="text">
-      Register
+    <mdui-button (click)="toggleRegisterMode()" slot="action" variant="text">
+      {{ isRegisterMode ? 'Log In' : 'Register' }}
     </mdui-button>
     <mdui-button
       [disabled]="!isFormValid"
