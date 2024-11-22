@@ -31,8 +31,6 @@ export class FarmerProductsComponent implements OnInit {
   onEditProduct(product: Product) {
     if (this.addProductForm) {
       this.addProductForm.setProductForEditing(product);
-    } else {
-      console.warn('Add product form is not yet available');
     }
   }
 

@@ -96,9 +96,7 @@ export class ProductsComponent {
       return this.productAtributesFilter.every(atribute => {
 
         const productAtribute = JSON.parse(product.categoryAtributes || '[]').find((a: ProductAtribute) => a.name === atribute.name);
-        
-        console.log(atribute.value);
-        
+                
         if (!productAtribute) {
           return false;
         }
