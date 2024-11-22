@@ -175,16 +175,13 @@ export class CategoriesComponent implements OnInit {
   }
 
   private validateCategoryToEdit(): boolean {
-    console.log(this.categoryToEdit);
     if (!this.categoryToEdit?.name) {
-      console.log('here');
       return false;
      
     }
 
     for (const atribute of this.categoryToEditAtributes) {
       if (!atribute.name || !atribute.type) {
-        console.log('here');
         return false;
       
       }
