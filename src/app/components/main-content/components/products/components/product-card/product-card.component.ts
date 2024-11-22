@@ -50,6 +50,7 @@ export class ProductCardComponent {
       (data: any) => {
         this.amount = 0;
         this.amoutToBuy = 0;
+        this.authStore.updateNumberOfProductsInCart();
         this.isLoading = false;
       }
     );

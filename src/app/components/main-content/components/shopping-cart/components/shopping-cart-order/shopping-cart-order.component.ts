@@ -7,6 +7,7 @@ import { Product } from '../../../../../../../models/product.interface';
 import { ProductWithQuantity } from '../../../../../../../models/product-with-quantity.interface';
 import { OrderStatus } from '../../../../../../../models/order-status.enum';
 import { HttpClient } from '@angular/common/http';
+import { AuthStoreService } from '../../../../../../services/auth-store.service';
 
 @Component({
   selector: 'app-shopping-cart-order',
@@ -25,7 +26,7 @@ export class ShoppingCartOrderComponent {
   public status = OrderStatus;
 
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private authStore: AuthStoreService) { }
 
   ngOnInit() {
     this.createdAt = formatDate(this.order.createdAt * 1000, 'dd.MM.yyyy', 'en-US');
@@ -89,6 +90,7 @@ export class ShoppingCartOrderComponent {
     this.http.delete(url).subscribe(() => {
       this.products = this.products.filter(p => p.id !== product.id); // Remove deleted product from list
       this.refreshOrders.emit();
+      this.authStore.updateNumberOfProductsInCart();
     });
   }
 
@@ -96,6 +98,7 @@ export class ShoppingCartOrderComponent {
     const url = `${environment.baseUri}/orders/${this.order.id}`;
     this.http.delete(url).subscribe(() => {
       this.refreshOrders.emit();
+      this.authStore.updateNumberOfProductsInCart();
     });
   }
 
@@ -105,6 +108,7 @@ export class ShoppingCartOrderComponent {
     this.http.patch(url, { status: this.order.status }, { headers: { 'Content-Type': 'application/json' } })
       .subscribe(() => {
         this.refreshOrders.emit();
+        this.authStore.updateNumberOfProductsInCart();
       });
   }
 }
