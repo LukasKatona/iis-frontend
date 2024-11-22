@@ -108,7 +108,7 @@ export class FarmerAddProductComponent implements OnInit {
       this.updateProduct('categoryId', { target: { value: null } });
     } else {
       this.categoryAtributes = JSON.parse(category.atributes || '[]');
-      this.productAtributes = this.categoryAtributes.map(a => ({ name: a.name, value: null }));
+      this.productAtributes = category.atributes ? this.categoryAtributes.map(a => ({ name: a.name, value: null })) : [];
       this.categoryDropdownValue = category.name;
       this.updateProduct('categoryId', { target: { value: category.id } });
     }
@@ -124,12 +124,14 @@ export class FarmerAddProductComponent implements OnInit {
   public setProductForEditing(product: Product) {
     this.product = { ...product };
     this.categoryDropdownValue = this.categoriesForDropdown.find(c => c.id === product.categoryId)?.name || '';
+    this.productAtributes = JSON.parse(product.categoryAtributes || '[]');
+    this.categoryAtributes = JSON.parse(this.categoriesForDropdown.find(c => c.id === product.categoryId)?.atributes || '[]');
     this.isFormValid = this.validateProduct();
   }
 
   public saveProduct() {
     this.isProductLoading = true;
-    
+
     if (this.product) {
       if (this.productAtributes.length > 0) {
         this.product.categoryAtributes = JSON.stringify(this.productAtributes);
@@ -158,6 +160,8 @@ export class FarmerAddProductComponent implements OnInit {
   private afterSaveProduct() {
     this.isProductLoading = false;
     this.isFormValid = false;
+    this.categoryAtributes = [];
+    this.productAtributes = [];
     this.productUpdated.emit(this.product);
     this.initProduct();
   }

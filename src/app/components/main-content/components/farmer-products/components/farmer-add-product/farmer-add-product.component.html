@@ -48,7 +48,7 @@
                 <mdui-checkbox
                     *ngIf="atribute.type == 'boolean'"
                     [checked]="productAtributes[i].value"
-                    (click)="changeProductAtributeValue(productAtributes[i], $event, 'boolean')">
+                    (change)="changeProductAtributeValue(productAtributes[i], $event, 'boolean')">
                     {{ atribute.name }}
                 </mdui-checkbox>
             </div>
