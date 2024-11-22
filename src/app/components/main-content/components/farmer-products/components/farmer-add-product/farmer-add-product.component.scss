@@ -27,3 +27,9 @@
   max-height: 200px;
   overflow-y: auto;
 }
+
+.ef-add-product__atributes {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}

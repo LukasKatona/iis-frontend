@@ -53,4 +53,8 @@ export class CategoryMenuComponent {
       }
     });
   }
+
+  public getCategoryLink(category: ProductCategory): string {
+    return "/shop/" + category.name.replace(/\s/g, '_').toLowerCase();
+  }
 }

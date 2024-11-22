@@ -3,6 +3,7 @@ import { Product } from '../../../../../../../../models/product.interface';
 import { environment } from '../../../../../../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+import { ProductAtribute } from '../../../../../../../../models/product-atribute.interface';
 
 @Component({
   selector: 'app-farmer-product-card',
@@ -14,10 +15,15 @@ import { CommonModule } from '@angular/common';
 })
 export class FarmerProductCardComponent {
   @Input() product!: Product;
+  public productAtributes: ProductAtribute[] = [];
   @Output() editRequested = new EventEmitter<Product>();
   @Output() productUpdated = new EventEmitter<Product>();
 
   constructor(private http: HttpClient) {}
+
+  ngOnInit(): void {
+    this.productAtributes = JSON.parse(this.product.categoryAtributes || '[]');
+  }
 
   editProduct(product: Product) {
     this.editRequested.emit(product); 

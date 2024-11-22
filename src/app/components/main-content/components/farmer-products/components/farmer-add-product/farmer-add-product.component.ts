@@ -9,6 +9,8 @@ import { ProductCategory } from '../../../../../../../models/product-category.in
 import { HttpClient } from '@angular/common/http';
 import { User } from '../../../../../../../models/user.interface';
 import { AuthStoreService } from '../../../../../../services/auth-store.service';
+import { Atribute } from '../../../../../../../models/atribute.interface';
+import { ProductAtribute } from '../../../../../../../models/product-atribute.interface';
 
 @Component({
   selector: 'app-farmer-add-product',
@@ -25,6 +27,10 @@ export class FarmerAddProductComponent implements OnInit {
 
   public categoriesForDropdown: ProductCategory[] = [];
   public categoryDropdownValue: string = '';
+
+  public categoryAtributes: Atribute[] = [];
+  public productAtributes: ProductAtribute[] = [];
+
 
   public isFormValid: boolean = false;
 
@@ -43,17 +49,46 @@ export class FarmerAddProductComponent implements OnInit {
   }
 
   private validateProduct(): boolean {
-    if (this.product?.name) {
-      return true;
+    if (!this.product?.name) {
+      return false;
     }
-    return false;
+
+    if (this.productAtributes.length > 0) {
+      return this.validateProductAtributes();
+    }
+
+    return true;
+  }
+
+  private validateProductAtributes(): boolean {
+    for (let atribute of this.productAtributes) {
+      let categoryAtribute = this.categoryAtributes.find(ca => ca.name === atribute.name);
+      
+      if (!categoryAtribute) {
+        return false;
+      }
+
+      if (categoryAtribute.isRequired && !atribute.value) {
+        return false;
+      }
+
+      if (categoryAtribute.type === 'number' && isNaN(atribute.value as number)) {
+        return false;
+      }
+
+      if (categoryAtribute.type === 'boolean' && (typeof atribute.value !== 'boolean' && atribute.value !== null)) {
+        return false;
+      }
+    }
+
+    return true;
   }
 
   private initProduct() {
     if (this.user?.id){
-      this.product = createEmptyProduct(this.user.id);
-      this.categoryDropdownValue = '';
+      this.product = createEmptyProduct(this.user.id); 
     }
+    this.categoryDropdownValue = '';
   }
 
   private fetchCategoriesForDropdown() {
@@ -66,25 +101,45 @@ export class FarmerAddProductComponent implements OnInit {
   }
 
   public onCategoryClicked(category: ProductCategory): void {
-    this.categoryDropdownValue = category.name; 
-    this.createProduct('categoryId', { target: { value: category.id } });
+    if (this.categoryDropdownValue == category.name) {
+      this.categoryAtributes = [];
+      this.productAtributes = [];
+      this.categoryDropdownValue = '';
+      this.updateProduct('categoryId', { target: { value: null } });
+    } else {
+      this.categoryAtributes = JSON.parse(category.atributes || '[]');
+      this.productAtributes = category.atributes ? this.categoryAtributes.map(a => ({ name: a.name, value: null })) : [];
+      this.categoryDropdownValue = category.name;
+      this.updateProduct('categoryId', { target: { value: category.id } });
+    }
   }
 
-  public createProduct(field: string, event: any) {
+  public updateProduct(field: string, event: any) {
     if (this.product) {
-      (this.product as any)[field] = event.target ? event.target.value : event;
-      this.isFormValid = this.validateProduct();
+      this.product[field] = event.target.value;
     }
+    this.isFormValid = this.validateProduct();
   }
 
   public setProductForEditing(product: Product) {
     this.product = { ...product };
     this.categoryDropdownValue = this.categoriesForDropdown.find(c => c.id === product.categoryId)?.name || '';
+    this.productAtributes = JSON.parse(product.categoryAtributes || '[]');
+    this.categoryAtributes = JSON.parse(this.categoriesForDropdown.find(c => c.id === product.categoryId)?.atributes || '[]');
     this.isFormValid = this.validateProduct();
   }
 
   public saveProduct() {
     this.isProductLoading = true;
+
+    if (this.product) {
+      if (this.productAtributes.length > 0) {
+        this.product.categoryAtributes = JSON.stringify(this.productAtributes);
+      } else {
+        this.product.categoryAtributes = '';
+      }
+    }
+    
     if (!this.product?.id) {
       this.http.post<Product>(environment.baseUri + '/products', this.product).subscribe(
         (createdProduct: Product) => {
@@ -105,7 +160,20 @@ export class FarmerAddProductComponent implements OnInit {
   private afterSaveProduct() {
     this.isProductLoading = false;
     this.isFormValid = false;
+    this.categoryAtributes = [];
+    this.productAtributes = [];
     this.productUpdated.emit(this.product);
     this.initProduct();
+  }
+
+  public changeProductAtributeValue(atribute: ProductAtribute, event: any, fieldType: string) {
+    if (fieldType === 'boolean') {
+      atribute.value = event.target.checked;
+    } else if (fieldType === 'number') {
+      atribute.value = parseFloat(event.target.value);
+    } else {
+      atribute.value = event.target.value;
+    }
+    this.isFormValid = this.validateProduct();
   }
 }

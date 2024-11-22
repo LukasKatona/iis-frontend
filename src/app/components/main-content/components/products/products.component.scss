@@ -68,3 +68,10 @@
 .ef-products__filters-buttons-sorts{
     width: 4rem;
 }
+
+.ef-products__number-comparator {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    align-items: center;
+}
