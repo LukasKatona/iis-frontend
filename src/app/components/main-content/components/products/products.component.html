@@ -2,8 +2,9 @@
     <mdui-card variant="elevated" class="ef-products__filters">
         <div class="ef-products__filters-content">
             <div class="ef-products__search">
-                <input type="text" [(ngModel)]="searchQuery" (input)="onSearchChange()" placeholder="Search products..."
-                    class="ef-products__search-input" />
+
+                <mdui-text-field type="text" variant="outlined" label="Search" [value]="searchQuery"
+                    (input)="onSearchChange($event)"></mdui-text-field>
 
                 <mdui-select variant="outlined" label="Farm" [value]="farmDropdownValue">
                     <div class="ef-products__dropdown-farmers">
@@ -17,10 +18,11 @@
             </div>
             <div class="ef-products__filters-buttons">
                 <p>Sort by:</p>
-                <mdui-button (click)="sortProducts('unitPrice', 'asc')">Cheapest</mdui-button>
-                <mdui-button (click)="sortProducts('unitPrice', 'desc')">Most Expensive</mdui-button>
-                <mdui-button (click)="sortProducts('rating', 'desc')">Reviews</mdui-button>
-
+                <mdui-segmented-button-group selects="multiple">
+                    <mdui-segmented-button value="cheapest" (click)="sortProducts('unitPrice', 'asc')">Cheapest</mdui-segmented-button>
+                    <mdui-segmented-button value="expensive" (click)="sortProducts('unitPrice', 'desc')">Most Expensive</mdui-segmented-button>
+                    <mdui-segmented-button value="reviews" (click)="sortProducts('rating', 'desc')">Reviews</mdui-segmented-button>
+                </mdui-segmented-button-group>
             </div>
         </div>
     </mdui-card>

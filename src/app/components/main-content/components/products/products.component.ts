@@ -83,7 +83,8 @@ export class ProductsComponent {
     }
   }
 
-  public onSearchChange(): void {
+  public onSearchChange( event: any): void {
+    this.searchQuery = event.target.value;
     this.filterBySearchQuery();
   }
 
