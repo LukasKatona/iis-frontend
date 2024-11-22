@@ -49,11 +49,16 @@ export class PersonalInfoComponent implements OnInit {
 
   public savePersonalInfo() {
     this.isPersonalInfoLoading = true;
-    this.http.patch<User>(environment.baseUri + '/users/' + this.user?.id, this.user).subscribe((data: User) => {
-      this.isPersonalInfoLoading = false;
-      this.user = data;
-      this.authStore.updateUserData(data);
-    });
+    this.http.patch<User>(environment.baseUri + '/users/' + this.user?.id, this.user).subscribe(
+      (data: User) => {
+        this.isPersonalInfoLoading = false;
+        this.user = data;
+        this.authStore.updateUserData(data);
+      },
+      (error) => {
+        this.isPersonalInfoLoading = false;
+      }
+    );
   }
 
   public changeUser(field: string, event: any) {
