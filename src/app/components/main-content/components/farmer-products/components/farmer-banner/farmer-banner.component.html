@@ -5,15 +5,19 @@
     
     
     <div class="ef-farmer-banner__contact">
-        <mdui-icon>email</mdui-icon>
+        <mdui-icon><i class="ri-user-line"></i></mdui-icon>
+        <p>{{ user?.name }} {{ user?.surname }}</p>
+    </div>
+    <div class="ef-farmer-banner__contact">
+        <mdui-icon><i class="ri-mail-line"></i></mdui-icon>
         <p>{{ user?.email }}</p>
     </div>
     <div class="ef-farmer-banner__contact">
-        <mdui-icon>phone</mdui-icon>
+        <mdui-icon><i class="ri-phone-line"></i></mdui-icon>
         <p>{{ user?.phone }}</p>
     </div>
     <div class="ef-farmer-banner__contact">
-        <mdui-icon>location_on</mdui-icon>
-        <p>{{ user?.street }} {{user?.streetNumber}}, {{user?.city}}, {{user?.state}}</p>
+        <mdui-icon><i class="ri-map-pin-line"></i></mdui-icon>
+        <p>{{ farmer?.street }} {{farmer?.streetNumber}}, {{farmer?.city}}, {{farmer?.state}}</p>
     </div>
 </mdui-card>

@@ -8,7 +8,7 @@ import { HttpClient } from '@angular/common/http';
 import { Farmer } from '../../../../../models/farmer.interface';
 import { Review } from '../../../../../models/review.interface';
 import { FormsModule } from '@angular/forms';
-import { FarmerBannerComponent } from './components/farmer-banner/farmer-banner.component';
+import { FarmerBannerComponent } from '../farmer-products/components/farmer-banner/farmer-banner.component';
 
 @Component({
   selector: 'app-products',
