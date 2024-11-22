@@ -6,7 +6,7 @@
     <div class="ef-product-card__content">
         <div>
             <h3>{{ product.name }}</h3>
-            <p>Price: {{ product.unitPrice }} / {{ product.unit }}</p>
+            <p>Price: {{ product.unitPrice }} Kč/ {{ product.unit }}</p>
             <p>In stock: {{ product.stock }}</p>
             <p *ngFor="let atribute of productAtributes">{{ atribute.name }}: {{ atribute.value }}</p>
         </div>
