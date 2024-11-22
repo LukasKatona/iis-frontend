@@ -19,7 +19,7 @@
                     <div>{{ product.product.name }}</div>
                     <input class="ef-shopping-cart__input" min="0" type="number" [(ngModel)]="product.quantity" (change)="updateProductQuantity(product)">
                     
-                    <div>{{ getProductTotalPrice(product.product, product.quantity) }}</div>
+                    <div>{{ getProductTotalPrice(product.product, product.quantity) }} Kč</div>
                     <div>
                         <mdui-button-icon (click)="deleteProduct(product.product)">
                             <i class="ri-delete-bin-line"></i>
@@ -31,7 +31,7 @@
         <mdui-divider></mdui-divider>
         <div class="ef-shopping-cart-order__content-under">
             <div class="ef-shopping-cart-order__order-price">
-                <p><strong>Total Price: </strong> {{ getTotalPrice() }}</p>
+                <p><strong>Total Price: </strong> {{ getTotalPrice() }} Kč</p>
             </div>
             <mdui-button type="submit" (click)="buyOrder()">Buy</mdui-button>
         </div>

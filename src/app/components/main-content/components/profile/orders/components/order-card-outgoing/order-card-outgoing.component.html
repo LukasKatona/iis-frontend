@@ -19,14 +19,14 @@
                 <li *ngFor="let product of productsWithQuantity">
                     <div> {{ product.product.name }}</div>
                     <div>{{ product.quantity }}</div>
-                    <div>{{ getProductTotalPrice(product.product, product.quantity) }}</div>
+                    <div>{{ getProductTotalPrice(product.product, product.quantity) }} Kč</div>
                     <input *ngIf="product.review" class="ef-order-card__rating-input" min="0" max="5" type="number" [(ngModel)]="product.review.rating" (change)="updateProductRating(product.review)">
                 </li>
             </ul>
         </div>
         <mdui-divider></mdui-divider>
         <div class="ef-order-card__order-price">
-            <p><strong>Total Price:</strong> {{ getTotalPrice() }}</p>
+            <p><strong>Total Price:</strong> {{ getTotalPrice() }} Kč</p>
         </div>
         <mdui-divider></mdui-divider>
         <div class="ef-order-card__content-under">
