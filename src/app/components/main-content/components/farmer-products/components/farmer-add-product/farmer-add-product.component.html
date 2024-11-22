@@ -1,18 +1,21 @@
 <mdui-card variant="outlined" class="ef-add-product">
-    <mdui-text-field label="ProductName" type="text" [value]="product?.name"
-        (input)="createProduct('name',$event)"></mdui-text-field>
+    <mdui-text-field required label="ProductName" type="text" [value]="product?.name"
+        (input)="updateProduct('name',$event)"></mdui-text-field>
     <div class="ef-add-product__information">
         <div class="ef-add-product__information-units">
             <mdui-text-field variant="outlined" label="Amount" type="number" [value]="product?.stock"
-                (input)="createProduct('stock',$event)"></mdui-text-field>
-            <mdui-select variant="outlined" [value]="product?.unit" name="unit" (change)="createProduct('unit',$event)">
+                (input)="updateProduct('stock',$event)"></mdui-text-field>
+            <mdui-select variant="outlined" [value]="product?.unit" name="unit" (change)="updateProduct('unit',$event)">
                 <mdui-menu-item [value]="unit.KILOGRAM">{{ unit.KILOGRAM }}</mdui-menu-item>
                 <mdui-menu-item [value]="unit.LITER">{{ unit.LITER }}</mdui-menu-item>
                 <mdui-menu-item [value]="unit.PIECE">{{ unit.PIECE }}</mdui-menu-item>
             </mdui-select>
         </div>
         <mdui-text-field variant="outlined" label="Unit Price"  [value]="product?.unitPrice"
-            (input)="createProduct('unitPrice',$event)"></mdui-text-field>
+            (input)="updateProduct('unitPrice',$event)"></mdui-text-field>
+
+        <mdui-text-field variant="outlined" label="Image URL" type="text" [value]="product?.imageUrl"
+            (input)="updateProduct('description',$event)"></mdui-text-field>
 
         <mdui-select variant="outlined" label="Category" [value]="categoryDropdownValue">
             <div class="ef-categories__editor-dropdown-options">
@@ -22,8 +25,35 @@
                 </mdui-menu-item>
             </div>
         </mdui-select>
-        <mdui-text-field variant="outlined" label="Image URL" type="text" [value]="product?.imageUrl"
-            (input)="createProduct('description',$event)"></mdui-text-field>
+
+        <div class="ef-add-product__atributes" *ngIf="categoryAtributes.length > 0">
+            <h3>Category Atributes</h3>
+            <div *ngFor="let atribute of categoryAtributes; let i = index">
+                <mdui-text-field
+                    *ngIf="atribute.type == 'text'"
+                    variant="outlined"
+                    label="{{ atribute.name }}"
+                    type="text"
+                    [value]="productAtributes[i].value"
+                    (input)="changeProductAtributeValue(productAtributes[i], $event, 'text')">
+                </mdui-text-field>
+                <mdui-text-field
+                    *ngIf="atribute.type == 'number'"
+                    variant="outlined"
+                    label="{{ atribute.name }}"
+                    type="number"
+                    [value]="productAtributes[i].value"
+                    (input)="changeProductAtributeValue(productAtributes[i], $event, 'number')">
+                </mdui-text-field>
+                <mdui-checkbox
+                    *ngIf="atribute.type == 'boolean'"
+                    [checked]="productAtributes[i].value"
+                    (change)="changeProductAtributeValue(productAtributes[i], $event, 'boolean')">
+                    {{ atribute.name }}
+                </mdui-checkbox>
+            </div>
+        </div>
+        
         <mdui-button [disabled]="!isFormValid" type="submit" [loading]="isProductLoading" (click)="saveProduct()">Add Product</mdui-button>
     </div>
 
