@@ -17,12 +17,19 @@
 
             </div>
             <div class="ef-products__filters-buttons">
+                <div class="ef-products__filters-buttons-sorts">
                 <p>Sort by:</p>
-                <mdui-segmented-button-group selects="multiple">
-                    <mdui-segmented-button value="cheapest" (click)="sortProducts('unitPrice', 'asc')">Cheapest</mdui-segmented-button>
-                    <mdui-segmented-button value="expensive" (click)="sortProducts('unitPrice', 'desc')">Most Expensive</mdui-segmented-button>
-                    <mdui-segmented-button value="reviews" (click)="sortProducts('rating', 'desc')">Reviews</mdui-segmented-button>
-                </mdui-segmented-button-group>
+                </div>
+                <div class="ef-products__filters-buttons-segments">
+                    <mdui-segmented-button-group selects="multiple" full-width>
+                        <mdui-segmented-button value="cheapest"
+                            (click)="sortProducts('unitPrice', 'asc')">Cheapest</mdui-segmented-button>
+                        <mdui-segmented-button value="expensive" (click)="sortProducts('unitPrice', 'desc')">Most
+                            Expensive</mdui-segmented-button>
+                        <mdui-segmented-button value="reviews"
+                            (click)="sortProducts('rating', 'desc')">Reviews</mdui-segmented-button>
+                    </mdui-segmented-button-group>
+                </div>
             </div>
         </div>
     </mdui-card>

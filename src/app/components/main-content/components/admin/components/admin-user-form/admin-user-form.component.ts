@@ -160,7 +160,7 @@ export class AdminUserFormComponent {
     });
   }
 
-  public createUser() { //TODO ??
+  public createUser() {
     this.isPersonalInfoLoading = true;
     this.http.post<User>(environment.baseUri + '/users', createEmptyUser()).subscribe((data: User) => {
       this.isPersonalInfoLoading = false;

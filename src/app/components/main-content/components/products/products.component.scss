@@ -52,15 +52,19 @@
     display: flex;
     flex-direction: row;
     gap: 1rem;
-
-    mdui-segmented-button{
-        width: 8rem;
-    }
-
+    width: 100%;
 }
 
 .ef-products__category-name h3 {
     color: rgb(var(--mdui-color-on-surface));
     padding: 1rem;
     margin: 0;
+}
+.ef-products__filters-buttons-segments{
+    align-items: stretch;
+    width: 100%;
+}
+
+.ef-products__filters-buttons-sorts{
+    width: 4rem;
 }

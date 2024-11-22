@@ -1,23 +1,70 @@
-<mdui-dialog [open]="isDialogOpen" headline="Log In">
+<mdui-dialog [open]="isDialogOpen" headline="{{ isRegisterMode ? 'Register' : 'Log In' }}">
     <div class="ef-login-dialog">
+      <!-- For Registration -->
+      <ng-container *ngIf="isRegisterMode">
         <mdui-text-field
-            required
-            variant="outlined"
-            label="Email"
-            type="text"
-            [value]="login?.username"
-            (input)="changeLogin('username', $event)"
+          required
+          variant="outlined"
+          label="Name"
+          type="text"
+          [value]="register.name"
+          (input)="changeRegister('name', $event)"
         ></mdui-text-field>
+  
         <mdui-text-field
-            required
-            variant="outlined"
-            label="Password"
-            type="password"
-            toggle-password
-            [value]="login?.password"
-            (input)="changeLogin('password', $event)"
+          required
+          variant="outlined"
+          label="Surname"
+          type="text"
+          [value]="register.surname"
+          (input)="changeRegister('surname', $event)"
         ></mdui-text-field>
+  
+        <mdui-text-field
+          required
+          variant="outlined"
+          label="Email"
+          type="email"
+          [value]="register.email"
+          (input)="changeRegister('email', $event)"
+        ></mdui-text-field>
+      </ng-container>
+
+      <!-- Username Field (visible only in login mode) -->
+      <mdui-text-field
+        *ngIf="!isRegisterMode"
+        required
+        variant="outlined"
+        label="Email"
+        type="text"
+        [value]="register.username"
+        (input)="changeRegister('username', $event)"
+      ></mdui-text-field>
+  
+      <!-- Password Field -->
+      <mdui-text-field
+        required
+        variant="outlined"
+        label="Password"
+        type="password"
+        toggle-password
+        [value]="register.password"
+        (input)="changeRegister('password', $event)"
+      ></mdui-text-field>
     </div>
+  
+    <!-- Dialog Actions -->
     <mdui-button (click)="close()" slot="action" variant="text">Cancel</mdui-button>
-    <mdui-button [disabled]="!isFormValid" [loading]="isLoginLoading" (click)="confirmLogin()" slot="action" variant="tonal">Confirm</mdui-button>
-</mdui-dialog>
+    <mdui-button *ngIf="!isRegisterMode" (click)="toggleRegisterMode()" slot="action" variant="text">
+      Register
+    </mdui-button>
+    <mdui-button
+      [disabled]="!isFormValid"
+      [loading]="isLoginLoading"
+      (click)="isRegisterMode ? confirmRegister() : confirmLogin()"
+      slot="action"
+      variant="tonal"
+    >
+      {{ isRegisterMode ? 'Register' : 'Confirm' }}
+    </mdui-button>
+  </mdui-dialog>
