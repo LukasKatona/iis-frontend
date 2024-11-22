@@ -9,10 +9,8 @@ import { Farmer } from '../../../../../models/farmer.interface';
 import { Review } from '../../../../../models/review.interface';
 import { FormsModule } from '@angular/forms';
 import { FarmerBannerComponent } from '../farmer-products/components/farmer-banner/farmer-banner.component';
-import { FarmerBannerComponent } from './components/farmer-banner/farmer-banner.component';
 import { Atribute } from '../../../../../models/atribute.interface';
 import { ProductAtribute } from '../../../../../models/product-atribute.interface';
-import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-products',
