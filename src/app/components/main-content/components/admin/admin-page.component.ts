@@ -6,7 +6,6 @@ import { environment } from '../../../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { AuthStoreService } from '../../../../services/auth-store.service';
 import { AdminUserFormComponent } from './components/admin-user-form/admin-user-form.component';
-import { V } from '@angular/cdk/keycodes';
 
 @Component({
   selector: 'app-admin-page',
@@ -25,9 +24,8 @@ export class AdminPageComponent {
   constructor(private authStore: AuthStoreService, private url: HttpClient) { }
 
   onEditUser(user: User): void {
-    this.isUserEditFormVisible = true; // Make the form visible
+    this.isUserEditFormVisible = true; 
     setTimeout(() => {
-      // Ensure the form is initialized before setting the user
       if (this.editUserForm) {
         this.editUserForm.setUserForEditing(user);
       } else {

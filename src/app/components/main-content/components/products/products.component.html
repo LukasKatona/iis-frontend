@@ -3,8 +3,9 @@
         <div class="ef-products__filters-content">
             <h3>General Filter</h3>
             <div class="ef-products__search">
-                <input type="text" [(ngModel)]="searchQuery" (input)="onSearchChange()" placeholder="Search products..."
-                    class="ef-products__search-input" />
+
+                <mdui-text-field type="text" variant="outlined" label="Search" [value]="searchQuery"
+                    (input)="onSearchChange($event)"></mdui-text-field>
 
                 <mdui-select variant="outlined" label="Farm" [value]="farmDropdownValue">
                     <div class="ef-products__dropdown-farmers">
@@ -17,11 +18,19 @@
 
             </div>
             <div class="ef-products__filters-buttons">
+                <div class="ef-products__filters-buttons-sorts">
                 <p>Sort by:</p>
-                <mdui-button (click)="sortProducts('unitPrice', 'asc')">Cheapest</mdui-button>
-                <mdui-button (click)="sortProducts('unitPrice', 'desc')">Most Expensive</mdui-button>
-                <mdui-button (click)="sortProducts('rating', 'desc')">Reviews</mdui-button>
-
+                </div>
+                <div class="ef-products__filters-buttons-segments">
+                    <mdui-segmented-button-group selects="multiple" full-width>
+                        <mdui-segmented-button value="cheapest"
+                            (click)="sortProducts('unitPrice', 'asc')">Cheapest</mdui-segmented-button>
+                        <mdui-segmented-button value="expensive" (click)="sortProducts('unitPrice', 'desc')">Most
+                            Expensive</mdui-segmented-button>
+                        <mdui-segmented-button value="reviews"
+                            (click)="sortProducts('rating', 'desc')">Reviews</mdui-segmented-button>
+                    </mdui-segmented-button-group>
+                </div>
             </div>
             <ng-container *ngIf="categoryAtributes.length > 0">
                 <h3>{{categoryName}} Filter</h3>

@@ -8,6 +8,7 @@ import { HttpClient } from '@angular/common/http';
 import { Farmer } from '../../../../../models/farmer.interface';
 import { Review } from '../../../../../models/review.interface';
 import { FormsModule } from '@angular/forms';
+import { FarmerBannerComponent } from '../farmer-products/components/farmer-banner/farmer-banner.component';
 import { FarmerBannerComponent } from './components/farmer-banner/farmer-banner.component';
 import { Atribute } from '../../../../../models/atribute.interface';
 import { ProductAtribute } from '../../../../../models/product-atribute.interface';
@@ -154,7 +155,8 @@ export class ProductsComponent {
     }
   }
 
-  public onSearchChange(): void {
+  public onSearchChange( event: any): void {
+    this.searchQuery = event.target.value;
     this.filterProducts();
   }
 
