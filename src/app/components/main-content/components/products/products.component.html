@@ -1,6 +1,7 @@
 <div class="ef-products">
     <mdui-card variant="elevated" class="ef-products__filters">
         <div class="ef-products__filters-content">
+            <h3>General Filter</h3>
             <div class="ef-products__search">
                 <input type="text" [(ngModel)]="searchQuery" (input)="onSearchChange()" placeholder="Search products..."
                     class="ef-products__search-input" />
@@ -22,13 +23,41 @@
                 <mdui-button (click)="sortProducts('rating', 'desc')">Reviews</mdui-button>
 
             </div>
+            <h3>{{categoryName}} Filter</h3>
+            <div *ngFor="let atribute of categoryAtributes; let i = index">
+                <mdui-text-field
+                    *ngIf="atribute.type == 'text'"
+                    variant="outlined"
+                    label="{{ atribute.name }}"
+                    type="text"
+                    [value]="productAtributesFilter[i].value"
+                    (input)="changeProductAtributeFilterValue(productAtributesFilter[i], $event, 'text')">
+                </mdui-text-field>
+                <div *ngIf="atribute.type == 'number'" class="ef-products__number-comparator">
+                    <mdui-text-field
+                        *ngIf="atribute.type == 'number'"
+                        variant="outlined"
+                        label="{{ atribute.name }}"
+                        type="number"
+                        [value]="productAtributesFilter[i].value"
+                        (input)="changeProductAtributeFilterValue(productAtributesFilter[i], $event, 'number')">
+                    </mdui-text-field>
+                    <mdui-select variant="outlined" label="Compare Method" [value]="productAtributesFilter[i].comparator"
+                        (change)="changeProductAtributeFilterValue(productAtributesFilter[i], $event, 'comparator')">
+                        <mdui-menu-item value="=">Equal</mdui-menu-item>
+                        <mdui-menu-item value=">">Greater than</mdui-menu-item>
+                        <mdui-menu-item value="<">Less than</mdui-menu-item>
+                    </mdui-select>
+                </div>
+                <mdui-checkbox
+                    *ngIf="atribute.type == 'boolean'"
+                    [checked]="productAtributesFilter[i].value"
+                    (change)="changeProductAtributeFilterValue(productAtributesFilter[i], $event, 'boolean')">
+                    {{ atribute.name }}
+                </mdui-checkbox>
+            </div>
         </div>
     </mdui-card>
-    <div class="ef-products__category-name">
-        <h3 *ngIf="categoryName">
-            {{ categoryName }}
-        </h3>
-    </div>
     <div class="ef-products__farmer-banner" *ngIf="Banner">
         <app-farmer-banner *ngIf="farmerBanner" [farmer]="farmerBanner"></app-farmer-banner>
     </div>

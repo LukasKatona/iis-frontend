@@ -1,7 +1,7 @@
 <mdui-collapse style="flex-grow: 1" *ngIf="category.children != null">
     <mdui-collapse-item *ngFor="let subCategory of category.children" trigger=".trigger" [value]="subCategory.id">
         <mdui-list-item slot="header">
-            <a style="color: rgb(var(--mdui-color-on-surface)); text-decoration: none" [routerLink]="'/shop/'+subCategory.name.toLowerCase()">{{subCategory.name}}</a>
+            <a style="color: rgb(var(--mdui-color-on-surface)); text-decoration: none" [routerLink]="getCategoryLink(subCategory)">{{subCategory.name}}</a>
             <mdui-icon *ngIf="subCategory.children != null" class="trigger" slot="end-icon" name="keyboard_arrow_down"></mdui-icon>
         </mdui-list-item>
         <div style="display: flex; flex-direction: row; justify-content: space-between">

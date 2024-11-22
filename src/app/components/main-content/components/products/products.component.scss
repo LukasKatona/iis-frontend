@@ -65,8 +65,9 @@
     }
 }
 
-.ef-products__category-name h3 {
-    color: rgb(var(--mdui-color-on-surface));
-    padding: 1rem;
-    margin: 0;
+.ef-products__number-comparator {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    align-items: center;
 }

@@ -9,6 +9,8 @@ import { Farmer } from '../../../../../models/farmer.interface';
 import { Review } from '../../../../../models/review.interface';
 import { FormsModule } from '@angular/forms';
 import { FarmerBannerComponent } from './components/farmer-banner/farmer-banner.component';
+import { Atribute } from '../../../../../models/atribute.interface';
+import { ProductAtribute } from '../../../../../models/product-atribute.interface';
 
 @Component({
   selector: 'app-products',
@@ -21,6 +23,7 @@ import { FarmerBannerComponent } from './components/farmer-banner/farmer-banner.
 export class ProductsComponent {
   private categoryId: number = 0;
   public categoryName: string = '';
+  public categoryAtributes: Atribute[] = [];
   public products: Product[] = [];
   public filteredProducts: Product[] = [];
   public farmers: Farmer[] = [];
@@ -34,12 +37,16 @@ export class ProductsComponent {
   public reviews: Review[] = [];
   public searchQuery: string = '';
 
+  public productAtributesFilter: ProductAtribute[] = [];
+
   constructor(private route: ActivatedRoute, private http: HttpClient) { }
 
   ngOnInit(): void {
-
     this.categoryId = this.route.snapshot.data['categoryId'];
     this.categoryName = this.route.snapshot.data['categoryName'];
+    this.categoryAtributes = JSON.parse(this.route.snapshot.data['atributes'] || '[]');
+    this.productAtributesFilter = this.route.snapshot.data['atributes'] ? this.categoryAtributes.map(a => ({ name: a.name, value: null, comparator: '=' })) : [];
+
     this.fetchFarmsForDropdown();
     this.getProducts(undefined, this.categoryId, this.farmerId, this.sortField, this.sortDirection);
   }
@@ -110,4 +117,16 @@ export class ProductsComponent {
     this.getProducts(undefined, this.categoryId, this.farmerId, this.sortField, this.sortDirection);
   }
 
+  public changeProductAtributeFilterValue(atribute: ProductAtribute, event: any, fieldType: string) {
+    if (fieldType === 'boolean') {
+      atribute.value = event.target.checked;
+    } else if (fieldType === 'number') {
+      atribute.value = parseFloat(event.target.value);
+    } else if (fieldType === 'comparator') {
+      atribute.comparator = event.target.value;
+    } else {
+      atribute.value = event.target.value;
+    }
+    console.log(this.productAtributesFilter);
+  }
 }
