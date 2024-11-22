@@ -84,7 +84,6 @@ export class AuthStoreService {
   }
 
   public updateNumberOfProductsInCart(): void {
-    console.log('updateNumberOfProductsInCart');
     this.http.get<number>(environment.baseUri + "/orders/number-of-products").subscribe( (data) => {
       this.numberOfProductsInCartSubject.next(data);
     });
