@@ -84,9 +84,11 @@ export class AuthStoreService {
   }
 
   public updateNumberOfProductsInCart(): void {
-    this.http.get<number>(environment.baseUri + "/orders/number-of-products").subscribe( (data) => {
-      this.numberOfProductsInCartSubject.next(data);
-    });
+    if (this.token() !== null) {
+      this.http.get<number>(environment.baseUri + "/orders/number-of-products").subscribe( (data) => {
+        this.numberOfProductsInCartSubject.next(data);
+      });
+    }
   }
 
   public clearAuthData(): void {
