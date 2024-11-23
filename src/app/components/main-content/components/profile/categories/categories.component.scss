@@ -1,0 +1,26 @@
+.ef-categories__column {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.ef-categories__editor {
+    padding: 1rem;
+}
+
+.ef-categories__editor-dropdown-options {
+    height: 50vh;
+    overflow: auto;
+}
+
+.ef-categories__editor-atribute-row{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+.ef-categories__tab-panel {
+    padding-top: 1rem;
+}

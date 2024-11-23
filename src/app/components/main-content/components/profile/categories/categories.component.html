@@ -1,0 +1,163 @@
+<mdui-tabs value="requests" full-width variant="secondary">
+    <mdui-tab value="requests">New Category Requests</mdui-tab>
+    <mdui-tab *ngIf="user?.isAdmin || user?.isModerator" value="categories">All Categories</mdui-tab>
+
+    <mdui-tab-panel class="ef-categories__tab-panel" slot="panel" value="requests">
+        <div class="ef-categories__column">
+            <h2>Create New Category Request</h2>
+            <mdui-card variant="outlined">
+                <mdui-text-field
+                    required
+                    label="Name"
+                    type="text"
+                    [value]="newCategoryRequest?.newCategoryName"
+                    (input)="changeNewCategoryRequest('newCategoryName', $event)"
+                ></mdui-text-field>
+                <div class="ef-categories__editor ef-categories__column">
+                    <mdui-select
+                        variant="outlined"
+                        label="Parent Category"
+                        [value]="newCategoryRequestParentCategoryDropdownValue"
+                    >
+                    <div class="ef-categories__editor-dropdown-options">
+                        <mdui-menu-item
+                            *ngFor="let category of categories"
+                            [value]="category.id"
+                            (click)="changeNewCategoryRequest('parentCategoryId', $event)"
+                        >
+                            {{ category.name }}
+                        </mdui-menu-item>
+                    </div>
+                    </mdui-select>
+                    <div *ngFor="let atribute of categoryRequestAtributes" class="ef-categories__editor-atribute-row">
+                        <mdui-text-field
+                            required
+                            variant="outlined"
+                            label="Atribute Name"
+                            type="text"
+                            [value]="atribute.name"
+                            (input)="changeNewCategoryRequestAtribute(atribute, 'name', $event)">
+                        </mdui-text-field>
+                        <mdui-select
+                            required
+                            variant="outlined"
+                            label="Atribute Type"
+                            [value]="atribute.type"
+                            (change)="changeNewCategoryRequestAtribute(atribute, 'type', $event)">
+                            <mdui-menu-item value="text">Text</mdui-menu-item>
+                            <mdui-menu-item value="number">Number</mdui-menu-item>
+                            <mdui-menu-item value="boolean">Boolean</mdui-menu-item>
+                        </mdui-select>
+                        <mdui-checkbox
+                            [checked]="atribute.isRequired"
+                            (change)="changeNewCategoryRequestAtribute(atribute, 'isRequired', $event)">
+                            Required
+                        </mdui-checkbox>
+                        <mdui-button-icon (click)="deleteAtributeForNewCategoryRequest(atribute)">
+                            <i class="ri-delete-bin-6-line"></i>
+                        </mdui-button-icon>
+                    </div>
+                    <mdui-button
+                        style="width: 100%;"
+                        (click)="createNewAtributeForNewCategoryRequest()">
+                        Create New Atribute
+                    </mdui-button>
+                    <mdui-button
+                        style="width: 100%;"
+                        [loading]="isCreateRequestLoading"
+                        (click)="createRequest()"
+                        [disabled]="!isNewCategoryRequestValid">
+                        Create Request
+                    </mdui-button>
+                </div>
+            </mdui-card>
+            <h2>New Category Requests</h2>
+            <app-category-request-card
+                *ngFor="let categoryRequest of newCategoryRequests"
+                [categoryRequest]="categoryRequest"
+                [parentCategoryName]="getParentCategoryName(categoryRequest.parentCategoryId)"
+            ></app-category-request-card>
+        </div>
+    </mdui-tab-panel>
+
+    <mdui-tab-panel *ngIf="user?.isAdmin || user?.isModerator" class="ef-categories__tab-panel" slot="panel" value="categories">
+        <div class="ef-categories__column">
+            <h2>Edit or Create Categories</h2>
+            <mdui-card variant="outlined">
+                <mdui-text-field
+                    required
+                    label="Name"
+                    type="text"
+                    [value]="categoryToEdit?.name"
+                    (input)="changeCategoryToEdit('name', $event)"
+                ></mdui-text-field>
+                <div class="ef-categories__editor ef-categories__column">
+                    <mdui-select
+                        variant="outlined"
+                        label="Parent Category"
+                        [value]="categoryToEditParentCategoryDropdownValue"
+                    >
+                    <div class="ef-categories__editor-dropdown-options">
+                        <mdui-menu-item
+                            *ngFor="let category of categories"
+                            [value]="category.id"
+                            (click)="changeCategoryToEdit('parentCategoryId', $event)"
+                        >
+                            {{ category.name }}
+                        </mdui-menu-item>
+                    </div>
+                    </mdui-select>
+                    <div *ngFor="let atribute of categoryToEditAtributes" class="ef-categories__editor-atribute-row">
+                        <mdui-text-field
+                            required
+                            variant="outlined"
+                            label="Atribute Name"
+                            type="text"
+                            [value]="atribute.name"
+                            (input)="changeCategoryToEditAtribute(atribute, 'name', $event)">
+                        </mdui-text-field>
+                        <mdui-select
+                            required
+                            variant="outlined"
+                            label="Atribute Type"
+                            [value]="atribute.type"
+                            (change)="changeCategoryToEditAtribute(atribute, 'type', $event)">
+                            <mdui-menu-item value="text">Text</mdui-menu-item>
+                            <mdui-menu-item value="number">Number</mdui-menu-item>
+                            <mdui-menu-item value="boolean">Boolean</mdui-menu-item>
+                        </mdui-select>
+                        <mdui-checkbox
+                            [checked]="atribute.isRequired"
+                            (change)="changeCategoryToEditAtribute(atribute, 'isRequired', $event)">
+                            Required
+                        </mdui-checkbox>
+                        <mdui-button-icon (click)="deleteAtributeForCategoryToEdit(atribute)">
+                            <i class="ri-delete-bin-6-line"></i>
+                        </mdui-button-icon>
+                    </div>
+                    <mdui-button
+                        style="width: 100%;"
+                        (click)="createNewAtributeForCategoryToEdit()">
+                        Create New Atribute
+                    </mdui-button>
+                    <mdui-button
+                        style="width: 100%;"
+                        [loading]="isEditCategoryLoading"
+                        (click)="saveCategory()"
+                        [disabled]="!isCategoryToEditValid">
+                        Save Category
+                    </mdui-button>
+                </div>
+            </mdui-card>
+            <h2>Categories</h2>
+            <app-category-card
+                *ngFor="let category of categories"
+                [category]="category"
+                [parentCategoryName]="getParentCategoryName(category.parentCategoryId)"
+                (categoryToEdit)="fetchCategoryToEditor(category)"
+                (categoryDeleted)="removeCategoryFromList(category)">
+            </app-category-card>
+        </div>
+    </mdui-tab-panel>
+</mdui-tabs>
+

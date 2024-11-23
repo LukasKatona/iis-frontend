@@ -1,22 +1,46 @@
 <div class="ef-main-header">
-    <span class="ef-main-header__logo">
-        E-FARM
-    </span>
+    <a routerLink="shop">
+        <span class="ef-main-header__logo">
+            E-FARM
+        </span>
+    </a>
 
-    <mat-form-field class="ef-main-header__search">
-        <input matInput placeholder="Search">
-        <mat-icon matSuffix>search</mat-icon>
-    </mat-form-field>
+    <mdui-tooltip *ngIf="user == null" content="Log In">
+        <mdui-button-icon (click)="openLoginDialog()">
+            <i class="ri-login-circle-line"></i>
+        </mdui-button-icon>
+    </mdui-tooltip>
 
-    <div class="ef-main-header__buttons">
-        <a mat-icon-button>
-            <mat-icon>shopping_cart</mat-icon>
+    
+    <div *ngIf="user != null" class="ef-main-header__buttons">
+        <mdui-tooltip content="Log Out">
+            <mdui-button-icon (click)="logOut()">
+                <i class="ri-logout-circle-line"></i>
+            </mdui-button-icon>
+        </mdui-tooltip>  
+        <a routerLink="profile/info">
+            <mdui-tooltip [content]="user.name + ' ' + user.surname">
+                <mdui-button-icon>
+                    <i class="ri-account-circle-line"></i>
+                </mdui-button-icon>
+            </mdui-tooltip>
         </a>
-        <a mat-icon-button>
-            <mat-icon>perm_identity</mat-icon>
+        <a routerLink="shopping-cart" class="ef-main-header__cart-icon">
+            <mdui-tooltip content="Shopping Cart">
+                <mdui-button-icon>
+                    <i class="ri-shopping-cart-2-line"></i>
+                </mdui-button-icon>
+            </mdui-tooltip>
+            <mdui-badge *ngIf="numberOfProductsInCart" class="ef-main-header__cart-badge">{{ numberOfProductsInCart }}</mdui-badge>
         </a>
-        <a mat-icon-button>
-            <mat-icon>settings</mat-icon>
+        <a routerLink="admin-page" *ngIf="user?.isAdmin">
+            <mdui-tooltip content="Admin Tools">
+                <mdui-button-icon>
+                    <i class="ri-tools-line"></i>
+                </mdui-button-icon>
+            </mdui-tooltip>
         </a>
     </div>
 </div>
+
+<app-login-dialog #loginDialog></app-login-dialog>

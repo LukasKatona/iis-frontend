@@ -1,6 +1,15 @@
 export interface ProductCategory {
-    id: number;
+    id?: number;
     name: string;
-    parentCategoryId?: number;
+    parentCategoryId?: number | null;
+    atributes?: string;
     children?: ProductCategory[];
+
+    [key: string]: any;
+}
+
+export function createEmptyProductCategory(): ProductCategory {
+    return {
+        name: ''
+    };
 }

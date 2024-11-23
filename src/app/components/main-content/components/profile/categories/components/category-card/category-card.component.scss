@@ -1,0 +1,44 @@
+.ef-category-card {
+    padding: 1rem;
+    width: 100%;
+    background-color: rgb(var(--mdui-color-surface-container));
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.ef-category-info {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 1rem;
+
+    h3 {
+        margin: 0;
+    }
+}
+
+.ef-category-card__row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.ef-category-card__state {
+    width: 30%;
+}
+
+.ef-product-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.ef-product-list li {
+    display: grid;
+    grid-template-columns: 2fr 2fr 2fr; 
+    align-items: center;
+    gap: 1rem; 
+    margin: 0;
+}

@@ -1,0 +1,31 @@
+.ef-farmer-products {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.ef-farmer-products__products {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.ef-farmer-products__overview {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding-bottom: 1rem;
+  align-items: stretch
+}
+
+app-farmer-banner,
+app-farmer-add-product {
+  flex: 1;
+  box-sizing: border-box;
+}
+

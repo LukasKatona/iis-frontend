@@ -1,0 +1,31 @@
+.ef-product-card {
+    width: 15rem;
+    background-color: rgb(var(--mdui-color-surface-container));
+}
+
+.ef-product-card__image {
+    width: 100%;
+    height: 15rem;
+    object-fit: cover;
+    background-color: rgb(var(--mdui-color-surface-container-highest));
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ef-product-card__content {
+    padding: 0 1rem 1rem 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-sizing: border-box;
+}
+
+.ef-product-card__actions {
+    display: flex;
+    align-self: flex-end;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+  
+

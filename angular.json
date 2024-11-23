@@ -34,7 +34,7 @@
               }
             ],
             "styles": [
-              "@angular/material/prebuilt-themes/cyan-orange.css",
+              "node_modules/remixicon/fonts/remixicon.css",
               "src/styles.scss"
             ],
             "scripts": []
@@ -100,7 +100,6 @@
               }
             ],
             "styles": [
-              "@angular/material/prebuilt-themes/cyan-orange.css",
               "src/styles.scss"
             ],
             "scripts": []

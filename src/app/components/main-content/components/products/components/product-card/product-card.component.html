@@ -1,0 +1,38 @@
+<mdui-card variant="elevated" class="ef-product-card">
+    <div class="ef-product-card__image">
+        <img *ngIf="product.imageUrl" class="ef-product-card__image" [src]="product.imageUrl" alt="missing image">
+        <i *ngIf="!product.imageUrl" class="ri-image-circle-line" style="font-size: 64px;"></i>
+    </div>
+    <div class="ef-product-card__content">
+        <div>
+            <h3>{{ product.name }}</h3>
+            <p>Price: {{ product.unitPrice }} Kč/ {{ product.unit }}</p>
+            <p>In stock: {{ product.stock }}</p>
+            <p *ngFor="let atribute of productAtributes">{{ atribute.name }}: {{ atribute.value }}</p>
+            <p>Rating: {{ product.rating | number: '1.1-1' }}/5</p>
+            <div class="ef-product-card__rating">
+                <p>0</p>
+                <mdui-linear-progress [value]="product.rating ?? 0" max="5"></mdui-linear-progress>
+                <p>5</p>
+            </div>
+        </div>
+        <div *ngIf="user" class="ef-product-card__add">
+            <div class="ef-product-card__amout">
+                <mdui-button-icon (click)="decrementAmount()">
+                    <i class="ri-subtract-line"></i>
+                </mdui-button-icon>
+                <mdui-text-field type="number" [value]="amount" min="0" max="{{ product.stock }}"
+                    (input)="onAmountChange($event)"></mdui-text-field>
+                <mdui-button-icon (click)="incrementAmount()">
+                    <i class="ri-add-line"></i>
+                </mdui-button-icon>
+            </div>
+            <mdui-button [disabled]="!isAmountValid" class="ef-product-card__add-button" (click)="addToCart()" [loading]="isLoading">
+                <div class="ef-product-card__add-button__text">
+                    Add to cart
+                    <i class="ri-shopping-cart-2-line"></i>
+                </div>
+            </mdui-button>
+        </div>
+    </div>
+</mdui-card>

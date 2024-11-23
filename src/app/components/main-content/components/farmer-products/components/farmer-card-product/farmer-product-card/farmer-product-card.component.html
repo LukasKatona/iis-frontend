@@ -1,0 +1,23 @@
+<mdui-card variant="elevated" class="ef-product-card">
+    <div class="ef-product-card__image">
+        <img *ngIf="product.imageUrl" class="ef-product-card__image" [src]="product.imageUrl" alt="missing image">
+        <i *ngIf="!product.imageUrl" class="ri-image-circle-line" style="font-size: 64px;"></i>
+    </div>
+    <div class="ef-product-card__content">
+        <div>
+            <h3>{{ product.name }}</h3>
+            <p>Price: {{ product.unitPrice }} Kč/ {{ product.unit }}</p>
+            <p>In stock: {{ product.stock }}</p>
+            <p *ngFor="let atribute of productAtributes">{{ atribute.name }}: {{ atribute.value }}</p>
+        </div>
+        <div class="ef-product-card__actions">
+            <mdui-button-icon (click)="editProduct(product)">
+                <i class="ri-edit-line"></i>
+            </mdui-button-icon>
+
+            <mdui-button-icon (click)="deleteProduct(product)">
+                <i class="ri-delete-bin-6-line"></i>
+            </mdui-button-icon>
+        </div>
+    </div>
+</mdui-card>

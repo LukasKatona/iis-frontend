@@ -1,0 +1,39 @@
+<mdui-card class="ef-shopping-cart-order">
+    <div class="ef-shopping-cart-order__header">
+        <div class="ef-shopping-cart-order__title">
+            <h3>Order ID: {{ order.id }}</h3>
+        </div>
+        <mdui-button type="submit" (click)="deleteOrder()">Delete Order</mdui-button>
+    </div>
+    <mdui-divider></mdui-divider>
+    <div class="ef-shopping-cart-order__content">
+        <div class="ef-shopping-cart-order__products">
+            <h4>Products</h4>
+            <ul class="ef-shopping-cart-order__list">
+                <li>
+                    <div><strong>Name</strong></div>
+                    <div><strong>Quantity</strong></div>
+                    <div><strong>Price</strong></div>
+                </li>
+                <li *ngFor="let product of productsWithQuantity">
+                    <div>{{ product.product.name }}</div>
+                    <input class="ef-shopping-cart__input" min="0" type="number" [(ngModel)]="product.quantity" (change)="updateProductQuantity(product)">
+                    
+                    <div>{{ getProductTotalPrice(product.product, product.quantity) }} Kč</div>
+                    <div>
+                        <mdui-button-icon (click)="deleteProduct(product.product)">
+                            <i class="ri-delete-bin-6-line"></i>
+                        </mdui-button-icon>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <mdui-divider></mdui-divider>
+        <div class="ef-shopping-cart-order__content-under">
+            <div class="ef-shopping-cart-order__order-price">
+                <p><strong>Total Price: </strong> {{ getTotalPrice() }} Kč</p>
+            </div>
+            <mdui-button type="submit" (click)="buyOrder()">Buy</mdui-button>
+        </div>
+    </div>
+</mdui-card>

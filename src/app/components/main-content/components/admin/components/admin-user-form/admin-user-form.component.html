@@ -1,0 +1,237 @@
+<div class="ef-personal-info__column">
+    <div class="ef-personal-info__column">
+        <div class="ef-admin-user-form__header">
+            <h3>{{ isCreatingNewUser ? 'Create New User' : 'Edit User' }}</h3>
+            <h3>User Personal Information</h3>
+            <mdui-button
+                (click)="onFormClosed()">
+                Close
+            </mdui-button>
+        </div>
+        
+        <mdui-card variant="outlined">
+            <mdui-text-field
+                required
+                label="Name"
+                type="text"
+                [value]="user?.name"
+                (input)="changeUser('name', $event)"
+            ></mdui-text-field>
+            <mdui-text-field
+                required
+                label="Surname"
+                type="text"
+                [value]="user?.surname"
+                (input)="changeUser('surname', $event)"
+            ></mdui-text-field>
+            <div class="ef-personal-info__column ef-personal-info__editor">
+                <h3>Credentials</h3>
+                <div class="ef-personal-info__row">
+                    <mdui-text-field
+                        required
+                        variant="outlined"
+                        label="Email"
+                        type="email"
+                        [value]="user?.email"
+                        (input)="changeUser('email', $event)"
+                    ></mdui-text-field>
+                    <mdui-text-field
+                        required
+                        variant="outlined"
+                        label="Password"
+                        type="password"
+                        toggle-password
+                        [value]="user?.password"
+                        (input)="changeUser('password', $event)"
+                    ></mdui-text-field>
+                </div>
+                <h3>Contact Information</h3>
+                <mdui-text-field
+                variant="outlined"
+                label="Phone"
+                type="text"
+                [value]="user?.phone"
+                (input)="changeUser('phone', $event)"
+            ></mdui-text-field>
+                <h3>Billing Address</h3>
+                <mdui-text-field
+                    variant="outlined"
+                    label="State"
+                    type="text"
+                    [value]="user?.state"
+                    (input)="changeUser('state', $event)"
+                ></mdui-text-field>
+                <mdui-text-field
+                    variant="outlined"
+                    label="City"
+                    type="text"
+                    [value]="user?.city"
+                    (input)="changeUser('city', $event)"
+                ></mdui-text-field>
+                <div class="ef-personal-info__row">
+                    <mdui-text-field
+                        variant="outlined"
+                        label="Street"
+                        type="text"
+                        [value]="user?.street"
+                        (input)="changeUser('street', $event)"
+                    ></mdui-text-field>
+                    <mdui-text-field
+                        variant="outlined"
+                        label="Street Number"
+                        type="text"
+                        [value]="user?.streetNumber"
+                        (input)="changeUser('streetNumber', $event)"
+                    ></mdui-text-field>
+                </div>
+                <mdui-text-field
+                    variant="outlined"
+                    label="Zip Code"
+                    type="text"
+                    [value]="user?.zipCode"
+                    (input)="changeUser('zipCode', $event)"
+                ></mdui-text-field>
+                <mdui-button
+                    [loading]="isPersonalInfoLoading"
+                    (click)="savePersonalInfo()"
+                    [disabled]="!isPersonalInfoValid">
+                    {{ isCreatingNewUser ? 'Create User' : 'Save Changes' }}
+                </mdui-button>
+            </div>
+        </mdui-card>
+    </div>
+    <div class="ef-personal-info__column">
+        <h3>Users Farmer Information</h3>
+        <mdui-button
+            *ngIf="!user?.isFarmer"
+            [loading]="isAddFarmerLoading"
+            (click)="addFarmer()"
+            [disabled]="!user?.id">
+            Register as Farmer
+        </mdui-button>
+        <mdui-card *ngIf="user?.isFarmer" variant="outlined">
+            <mdui-text-field
+                required
+                label="Farm Name"
+                type="text"
+                [value]="farmer?.farmName"
+                (input)="changeFarmer('farmName', $event)"
+            ></mdui-text-field>
+            <div class="ef-personal-info__column ef-personal-info__editor">
+                <mdui-text-field
+                    variant="outlined"
+                    label="Farm Description"
+                    type="text"
+                    [value]="farmer?.description"
+                    (input)="changeFarmer('description', $event)"
+                    autosize
+                ></mdui-text-field>
+                <h3>Commerce Information</h3>
+                <div class="ef-personal-info__row">
+                    <mdui-text-field
+                        required
+                        variant="outlined"
+                        label="CIN"
+                        type="text"
+                        [value]="farmer?.CIN"
+                        (input)="changeFarmer('CIN', $event)"
+                    ></mdui-text-field>
+                    <mdui-text-field
+                        required
+                        variant="outlined"
+                        label="VATIN"
+                        type="text"
+                        [value]="farmer?.VATIN"
+                        (input)="changeFarmer('VATIN', $event)"
+                    ></mdui-text-field>
+                </div>
+                <div class="ef-personal-info__row">
+                    <mdui-text-field
+                        required
+                        variant="outlined"
+                        label="VAT"
+                        type="text"
+                        [value]="farmer?.VAT"
+                        (input)="changeFarmer('VAT', $event)"
+                    ></mdui-text-field>
+                    <mdui-checkbox
+                        class="ef-personal-info__checkbox"
+                        [checked]="farmer?.paysVat"
+                        (change)="changeFarmer('paysVat', $event)"
+                    >
+                        Pays VAT
+                    </mdui-checkbox>
+                </div>
+                <div class="ef-personal-info__row">
+                    <mdui-text-field
+                        required
+                        variant="outlined"
+                        label="Bank Code"
+                        type="text"
+                        [value]="farmer?.bankCode"
+                        (input)="changeFarmer('bankCode', $event)"
+                    ></mdui-text-field>
+                    <mdui-text-field
+                        required
+                        variant="outlined"
+                        label="Account Number"
+                        type="text"
+                        [value]="farmer?.accountNumber"
+                        (input)="changeFarmer('accountNumber', $event)"
+                    ></mdui-text-field>
+                </div>
+                <mdui-text-field
+                    variant="outlined"
+                    label="IBAN"
+                    type="text"
+                    [value]="farmer?.iban"
+                    (input)="changeFarmer('iban', $event)"
+                ></mdui-text-field>
+                <h3>Billing Address</h3>
+                <mdui-text-field
+                    variant="outlined"
+                    label="State"
+                    type="text"
+                    [value]="farmer?.state"
+                    (input)="changeFarmer('state', $event)"
+                ></mdui-text-field>
+                <mdui-text-field
+                    variant="outlined"
+                    label="City"
+                    type="text"
+                    [value]="farmer?.city"
+                    (input)="changeFarmer('city', $event)"
+                ></mdui-text-field>
+                <div class="ef-personal-info__row">
+                    <mdui-text-field
+                        variant="outlined"
+                        label="Street"
+                        type="text"
+                        [value]="farmer?.street"
+                        (input)="changeFarmer('street', $event)"
+                    ></mdui-text-field>
+                    <mdui-text-field
+                        variant="outlined"
+                        label="Street Number"
+                        type="text"
+                        [value]="farmer?.streetNumber"
+                        (input)="changeFarmer('streetNumber', $event)"
+                    ></mdui-text-field>
+                </div>
+                <mdui-text-field
+                    variant="outlined"
+                    label="Zip Code"
+                    type="text"
+                    [value]="farmer?.zipCode"
+                    (input)="changeFarmer('zipCode', $event)"
+                ></mdui-text-field>
+                <mdui-button
+                    [loading]="isFarmerInfoLoading"
+                    (click)="saveFarmerInfo()"
+                    [disabled]="!isFarmerInfoValid">
+                    Save Farmer Information
+                </mdui-button>
+            </div>
+        </mdui-card>
+    </div>
+</div>

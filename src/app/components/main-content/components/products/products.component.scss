@@ -1,0 +1,77 @@
+.ef-products {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.ef-products__filters {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+    background-color: rgb(var(--mdui-color-surface-container));
+}
+
+.ef-products__filters-content {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.ef-products__search {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+
+    mdui-select {
+        width: 45%;
+    }
+}
+
+.ef-products__dropdown-farmers {
+    max-height: 200px;
+    overflow-y: auto;
+    
+}
+
+.ef-products__products {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.ef-products__filters-buttons {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    width: 100%;
+}
+
+.ef-products__category-name h3 {
+    color: rgb(var(--mdui-color-on-surface));
+    padding: 1rem;
+    margin: 0;
+}
+.ef-products__filters-buttons-segments{
+    align-items: stretch;
+    width: 100%;
+}
+
+.ef-products__filters-buttons-sorts{
+    width: 4rem;
+}
+
+.ef-products__number-comparator {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    align-items: center;
+}

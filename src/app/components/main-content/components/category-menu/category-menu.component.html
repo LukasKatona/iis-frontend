@@ -1,16 +1,15 @@
-<mat-tree class="ef-category-menu" [dataSource]="dataSource" [treeControl]="treeControl" >
-  <mat-tree-node *matTreeNodeDef="let node">
-    <mat-icon>remove</mat-icon>
-    {{node.name}}
-  </mat-tree-node>
-  <mat-tree-node *matTreeNodeDef="let node;when: hasChild" matTreeNodeToggle
-                 [cdkTreeNodeTypeaheadLabel]="node.name">
-    <a mat-icon-button matTreeNodeToggle
-            [attr.aria-label]="'Toggle ' + node.name">
-      <mat-icon class="mat-icon-rtl-mirror">
-        {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
-      </mat-icon>
-    </a>
-    {{node.name}}
-  </mat-tree-node>
-</mat-tree>
+<mdui-collapse class="menu-collapse">
+    <mdui-collapse-item *ngFor="let category of categoryTree" trigger=".trigger" [value]="category.id">
+        <mdui-list-item slot="header">
+            <a style="color: rgb(var(--mdui-color-on-surface)); text-decoration: none" [routerLink]="getCategoryLink(category)">{{category.name}}</a>
+            <mdui-icon *ngIf="category.children != null" class="trigger" slot="end-icon" name="keyboard_arrow_down"></mdui-icon>
+        </mdui-list-item>
+        <div style="display: flex; flex-direction: row; justify-content: space-between">
+            <div style="width: 2px; background-color: rgb(var(--mdui-color-primary)); margin-right: 5px"></div>
+            <div style="flex-grow: 1;">
+                <app-category-menu-item [category]="category"></app-category-menu-item>
+            </div>
+        </div>
+    </mdui-collapse-item> 
+</mdui-collapse>
+

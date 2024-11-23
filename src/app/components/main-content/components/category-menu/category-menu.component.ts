@@ -1,95 +1,60 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ProductCategory } from '../../../../../models/product-category.interface';
 import { CommonModule } from '@angular/common';
 import { environment } from '../../../../../environments/environment';
-import { MatTreeFlatDataSource, MatTreeFlattener, MatTreeModule } from '@angular/material/tree';
-import { FlatTreeControl } from '@angular/cdk/tree';
-import { MatIconModule } from '@angular/material/icon';
-
-/** Flat node with expandable and level information */
-interface ExampleFlatNode {
-  expandable: boolean;
-  name: string;
-  level: number;
-}
+import { RouterModule } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { CategoryMenuItemComponent } from './components/category-menu-item/category-menu-item.component';
 
 @Component({
   selector: 'app-category-menu',
   standalone: true,
-  imports: [CommonModule, MatTreeModule, MatIconModule],
+  imports: [CommonModule, RouterModule, CategoryMenuItemComponent],
   templateUrl: './category-menu.component.html',
-  styleUrl: './category-menu.component.scss'
+  styleUrl: './category-menu.component.scss',
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class CategoryMenuComponent implements OnInit {
-  menuTree: ProductCategory[] = [];
+export class CategoryMenuComponent {
+  categoryTree: ProductCategory[] = [];
 
-  ngOnInit(): void {
+  constructor(private http: HttpClient) {
     this.getProductCategories();
   }
 
   private getProductCategories() {
-    console.log(environment.baseUri)
-    fetch(environment.baseUri + '/product-categories')
-      .then(response => response.json())
-      .then(data => {
-        this.menuTree = this.buildCategoryTree(data);
-        this.dataSource.data = this.menuTree;
+    this.http.get<ProductCategory[]>(`${environment.baseUri}/product-categories`)
+      .subscribe((data: ProductCategory[]) => {
+        this.buildCategoryTree(data);
+        const collapse = document.querySelector(".menu-collapse") as any;
+        if (collapse != null) {
+          collapse.value = [];
+          data.forEach((category: ProductCategory) => {
+          collapse.value.push(category.id);
+          });
+        }
       });
   }
 
-  private buildCategoryTree(categories: ProductCategory[]): ProductCategory[] {
-    const categoryMap: { [key: number]: ProductCategory & { id: number, parentCategoryId?: number | null } } = {};
-    
+  private buildCategoryTree(categories: ProductCategory[]) {
+    const categoryMap = new Map<number, ProductCategory>();
+    categories.forEach(category => categoryMap.set(category.id ?? 0, category));
+
     categories.forEach(category => {
-      categoryMap[category.id] = { ...category, children: [] };
-    });
-  
-    const tree: ProductCategory[] = [];
-  
-    categories.forEach(category => {
-      if (category.parentCategoryId === null) {
-        tree.push(categoryMap[category.id]);
-        console.log(categoryMap[category.id]);
-      } else {
-        if (category.parentCategoryId !== undefined) {
-          const parent = categoryMap[category.parentCategoryId];
-          if (parent) {
-            parent.children!.push(categoryMap[category.id]);
+      if (category.parentCategoryId != null) {
+        const parent = categoryMap.get(category.parentCategoryId);
+        if (parent != null) {
+          if (parent.children == null) {
+            parent.children = [];
           }
+          parent.children.push(category);
         }
+      } else {
+        this.categoryTree.push(category);
       }
     });
-  
-    console.log(tree);
-    return tree;
   }
 
-  private _transformer = (node: ProductCategory, level: number) => {
-    return {
-      expandable: !!node.children && node.children.length > 0,
-      name: node.name,
-      level: level,
-    };
-  };
-
-  treeControl = new FlatTreeControl<ExampleFlatNode>(
-    node => node.level,
-    node => node.expandable,
-  );
-
-  treeFlattener = new MatTreeFlattener(
-    this._transformer,
-    node => node.level,
-    node => node.expandable,
-    node => node.children,
-  );
-
-  dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
-
-  constructor() {
-    this.dataSource.data = this.menuTree;
+  public getCategoryLink(category: ProductCategory): string {
+    return "/shop/" + category.name.replace(/\s/g, '_').toLowerCase();
   }
-
-  hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
-
 }

@@ -9,3 +9,11 @@
         <app-main-footer></app-main-footer>
     </div>
 </div>
+
+<mdui-snackbar class="ef-app__error-snackbar" closeable placement="top" [open]="error">
+    <h3>{{ error?.status }}</h3>
+    <p>{{ error?.message }}</p>
+    <mdui-button-icon slot="close-button">
+        <i class="ri-close-circle-line"></i> 
+    </mdui-button-icon>
+</mdui-snackbar>
