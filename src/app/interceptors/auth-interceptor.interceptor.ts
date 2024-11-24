@@ -1,7 +1,7 @@
 import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { AuthStoreService } from '../services/auth-store.service';
-import { catchError, throwError } from 'rxjs';
+import { catchError, finalize, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 
 export const authInterceptorInterceptor: HttpInterceptorFn = (req, next) => {
@@ -16,9 +16,12 @@ export const authInterceptorInterceptor: HttpInterceptorFn = (req, next) => {
     }
   });
 
+  let numberOfRunningRequests = authStoreService.runningRequests() ?? 0;
+  authStoreService.updateRunningRequests(numberOfRunningRequests+1);
+
   return next(modifiedRequest).pipe(
     catchError((error) => {
-      
+
       if (error.status === 401 && error.error.detail === 'Could not validate credentials') {
         authStoreService.clearAuthData();
         router.navigate(['/']);
@@ -30,8 +33,12 @@ export const authInterceptorInterceptor: HttpInterceptorFn = (req, next) => {
           status: error.status
         });
       }
-      
+
       return throwError(error);
+    }),
+    finalize(() => {
+      let numberOfRunningRequests = authStoreService.runningRequests() ?? 0;
+      authStoreService.updateRunningRequests(numberOfRunningRequests-1);
     })
   );
 };

@@ -15,6 +15,8 @@ export class AuthStoreService {
 
   private numberOfProductsInCartSubject: BehaviorSubject<number | null>;
 
+  private runningRequestsSubject: BehaviorSubject<number | null>;
+
   constructor(private http: HttpClient) {
     const storedUser = localStorage.getItem('user');
     const storedToken = localStorage.getItem('token');
@@ -22,11 +24,15 @@ export class AuthStoreService {
 
     const storedNumberOfProductsInCart = localStorage.getItem('numberOfProductsInCart');
 
+    const runningRequests = localStorage.getItem('runningRequests');
+
     this.userSubject = new BehaviorSubject<User | null>(storedUser ? JSON.parse(storedUser) : null);
     this.tokenSubject = new BehaviorSubject<string | null>(storedToken);
     this.authErrorSubject = new BehaviorSubject<AuthError | null>(storedAuthError ? JSON.parse(storedAuthError) : null);
 
     this.numberOfProductsInCartSubject = new BehaviorSubject<number | null>(storedNumberOfProductsInCart ? JSON.parse(storedNumberOfProductsInCart) : null);
+
+    this.runningRequestsSubject = new BehaviorSubject<number | null>(runningRequests ? JSON.parse(runningRequests) : null);
   }
 
   public loggedUser$(): Observable<User | null> {
@@ -45,6 +51,10 @@ export class AuthStoreService {
     return this.numberOfProductsInCartSubject.asObservable();
   }
 
+  public runningRequests$(): Observable<number | null> {
+    return this.runningRequestsSubject.asObservable();
+  }
+
   public loggedUser(): User | null {
     return this.userSubject.value;
   }
@@ -59,6 +69,10 @@ export class AuthStoreService {
 
   public numberOfProductsInCart(): number | null {
     return this.numberOfProductsInCartSubject.value;
+  }
+
+  public runningRequests(): number | null {
+    return this.runningRequestsSubject.value;
   }
 
   public updateAuthData(user: User | null, token: string | null): void {
@@ -91,14 +105,21 @@ export class AuthStoreService {
     }
   }
 
+  public updateRunningRequests(runningRequests: number | null): void {
+    this.runningRequestsSubject.next(runningRequests);
+    localStorage.setItem('runningRequests', runningRequests !== null ? runningRequests.toString() : '');
+  }
+
   public clearAuthData(): void {
     this.userSubject.next(null);
     this.tokenSubject.next(null);
     this.authErrorSubject.next(null);
     this.numberOfProductsInCartSubject.next(null);
+    this.runningRequestsSubject.next(null);
     localStorage.removeItem('user');
     localStorage.removeItem('token');
     localStorage.removeItem('authError');
     localStorage.removeItem('numberOfProductsInCart');
+    localStorage.removeItem('runningRequests');
   }
 }

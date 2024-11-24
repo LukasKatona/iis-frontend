@@ -12,11 +12,12 @@ import { setColorScheme } from 'mdui';
 import { HttpClient } from '@angular/common/http';
 import { AuthError } from '../models/auth-error.interface';
 import { AuthStoreService } from './services/auth-store.service';
+import { LoadingOverlayComponent } from './components/loading-overlay/loading-overlay.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [MainHeaderComponent, MainContentComponent, MainFooterComponent],
+  imports: [MainHeaderComponent, MainContentComponent, MainFooterComponent, LoadingOverlayComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
@@ -26,6 +27,7 @@ export class AppComponent {
 
   constructor(private router: Router, private http: HttpClient, private authStore: AuthStoreService) {
     this.authStore.updateAuthError(null);
+    this.authStore.updateRunningRequests(0);
   }
 
   ngOnInit() {
