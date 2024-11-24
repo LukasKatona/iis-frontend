@@ -17,8 +17,8 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "baseHref": "/~xkaton00/",
-            "deployUrl": "/~xkaton00/",
+            "baseHref": "/~xkaton00/IIS/",
+            "deployUrl": "/~xkaton00/IIS/",
             "outputPath": "dist/efarm",
             "index": "src/index.html",
             "browser": "src/main.ts",
